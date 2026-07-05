@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+/*
+  デザインコンセプト：Chiharu Shiota のような静的で緊張感のある美しさ。
+  ミニマル / 余白重視 / 作品画像を主役に、UI は極力主張しない。
+*/
+
+:root {
+  --color-bg: #f5f4f2;
+  --color-ink: #1a1a1a;
+  --color-muted: #8a877f;
+  --color-line: #e2e0db;
+  --max-width: 1500px;
+  --content-width: 1180px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: "Helvetica Neue", "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+    "Noto Sans JP", "Yu Gothic", sans-serif;
+  font-feature-settings: "palt";
+  letter-spacing: 0.04em;
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* メインコンテンツ幅 1180px を中央寄せ。SP は左右 24px 固定。 */
+.container-main {
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+.container-wide {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+/* 見出しの間（ま） */
+.tracking-wider-jp {
+  letter-spacing: 0.22em;
+}
+
+/* 画像フェードイン（Lazy Load 表示用） */
+.fade-in {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.fade-in.is-visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .fade-in {
+    transition: none;
+    opacity: 1;
+  }
+}

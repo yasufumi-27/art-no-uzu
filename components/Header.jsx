@@ -1,0 +1,37 @@
+import Link from "next/link";
+
+// グローバルナビゲーション（仕様書 7）。ロゴクリックで TOP へ遷移。
+const NAV = [
+  { href: "/works", label: "Works / Exhibition" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+
+export default function Header() {
+  return (
+    <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[var(--color-bg)]/85 backdrop-blur-md">
+      <div className="container-wide flex items-center justify-between h-16 md:h-20">
+        <Link
+          href="/"
+          className="text-sm md:text-base tracking-wider-jp font-medium"
+        >
+          ART NO UZU
+        </Link>
+        <nav>
+          <ul className="flex items-center gap-5 md:gap-10 text-[11px] md:text-xs tracking-wider-jp text-[var(--color-muted)]">
+            {NAV.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="transition-colors hover:text-[var(--color-ink)]"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+  );
+}
