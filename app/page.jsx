@@ -1,8 +1,10 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
+import Spiral from "@/components/Spiral";
 import { placeholder } from "@/lib/placeholder";
 import { works } from "@/lib/works";
+import { SOCIAL } from "@/components/Footer";
 
 export default function Home() {
   const featured = works.slice(0, 9);
@@ -12,22 +14,35 @@ export default function Home() {
       <Hero />
 
       <div className="container-main">
-        {/* ステートメント（間・余白） */}
-        <Reveal className="py-28 md:py-40 max-w-2xl mx-auto text-center">
-          <p className="text-sm md:text-base leading-loose tracking-wider-jp text-[var(--color-ink)]">
-            静けさの中に、緊張が宿る。
+        {/* ステートメント：渦のコンセプト */}
+        <Reveal className="relative py-32 md:py-44 max-w-2xl mx-auto text-center">
+          <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 text-[var(--color-line)] breathe">
+            <Spiral className="spin-slow h-full w-full" />
+          </div>
+          <p className="font-display text-xs tracking-[0.3em] text-[var(--color-muted)]">
+            ART NO UZU
+          </p>
+          <p className="mt-8 text-base md:text-lg leading-loose tracking-wider-jp">
+            渦は、感情であり、呼吸であり、
             <br />
-            余白と間（ま）を通して、作品そのものと向き合う。
+            記録であり、祈り。
+          </p>
+          <p className="mt-8 text-xs leading-loose text-[var(--color-muted)]">
+            2014年から、ただひたすらに渦を描き続けている。
+            <br />
+            一筆ずつ重ねた反復が、生きた時間そのものになる。
           </p>
         </Reveal>
 
-        {/* Featured Works */}
+        {/* Works / Exhibition */}
         <section className="pb-10">
           <Reveal className="mb-12 flex items-baseline justify-between">
-            <h2 className="text-lg tracking-wider-jp">Works / Exhibition</h2>
+            <h2 className="font-display text-lg tracking-[0.15em]">
+              Works / Exhibition
+            </h2>
             <Link
               href="/works"
-              className="text-xs tracking-wider-jp text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+              className="nav-link text-xs tracking-wider-jp text-[var(--color-muted)] hover:text-[var(--color-ink)]"
             >
               View all →
             </Link>
@@ -46,15 +61,82 @@ export default function Home() {
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                     />
+                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/55 to-transparent p-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                      <p className="text-[11px] tracking-wider-jp text-white line-clamp-1">
+                        {work.title}
+                      </p>
+                    </div>
                   </div>
-                  <p className="mt-3 text-xs tracking-wider-jp">{work.title}</p>
-                  <p className="mt-0.5 text-[10px] text-[var(--color-muted)]">
-                    {work.year}
-                  </p>
                 </Link>
               </Reveal>
             ))}
           </div>
+        </section>
+
+        {/* About */}
+        <section className="border-t border-[var(--color-line)] py-24 md:py-32">
+          <div className="grid grid-cols-1 gap-14 md:grid-cols-[1fr_1.3fr] md:items-center">
+            <Reveal>
+              <div className="aspect-[4/5] w-full overflow-hidden bg-[var(--color-line)]">
+                <img
+                  src={placeholder("about-portrait", 4 / 5)}
+                  alt="神谷佳美"
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <h2 className="font-display text-lg tracking-[0.15em]">About</h2>
+              <p className="mt-8 text-sm leading-loose">
+                神谷佳美（Kamitani Yoshimi）。1994年東京生まれ。
+                2014年より「渦」だけを描き続けている。
+                目指すのは、80年間渦を描き続けた100歳のおばあちゃんになること。
+              </p>
+              <p className="mt-4 text-sm leading-loose text-[var(--color-muted)]">
+                飾るための絵は描いていない。歳を重ねるごとに深まり、
+                その人らしく生きる生涯に寄り添う——そんな一枚を渦に託している。
+              </p>
+              <Link
+                href="/about"
+                className="nav-link mt-8 inline-block text-xs tracking-wider-jp"
+              >
+                More about the artist →
+              </Link>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* Contact */}
+        <section className="border-t border-[var(--color-line)] py-24 md:py-32 text-center">
+          <Reveal>
+            <h2 className="font-display text-lg tracking-[0.15em]">Contact</h2>
+            <p className="mt-6 text-sm leading-loose text-[var(--color-muted)]">
+              作品のご購入・ご依頼・お問い合わせは、
+              <br className="md:hidden" />
+              フォームまたは各SNSよりお気軽にご連絡ください。
+            </p>
+            <ul className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3 text-xs tracking-wider-jp text-[var(--color-muted)]">
+              {SOCIAL.map((s) => (
+                <li key={s.label}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="nav-link hover:text-[var(--color-ink)]"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/contact"
+              className="mt-12 inline-block border border-[var(--color-ink)] px-12 py-3 text-xs tracking-wider-jp transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)]"
+            >
+              お問い合わせフォームへ
+            </Link>
+          </Reveal>
         </section>
       </div>
     </>

@@ -13,7 +13,7 @@ export default function Header() {
       <div className="container-wide flex items-center justify-between h-16 md:h-20">
         <Link
           href="/"
-          className="anim-header-item text-sm md:text-base tracking-wider-jp font-medium"
+          className="anim-header-item font-display text-sm md:text-base tracking-[0.28em] font-semibold"
         >
           ART NO UZU
         </Link>
@@ -27,7 +27,7 @@ export default function Header() {
               >
                 <Link
                   href={item.href}
-                  className="transition-colors hover:text-[var(--color-ink)]"
+                  className="nav-link transition-colors hover:text-[var(--color-ink)]"
                 >
                   {item.label}
                 </Link>

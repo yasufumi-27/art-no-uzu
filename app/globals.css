@@ -21,12 +21,19 @@ html {
 body {
   background: var(--color-bg);
   color: var(--color-ink);
-  font-family: "Helvetica Neue", "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+  font-family: var(--font-body), "Hiragino Sans", "Hiragino Kaku Gothic ProN",
     "Noto Sans JP", "Yu Gothic", sans-serif;
+  font-weight: 300;
   font-feature-settings: "palt";
   letter-spacing: 0.04em;
-  line-height: 1.9;
+  line-height: 1.95;
   -webkit-font-smoothing: antialiased;
+}
+
+/* 見出し用ディスプレイ書体（Syne） */
+.font-display {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  letter-spacing: 0.02em;
 }
 
 /* メインコンテンツ幅 1180px を中央寄せ。SP は左右 24px 固定。 */
@@ -90,14 +97,102 @@ body {
   }
 }
 
+/* 渦：ゆっくりと回転し続ける（呼吸するようなアクセント） */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 近未来的なクリップ・リビール（下から立ち上がる） */
+@keyframes clipUp {
+  from {
+    clip-path: inset(100% 0 0 0);
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 文字が一文字ずつせり上がる */
+@keyframes charRise {
+  from {
+    opacity: 0;
+    transform: translateY(0.7em) rotate(2deg);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+    filter: blur(0);
+  }
+}
+
+/* 呼吸するようにゆらぐ */
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+
+.spin-slow {
+  animation: spin-slow 40s linear infinite;
+}
+.breathe {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+/* 一文字ずつのリビール（JSX 側で inline animation-delay を付与） */
+.char {
+  display: inline-block;
+  white-space: pre;
+  animation: charRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 /* ヘッダーのロゴ／メニューが枠外からインしてくる */
 .anim-header-item {
   animation: slideDown 1s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* ナビのアンダーライン：ホバーで左から伸びる（近未来的なライン） */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .anim-header-item {
+  .anim-header-item,
+  .spin-slow,
+  .breathe,
+  .char {
     animation: none;
+  }
+  .char {
+    opacity: 1;
   }
   html {
     scroll-behavior: auto;

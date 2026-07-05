@@ -60,7 +60,7 @@ export default function WorkDetail({ params }) {
               Exhibition
             </span>
           )}
-          <h1 className="mt-4 text-2xl font-light tracking-wider-jp md:text-3xl">
+          <h1 className="mt-4 text-2xl font-light tracking-wider-jp md:text-3xl leading-relaxed">
             {work.title}
           </h1>
           <p className="mt-6 max-w-xl text-sm leading-loose text-[var(--color-ink)]">

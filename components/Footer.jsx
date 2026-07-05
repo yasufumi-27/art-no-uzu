@@ -14,7 +14,10 @@ export default function Footer() {
     <footer className="mt-32 border-t border-[var(--color-line)] py-16">
       <div className="container-main flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-sm tracking-wider-jp">ART NO UZU</p>
+          <p className="font-display text-sm tracking-[0.25em]">ART NO UZU</p>
+          <p className="mt-2 text-[11px] tracking-wider-jp text-[var(--color-muted)]">
+            神谷佳美 — 渦は、感情であり、呼吸であり、記録であり、祈り。
+          </p>
           <p className="mt-3 text-xs text-[var(--color-muted)] leading-relaxed">
             画像・作品の無断転載および商用利用を禁止します。
             <br />

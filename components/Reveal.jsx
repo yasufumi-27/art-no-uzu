@@ -17,7 +17,7 @@ export default function Reveal({ children, delay = 0, className = "" }) {
       return;
     }
 
-    gsap.set(el, { opacity: 0, y: 24 });
+    gsap.set(el, { opacity: 0, y: 36, filter: "blur(8px)" });
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -25,9 +25,10 @@ export default function Reveal({ children, delay = 0, className = "" }) {
             gsap.to(el, {
               opacity: 1,
               y: 0,
-              duration: 1,
+              filter: "blur(0px)",
+              duration: 1.2,
               delay,
-              ease: "power2.out",
+              ease: "power3.out",
             });
             observer.unobserve(el);
           }

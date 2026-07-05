@@ -14,9 +14,11 @@ export default function ContactPage() {
       <div className="grid grid-cols-1 gap-20 md:grid-cols-[1fr_1.2fr]">
         <div>
           <Reveal>
-            <h1 className="text-3xl font-light tracking-wider-jp">Contact</h1>
+            <h1 className="font-display text-3xl font-light tracking-[0.1em]">
+              Contact
+            </h1>
             <p className="mt-8 text-sm leading-relaxed text-[var(--color-muted)]">
-              お問い合わせは下記フォーム、または各SNSよりご連絡ください。
+              作品のご購入・ご依頼・その他お問い合わせは、下記フォームまたは各SNSよりお気軽にご連絡ください。
             </p>
           </Reveal>
 

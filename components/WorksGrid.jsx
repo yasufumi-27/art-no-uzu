@@ -79,7 +79,8 @@ function Card({ work, onOpen }) {
 }
 
 export default function WorksGrid({ works, years, comingSoonYear }) {
-  const tabs = [...years, comingSoonYear];
+  // 左端を 2027（Coming Soon）とし、以降 2026 → 2015 の降順。
+  const tabs = [comingSoonYear, ...years];
   const [activeYear, setActiveYear] = useState(years[0]);
   const [lightbox, setLightbox] = useState(null);
 

@@ -90,6 +90,11 @@
 ## 未決事項（クライアント確認待ち）
 
 - [ ] ドメイン名
-- [ ] 実作品画像・掲載作品の選定
-- [ ] プロフィール／ステートメントの正式原稿
-- [ ] 各SNS・BASE・公式LINE の正式URL
+- [ ] 実作品画像・掲載作品の選定（現在はプレースホルダー。作品タイトルは実在のものを反映済み）
+- [ ] プロフィール／ステートメントの最終確認（[ARTIST_PROFILE.md](./ARTIST_PROFILE.md) にWeb調査ベースで作成済み）
+- [ ] 各SNS・BASE・公式LINE・YouTube・TikTok の正式URL（Instagram は反映済み）
+- [ ] BASE ショップ（購入導線）へのリンク追加要否
+
+## 参考資料
+
+- アーティスト分析: [ARTIST_PROFILE.md](./ARTIST_PROFILE.md)（神谷佳美 / ART NO UZU のWeb調査まとめ）
