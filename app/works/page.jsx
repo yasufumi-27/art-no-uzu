@@ -14,7 +14,7 @@ export default function WorksPage() {
       <Reveal className="mb-20 max-w-xl">
         <h1 className="text-3xl font-light tracking-wider-jp">Works / Exhibition</h1>
         <p className="mt-6 text-sm leading-relaxed text-[var(--color-muted)]">
-          作品と展示を同一の時間軸で辿るアーカイブ。サムネイルにカーソルを重ねると概要が表示されます。
+作品と展示を同一の時間軸で辿るアーカイブ。西暦を選ぶとその年の作品に切り替わります。
         </p>
       </Reveal>
 

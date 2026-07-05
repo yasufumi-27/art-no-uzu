@@ -16,8 +16,14 @@ const INTERVAL = 5000;
 
 export default function Hero() {
   const [index, setIndex] = useState(0);
+  const [ready, setReady] = useState(false); // 初期ロード時のゆっくりフェードイン用
   const captionRef = useRef(null);
   const timer = useRef(null);
+
+  useEffect(() => {
+    const t = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(t);
+  }, []);
 
   const go = (next) => {
     setIndex((prev) => (next + SLIDES.length) % SLIDES.length);
@@ -47,8 +53,8 @@ export default function Hero() {
             key={slide.id}
             src={placeholder(slide.id, 16 / 9)}
             alt={slide.title}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1600ms] ease-in-out"
-            style={{ opacity: i === index ? 1 : 0 }}
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[2200ms] ease-in-out"
+            style={{ opacity: ready && i === index ? 1 : 0 }}
           />
         ))}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />

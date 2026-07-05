@@ -13,14 +13,18 @@ export default function Header() {
       <div className="container-wide flex items-center justify-between h-16 md:h-20">
         <Link
           href="/"
-          className="text-sm md:text-base tracking-wider-jp font-medium"
+          className="anim-header-item text-sm md:text-base tracking-wider-jp font-medium"
         >
           ART NO UZU
         </Link>
         <nav>
           <ul className="flex items-center gap-5 md:gap-10 text-[11px] md:text-xs tracking-wider-jp text-[var(--color-muted)]">
-            {NAV.map((item) => (
-              <li key={item.href}>
+            {NAV.map((item, i) => (
+              <li
+                key={item.href}
+                className="anim-header-item"
+                style={{ animationDelay: `${0.15 + i * 0.12}s` }}
+              >
                 <Link
                   href={item.href}
                   className="transition-colors hover:text-[var(--color-ink)]"

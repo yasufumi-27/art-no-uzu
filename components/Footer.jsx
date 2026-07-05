@@ -2,7 +2,7 @@ import Link from "next/link";
 
 // 外部SNS導線（仕様書 12.1）と著作権・免責（仕様書 20）。
 export const SOCIAL = [
-  { label: "Instagram", href: "https://www.instagram.com/" },
+  { label: "Instagram", href: "https://www.instagram.com/art_no_uzu?igsh=ZmdjZXJveWJyMHJt" },
   { label: "YouTube", href: "https://www.youtube.com/" },
   { label: "TikTok", href: "https://www.tiktok.com/" },
   { label: "LINE", href: "https://line.me/" },
