@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { placeholder } from "@/lib/placeholder";
-import Spiral from "@/components/Spiral";
 
 // Works / Exhibition 統合一覧（仕様書 9）。
 // 西暦ボタンで年を切り替えて作品を表示（塩田千春サイト参考）。
@@ -19,13 +18,13 @@ function Card({ work, index }) {
         className="h-full w-full object-cover"
       />
       {work.category === "Exhibition" && (
-        <span className="absolute left-3 top-3 bg-black/70 px-2 py-1 text-[10px] tracking-wider-jp text-white">
+        <span className="absolute left-3 top-3 bg-black/70 px-2 py-1 text-[0.625rem] tracking-wider-jp text-white">
           Exhibition
         </span>
       )}
       {/* 詳細ページを持たない作品は Instagram へ誘導するラベルを表示 */}
       {!work.hasDetail && (
-        <span className="absolute left-3 top-3 bg-black/70 px-2 py-1 text-[10px] tracking-wider-jp text-white">
+        <span className="absolute left-3 top-3 bg-black/70 px-2 py-1 text-[0.625rem] tracking-wider-jp text-white">
           instagram
         </span>
       )}
@@ -102,16 +101,8 @@ export default function WorksGrid({
       </p>
 
       {isComingSoon ? (
-        // Coming Soon：新しい渦が生まれる表現（生成→回転成長→消滅のループ）＋波打つ文字。
+        // Coming Soon：文字が渦のように生まれるアニメーション（渦は背景に任せる）。
         <div className="relative flex aspect-[16/7] w-full items-center justify-center overflow-hidden">
-          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[115%] w-[115%] -translate-x-1/2 -translate-y-1/2 text-[var(--color-muted)]">
-            <Spiral
-              turns={5}
-              strokeWidth={0.5}
-              className="uzu-birth h-full w-full"
-              pathClassName="uzu-birth-draw"
-            />
-          </div>
           <div className="relative text-center">
             <p className="font-display text-3xl tracking-[0.35em] text-[var(--color-ink)] md:text-5xl">
               {[..."COMING"].map((c, i) => (

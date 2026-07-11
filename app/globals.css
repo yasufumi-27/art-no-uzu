@@ -222,6 +222,17 @@ body {
   animation: uzuBirthDraw 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
 
+/* サイト背景の渦：同じ「生まれる」表現を、現状の背景と同じくらいゆっくり（160s）。 */
+.uzu-bg-birth {
+  transform-origin: 50% 50%;
+  animation: uzuBirth 160s cubic-bezier(0.33, 0, 0.2, 1) infinite;
+}
+.uzu-bg-birth-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: uzuBirthDraw 160s cubic-bezier(0.33, 0, 0.2, 1) infinite;
+}
+
 /* Coming Soon：文字も渦のように回転しながら生まれ、やがて消えて再び生まれる（渦の誕生と同期） */
 @keyframes csBirth {
   0% {
@@ -385,10 +396,13 @@ body {
   .uzu-bg-svg,
   .uzu-draw,
   .uzu-birth,
-  .uzu-birth-draw {
+  .uzu-birth-draw,
+  .uzu-bg-birth,
+  .uzu-bg-birth-draw {
     animation: none;
   }
-  .uzu-birth-draw {
+  .uzu-birth-draw,
+  .uzu-bg-birth-draw {
     stroke-dashoffset: 0;
   }
   .char,

@@ -63,7 +63,7 @@ export default function WorkDetail({ params }) {
       <div className="container-main mt-14 grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr]">
         <Reveal delay={0.1}>
           {work.category === "Exhibition" && (
-            <span className="inline-block bg-black px-2 py-1 text-[10px] tracking-wider-jp text-white">
+            <span className="inline-block bg-black px-2 py-1 text-[0.625rem] tracking-wider-jp text-white">
               Exhibition
             </span>
           )}
@@ -117,17 +117,17 @@ export default function WorkDetail({ params }) {
                       className="h-full w-full object-cover"
                     />
                     {w.category === "Exhibition" && (
-                      <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[9px] tracking-wider-jp text-white">
+                      <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[0.5625rem] tracking-wider-jp text-white">
                         Exhibition
                       </span>
                     )}
                     {!w.hasDetail && (
-                      <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[9px] tracking-wider-jp text-white">
+                      <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[0.5625rem] tracking-wider-jp text-white">
                         instagram
                       </span>
                     )}
                   </div>
-                  <p className="mt-2 text-[11px] tracking-wider-jp">{w.title}</p>
+                  <p className="mt-2 text-[0.6875rem] tracking-wider-jp">{w.title}</p>
                 </>
               );
               // 詳細ページあり→詳細へ、なし→直接 Instagram へ（#1）

@@ -37,10 +37,10 @@ export default function FeaturedWorks() {
               className="h-full w-full object-cover"
             />
             <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/55 to-transparent p-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-              <p className="text-[9px] tracking-[0.2em] text-white/70">
+              <p className="text-[0.5625rem] tracking-[0.2em] text-white/70">
                 {work.category}
               </p>
-              <p className="text-[11px] tracking-wider-jp text-white line-clamp-1">
+              <p className="text-[0.6875rem] tracking-wider-jp text-white line-clamp-1">
                 {work.title}
               </p>
             </div>

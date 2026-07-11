@@ -1,19 +1,17 @@
 import Spiral from "@/components/Spiral";
 
-// サイト全体の背景に配置する大きな渦（#3）。
-// 画面サイズを超える大きさで1つ表示し、渦を表現するアニメーション（#4）を付与する：
-//   - 全体がゆっくり回転（渦の巻き）
-//   - 呼吸するように拡縮（生命感）
-//   - 読み込み時に中心から一筆で描かれる（stroke の draw-in）
+// サイト全体の背景に配置する大きな渦。
+// 「新しい渦が生まれる」表現（中心から一筆で描かれつつ回転・成長して現れ、消えては再び生まれる）を、
+// 非常にゆっくり（160s）付与する。
 export default function BackgroundUzu() {
   return (
     <div className="uzu-bg" aria-hidden="true">
-      <div className="uzu-bg-rotor">
+      <div className="uzu-bg-birth h-[150vmax] w-[150vmax]">
         <Spiral
           turns={7}
           strokeWidth={0.3}
-          className="uzu-bg-svg"
-          pathClassName="uzu-draw"
+          className="h-full w-full"
+          pathClassName="uzu-bg-birth-draw"
         />
       </div>
     </div>
