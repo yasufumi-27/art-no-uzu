@@ -9,13 +9,22 @@ const NAV = [
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[var(--color-bg)]/5">
-      <div className="container-wide flex items-center justify-between h-16 md:h-20">
+    <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[var(--color-bg)]/40">
+      <div className="container-wide flex items-center justify-between h-20 md:h-28">
         <Link
           href="/"
-          className="anim-header-item font-display text-sm md:text-base tracking-[0.28em] font-semibold"
+          aria-label="Yoshimi Kamitani — Home"
+          className="font-display text-xl md:text-3xl tracking-[0.18em] font-semibold"
         >
-          ART NO UZU
+          {Array.from("Yoshimi Kamitani").map((ch, i) => (
+            <span
+              key={i}
+              className="title-char"
+              style={{ animationDelay: `${i * 0.09}s` }}
+            >
+              {ch}
+            </span>
+          ))}
         </Link>
         <nav>
           <ul className="flex items-center gap-5 md:gap-10 text-[13px] md:text-sm tracking-wider-jp text-[var(--color-ink)]">

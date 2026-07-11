@@ -15,7 +15,7 @@ function Card({ work, index }) {
         src={placeholder(work.id, 1)}
         alt={work.title}
         loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.1]"
+        className="h-full w-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.2]"
       />
       {work.category === "Exhibition" && (
         <span className="absolute left-3 top-3 bg-black/70 px-2 py-1 text-[10px] tracking-wider-jp text-white">

@@ -215,6 +215,40 @@ body {
   animation: slideDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* タイトル専用の豪華なアニメーション（#3）
+   一文字ずつ立体的に立ち上がり、その後ゆっくりと光が流れる（グロー波） */
+@keyframes titleCharIn {
+  0% {
+    opacity: 0;
+    transform: translateY(0.9em) rotateX(-85deg) scale(1.15);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0) scale(1);
+    filter: blur(0);
+  }
+}
+@keyframes titleGlow {
+  0%,
+  100% {
+    color: var(--color-ink);
+    text-shadow: none;
+  }
+  50% {
+    color: #8a2b22;
+    text-shadow: 0 0 14px rgba(176, 58, 46, 0.4);
+  }
+}
+.title-char {
+  display: inline-block;
+  white-space: pre;
+  transform-origin: 50% 100%;
+  animation:
+    titleCharIn 1.7s cubic-bezier(0.16, 1, 0.3, 1) both,
+    titleGlow 5s ease-in-out infinite;
+}
+
 /* ナビのアンダーライン：ホバーで左から伸びる（近未来的なライン） */
 .nav-link {
   position: relative;
@@ -240,13 +274,15 @@ body {
   .spin-slow,
   .breathe,
   .char,
+  .title-char,
   .work-in,
   .uzu-bg-rotor,
   .uzu-bg-svg,
   .uzu-draw {
     animation: none;
   }
-  .char {
+  .char,
+  .title-char {
     opacity: 1;
   }
   .uzu-draw {
