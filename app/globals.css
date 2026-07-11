@@ -222,29 +222,50 @@ body {
   animation: uzuBirthDraw 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
 
-/* サイト背景の渦（pathLength=100）。
-   1周期（80s）で「空 → 根本から描画(0→100) → 根本から消去(100→200) → 空」を繰り返す。
-   dashoffset を 100→300 と増やすことで、線は根本(パス始点=中心)側から順に消えていく。
-   全体はゆっくり回転。 */
-.uzu-bg-rotor2 {
-  transform-origin: 50% 50%;
-  animation: spin-slow 160s linear infinite;
-}
+/* サイト背景の渦（pathLength=1000、6巻きのスパイラル）。
+   1本の渦のライフサイクル（周期50s）：
+     0s   : 空（描き始め）
+     0–20s: 根本(中心)から先端まで描く（20秒で6回巻く）
+     15s  : 根本から消え始める（描き始めの15秒後）
+     15–35s: 根本から先端へ消えていく
+     35–50s: 空（待機）
+   2層を 25s ずらして重ねることで、
+   「消え始め（15s）の10秒後（=25s）に次の渦が描き始める」を常時繰り返す。
+   可視区間 [tail, head] を dasharray/​dashoffset で表現（pathLength=1000）。 */
 .uzu-life {
-  stroke-dasharray: 100 100;
-  stroke-dashoffset: 100; /* 初期は空の状態から */
-  animation: uzuLife 80s linear infinite;
+  stroke-dasharray: 0 1000;
+  stroke-dashoffset: 0;
+  animation: uzuLife 50s linear infinite;
 }
-/* 2層目は半周期あとから始まり、1層目が消えていくときに根本から生まれる */
 .uzu-life-b {
-  animation-delay: 40s;
+  animation-delay: 25s;
 }
 @keyframes uzuLife {
-  from {
-    stroke-dashoffset: 100;
+  /* head = 描画先端、tail = 消去末端。dash 長 = (head-tail)*1000、offset = -tail*1000 */
+  0% {
+    /* 0s: 空 */
+    stroke-dasharray: 0 1000;
+    stroke-dashoffset: 0;
   }
-  to {
-    stroke-dashoffset: 300;
+  30% {
+    /* 15s: [0, 0.75] 描画途中で根本が消え始める直前 */
+    stroke-dasharray: 750 1000;
+    stroke-dashoffset: 0;
+  }
+  40% {
+    /* 20s: [0.25, 1.0] 先端まで到達、根本は消え始めている */
+    stroke-dasharray: 750 1000;
+    stroke-dashoffset: -250;
+  }
+  70% {
+    /* 35s: [1.0, 1.0] 完全に消える */
+    stroke-dasharray: 0 1000;
+    stroke-dashoffset: -1000;
+  }
+  100% {
+    /* 35–50s: 空のまま待機 */
+    stroke-dasharray: 0 1000;
+    stroke-dashoffset: -1000;
   }
 }
 
@@ -407,14 +428,15 @@ body {
   .title-char,
   .cs-letter,
   .work-in,
-  .uzu-bg-rotor2,
   .uzu-life,
   .uzu-birth,
   .uzu-birth-draw {
     animation: none;
   }
   .uzu-life {
-    stroke-dashoffset: 200; /* 静止時は渦を表示 */
+    /* 静止時は渦を全体表示 [0,1] */
+    stroke-dasharray: 1000 1000;
+    stroke-dashoffset: 0;
   }
   .uzu-birth-draw {
     stroke-dashoffset: 0;
