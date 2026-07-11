@@ -222,15 +222,25 @@ body {
   animation: uzuBirthDraw 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
 
-/* サイト背景の渦：同じ「生まれる」表現を、現状の背景と同じくらいゆっくり（160s）。 */
+/* サイト背景の渦：中心（根本）から描かれ、根本から順に消えていく“流れる渦”。
+   dash の可視長を 75%、隙間を 25% にし、パターン長 = パス全長（pathLength=1）とすることで、
+   ・根本側から順に消える（tail が外へ進む）
+   ・可視長 75% のため、渦が 75% 出た時点で根本が消え始める
+   ・パターンが周期的に繰り返すため、消えかけと同時に新しい渦が根本から現れる（overlap）
+   全体はゆっくり回転（160s）。 */
 .uzu-bg-birth {
   transform-origin: 50% 50%;
-  animation: uzuBirth 160s cubic-bezier(0.33, 0, 0.2, 1) infinite;
+  animation: spin-slow 160s linear infinite;
 }
 .uzu-bg-birth-draw {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: uzuBirthDraw 160s cubic-bezier(0.33, 0, 0.2, 1) infinite;
+  stroke-dasharray: 0.75 0.25;
+  stroke-dashoffset: 0;
+  animation: uzuFlow 90s linear infinite;
+}
+@keyframes uzuFlow {
+  to {
+    stroke-dashoffset: -1;
+  }
 }
 
 /* Coming Soon：文字も渦のように回転しながら生まれ、やがて消えて再び生まれる（渦の誕生と同期） */

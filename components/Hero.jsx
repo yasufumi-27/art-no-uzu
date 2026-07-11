@@ -59,7 +59,7 @@ export default function Hero() {
         <div className="absolute bottom-12 left-0 container-wide text-white">
           <p
             key={`y-${index}`}
-            className="char font-display text-[11px] tracking-[0.3em] opacity-80"
+            className="char font-display text-[0.6875rem] tracking-[0.3em] opacity-80"
             style={{ animationDelay: "0.1s" }}
           >
             {current.year}
