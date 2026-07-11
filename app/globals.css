@@ -222,24 +222,29 @@ body {
   animation: uzuBirthDraw 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
 
-/* サイト背景の渦：中心（根本）から描かれ、根本から順に消えていく“流れる渦”。
-   dash の可視長を 75%、隙間を 25% にし、パターン長 = パス全長（pathLength=1）とすることで、
-   ・根本側から順に消える（tail が外へ進む）
-   ・可視長 75% のため、渦が 75% 出た時点で根本が消え始める
-   ・パターンが周期的に繰り返すため、消えかけと同時に新しい渦が根本から現れる（overlap）
-   全体はゆっくり回転（160s）。 */
-.uzu-bg-birth {
+/* サイト背景の渦（pathLength=100）。
+   1周期（80s）で「空 → 根本から描画(0→100) → 根本から消去(100→200) → 空」を繰り返す。
+   dashoffset を 100→300 と増やすことで、線は根本(パス始点=中心)側から順に消えていく。
+   全体はゆっくり回転。 */
+.uzu-bg-rotor2 {
   transform-origin: 50% 50%;
   animation: spin-slow 160s linear infinite;
 }
-.uzu-bg-birth-draw {
-  stroke-dasharray: 0.75 0.25;
-  stroke-dashoffset: 0;
-  animation: uzuFlow 90s linear infinite;
+.uzu-life {
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 100; /* 初期は空の状態から */
+  animation: uzuLife 80s linear infinite;
 }
-@keyframes uzuFlow {
+/* 2層目は半周期あとから始まり、1層目が消えていくときに根本から生まれる */
+.uzu-life-b {
+  animation-delay: 40s;
+}
+@keyframes uzuLife {
+  from {
+    stroke-dashoffset: 100;
+  }
   to {
-    stroke-dashoffset: -1;
+    stroke-dashoffset: 300;
   }
 }
 
@@ -402,25 +407,21 @@ body {
   .title-char,
   .cs-letter,
   .work-in,
-  .uzu-bg-rotor,
-  .uzu-bg-svg,
-  .uzu-draw,
+  .uzu-bg-rotor2,
+  .uzu-life,
   .uzu-birth,
-  .uzu-birth-draw,
-  .uzu-bg-birth,
-  .uzu-bg-birth-draw {
+  .uzu-birth-draw {
     animation: none;
   }
-  .uzu-birth-draw,
-  .uzu-bg-birth-draw {
+  .uzu-life {
+    stroke-dashoffset: 200; /* 静止時は渦を表示 */
+  }
+  .uzu-birth-draw {
     stroke-dashoffset: 0;
   }
   .char,
   .title-char {
     opacity: 1;
-  }
-  .uzu-draw {
-    stroke-dashoffset: 0;
   }
   html {
     scroll-behavior: auto;
