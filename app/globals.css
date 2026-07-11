@@ -210,22 +210,39 @@ body {
   animation: charRise 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* ヘッダーのロゴ／メニューが枠外からインしてくる */
+/* ヘッダーのロゴ／メニューが枠外からインしてくる（ゆっくり移動）(#3) */
 .anim-header-item {
-  animation: slideDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: slideDown 3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* メニュー文字の可読性：背景色のハローを回して、後ろの文字と被っても読めるように(#1) */
+.header-legible {
+  text-shadow:
+    0 0 6px var(--color-bg),
+    0 0 6px var(--color-bg),
+    0 0 12px var(--color-bg);
+}
+
+/* 作品画像のホバー拡大（transform ベースで確実に動作させる）(#2) */
+.zoom-img {
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.group:hover .zoom-img {
+  transform: scale(1.2);
 }
 
 /* タイトル専用の豪華なアニメーション（#3）
-   一文字ずつ立体的に立ち上がり、その後ゆっくりと光が流れる（グロー波） */
+   一文字ずつ左から右へ流れるように入場し、常時ゆっくり光が流れる（グロー波） */
 @keyframes titleCharIn {
   0% {
     opacity: 0;
-    transform: translateY(0.9em) rotateX(-85deg) scale(1.15);
+    transform: translateX(-0.8em);
     filter: blur(6px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) rotateX(0) scale(1);
+    transform: translateX(0);
     filter: blur(0);
   }
 }
@@ -233,19 +250,22 @@ body {
   0%,
   100% {
     color: var(--color-ink);
-    text-shadow: none;
+    text-shadow:
+      0 0 6px var(--color-bg),
+      0 0 12px var(--color-bg);
   }
   50% {
     color: #8a2b22;
-    text-shadow: 0 0 14px rgba(176, 58, 46, 0.4);
+    text-shadow:
+      0 0 6px var(--color-bg),
+      0 0 16px rgba(176, 58, 46, 0.45);
   }
 }
 .title-char {
   display: inline-block;
   white-space: pre;
-  transform-origin: 50% 100%;
   animation:
-    titleCharIn 1.7s cubic-bezier(0.16, 1, 0.3, 1) both,
+    titleCharIn 1.8s cubic-bezier(0.16, 1, 0.3, 1) both,
     titleGlow 5s ease-in-out infinite;
 }
 

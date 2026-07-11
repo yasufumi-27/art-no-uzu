@@ -14,7 +14,7 @@ export default function Header() {
         <Link
           href="/"
           aria-label="Yoshimi Kamitani — Home"
-          className="font-display text-xl md:text-3xl tracking-[0.18em] font-semibold"
+          className="header-legible font-display text-xl md:text-3xl tracking-[0.18em] font-semibold"
         >
           {Array.from("Yoshimi Kamitani").map((ch, i) => (
             <span
@@ -27,7 +27,7 @@ export default function Header() {
           ))}
         </Link>
         <nav>
-          <ul className="flex items-center gap-5 md:gap-10 text-[13px] md:text-sm tracking-wider-jp text-[var(--color-ink)]">
+          <ul className="header-legible flex items-center gap-5 md:gap-10 text-[13px] md:text-sm tracking-wider-jp text-[var(--color-ink)]">
             {NAV.map((item, i) => (
               <li
                 key={item.href}

@@ -114,7 +114,7 @@ export default function WorkDetail({ params }) {
                       src={placeholder(w.id, 1)}
                       alt={w.title}
                       loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.1]"
+                      className="zoom-img h-full w-full object-cover"
                     />
                     {w.category === "Exhibition" && (
                       <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[9px] tracking-wider-jp text-white">

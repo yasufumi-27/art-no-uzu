@@ -34,7 +34,7 @@ export default function FeaturedWorks() {
               src={placeholder(work.id, 1)}
               alt={work.title}
               loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.2]"
+              className="zoom-img h-full w-full object-cover"
             />
             <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/55 to-transparent p-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
               <p className="text-[9px] tracking-[0.2em] text-white/70">
