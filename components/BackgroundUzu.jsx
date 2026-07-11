@@ -1,9 +1,9 @@
 import Spiral from "@/components/Spiral";
 
-// サイト全体の背景の渦。周期35sで生まれ変わり続ける：
-//   0秒目から20秒かけて根本(中心)から描き、
-//   15秒目から20秒かけて根本から消え、
-//   35秒目から再び描く（以降くり返し）。
+// サイト全体の背景の渦。周期45sで生まれ変わり続ける：
+//   0秒目から30秒かけて根本(中心)から描き、
+//   10秒目から35秒かけて根本から消え、
+//   45秒目から再び描く（以降くり返し）。
 export default function BackgroundUzu() {
   return (
     <div className="uzu-bg" aria-hidden="true">
