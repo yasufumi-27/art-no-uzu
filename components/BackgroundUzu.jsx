@@ -7,7 +7,7 @@ import Spiral from "@/components/Spiral";
 export default function BackgroundUzu() {
   return (
     <div className="uzu-bg" aria-hidden="true">
-      <div className="uzu-bg-rotor2 relative h-[150vmax] w-[150vmax]">
+      <div className="uzu-bg-rotor2 relative h-[112vmax] w-[112vmax]">
         <Spiral
           turns={7}
           strokeWidth={0.3}
