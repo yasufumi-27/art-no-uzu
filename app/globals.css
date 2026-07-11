@@ -18,6 +18,14 @@ html {
   scroll-behavior: smooth;
 }
 
+/* PC（デスクトップ）のみ文字サイズを全体的に約2pt大きく。
+   スマホ・iPad（〜1279px）は現状維持。コンテナ幅/余白は px 指定のため崩れない。 */
+@media (min-width: 1280px) {
+  :root {
+    font-size: 18px;
+  }
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-ink);
@@ -214,22 +222,33 @@ body {
   animation: uzuBirthDraw 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
 
-/* Coming Soon：文字が常に波打つ（ずっと動く） */
-@keyframes csWave {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.8;
+/* Coming Soon：文字も渦のように回転しながら生まれ、やがて消えて再び生まれる（渦の誕生と同期） */
+@keyframes csBirth {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-140deg);
+    filter: blur(5px);
   }
-  50% {
-    transform: translateY(-0.2em);
+  14% {
     opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0);
+  }
+  68% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25) rotate(70deg);
+    filter: blur(4px);
   }
 }
 .cs-letter {
   display: inline-block;
   white-space: pre;
-  animation: csWave 2.6s ease-in-out infinite;
+  animation: csBirth 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
 
 /* 呼吸するようにゆらぐ */

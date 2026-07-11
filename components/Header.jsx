@@ -14,13 +14,25 @@ export default function Header() {
         <Link
           href="/"
           aria-label="Yoshimi Kamitani — Home"
-          className="header-legible font-display text-xl md:text-3xl tracking-[0.18em] font-semibold"
+          className="header-legible font-display text-xl md:text-3xl tracking-[0.18em] font-semibold leading-tight"
         >
-          {Array.from("Yoshimi Kamitani").map((ch, i) => (
+          {Array.from("Yoshimi").map((ch, i) => (
             <span
-              key={i}
+              key={`f-${i}`}
               className="title-char"
               style={{ animationDelay: `${i * 0.09}s` }}
+            >
+              {ch}
+            </span>
+          ))}
+          {/* スマホは改行、PC/iPad は半角スペース */}
+          <br className="md:hidden" />
+          <span className="hidden md:inline">{" "}</span>
+          {Array.from("Kamitani").map((ch, i) => (
+            <span
+              key={`l-${i}`}
+              className="title-char"
+              style={{ animationDelay: `${(8 + i) * 0.09}s` }}
             >
               {ch}
             </span>
