@@ -232,6 +232,17 @@ body {
   transform: scale(1.2);
 }
 
+/* ホバーで表示領域ごと 1.2 倍に拡大（画像の内部ズームではなくカード全体）(#3)
+   要素は position: relative であること。拡大時は前面に出す。 */
+.zoom-card {
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.zoom-card:hover {
+  transform: scale(1.2);
+  z-index: 30;
+}
+
 /* タイトル専用の豪華なアニメーション（#3）
    一文字ずつ左から右へ流れるように入場し、常時ゆっくり光が流れる（グロー波） */
 @keyframes titleCharIn {

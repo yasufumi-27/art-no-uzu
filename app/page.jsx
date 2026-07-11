@@ -35,7 +35,7 @@ export default function Home() {
         {/* Works / Exhibition */}
         <section className="pb-10">
           <Reveal className="mb-12 flex items-baseline justify-between">
-            <h2 className="font-display text-lg tracking-[0.15em]">
+            <h2 className="font-display text-4xl tracking-[0.15em]">
               Works / Exhibition
             </h2>
             <Link
@@ -62,7 +62,7 @@ export default function Home() {
               </div>
             </Reveal>
             <Reveal delay={0.1}>
-              <h2 className="font-display text-lg tracking-[0.15em]">About</h2>
+              <h2 className="font-display text-4xl tracking-[0.15em]">About</h2>
               <p className="mt-8 text-sm leading-loose">
                 神谷佳美（Kamitani Yoshimi）。1994年東京生まれ。
                 2014年より「渦」だけを描き続けている。
@@ -85,7 +85,7 @@ export default function Home() {
         {/* Contact */}
         <section className="border-t border-[var(--color-line)] py-24 md:py-32 text-center">
           <Reveal>
-            <h2 className="font-display text-lg tracking-[0.15em]">Contact</h2>
+            <h2 className="font-display text-4xl tracking-[0.15em]">Contact</h2>
             <p className="mt-6 text-sm leading-loose text-[var(--color-muted)]">
               作品のご購入・ご依頼・お問い合わせは、
               <br className="md:hidden" />

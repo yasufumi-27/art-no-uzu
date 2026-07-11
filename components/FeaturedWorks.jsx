@@ -29,12 +29,12 @@ export default function FeaturedWorks() {
     <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6">
       {items.map((work, i) => {
         const inner = (
-          <div className="relative aspect-square overflow-hidden bg-[var(--color-line)]">
+          <div className="zoom-card relative aspect-square overflow-hidden bg-[var(--color-line)]">
             <img
               src={placeholder(work.id, 1)}
               alt={work.title}
               loading="lazy"
-              className="zoom-img h-full w-full object-cover"
+              className="h-full w-full object-cover"
             />
             <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/55 to-transparent p-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
               <p className="text-[9px] tracking-[0.2em] text-white/70">

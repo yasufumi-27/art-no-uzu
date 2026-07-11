@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { placeholder } from "@/lib/placeholder";
+import Spiral from "@/components/Spiral";
 
 // Works / Exhibition 統合一覧（仕様書 9）。
 // 西暦ボタンで年を切り替えて作品を表示（塩田千春サイト参考）。
@@ -10,12 +11,12 @@ import { placeholder } from "@/lib/placeholder";
 
 function Card({ work, index }) {
   const inner = (
-    <div className="relative aspect-square w-full overflow-hidden bg-[var(--color-line)]">
+    <div className="zoom-card relative aspect-square w-full overflow-hidden bg-[var(--color-line)]">
       <img
         src={placeholder(work.id, 1)}
         alt={work.title}
         loading="lazy"
-        className="zoom-img h-full w-full object-cover"
+        className="h-full w-full object-cover"
       />
       {work.category === "Exhibition" && (
         <span className="absolute left-3 top-3 bg-black/70 px-2 py-1 text-[10px] tracking-wider-jp text-white">
@@ -101,10 +102,43 @@ export default function WorksGrid({
       </p>
 
       {isComingSoon ? (
-        <div className="flex aspect-[3/1] w-full items-center justify-center border border-dashed border-[var(--color-line)]">
-          <p className="text-sm tracking-wider-jp text-[var(--color-muted)]">
-            Coming Soon
-          </p>
+        // Coming Soon：渦がゆっくり回り、中心から一筆で描かれる。サイトのテーマに沿った表現。
+        <div className="relative flex aspect-[16/7] w-full items-center justify-center overflow-hidden">
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[130%] w-[130%] -translate-x-1/2 -translate-y-1/2 text-[var(--color-line)] opacity-70">
+            <Spiral
+              turns={6}
+              strokeWidth={0.3}
+              className="uzu-bg-svg spin-slow h-full w-full"
+              pathClassName="uzu-draw"
+            />
+          </div>
+          <div className="relative text-center">
+            <p className="font-display text-3xl tracking-[0.35em] text-[var(--color-ink)] md:text-5xl">
+              {[..."COMING"].map((c, i) => (
+                <span
+                  key={i}
+                  className="char"
+                  style={{ animationDelay: `${i * 0.12}s` }}
+                >
+                  {c}
+                </span>
+              ))}
+            </p>
+            <p className="mt-3 font-display text-lg tracking-[0.5em] text-[var(--color-muted)] md:text-2xl">
+              {[..."SOON"].map((c, i) => (
+                <span
+                  key={i}
+                  className="char"
+                  style={{ animationDelay: `${0.8 + i * 0.12}s` }}
+                >
+                  {c}
+                </span>
+              ))}
+            </p>
+            <p className="mt-6 text-[11px] tracking-wider-jp text-[var(--color-muted)] breathe">
+              2027 — 新たな渦が、生まれる。
+            </p>
+          </div>
         </div>
       ) : (
         // key に activeYear を含めることで、年切替時にグリッドが再アニメーション。
