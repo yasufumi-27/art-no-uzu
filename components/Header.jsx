@@ -9,7 +9,7 @@ const NAV = [
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[var(--color-bg)]/20 backdrop-blur-md">
+    <header className="glass-uzu sticky top-0 z-40 border-b border-[var(--color-line)]">
       <div className="container-wide flex items-center justify-between h-16 md:h-20">
         <Link
           href="/"
@@ -18,7 +18,7 @@ export default function Header() {
           ART NO UZU
         </Link>
         <nav>
-          <ul className="flex items-center gap-5 md:gap-10 text-[13px] md:text-sm tracking-wider-jp text-[var(--color-muted)]">
+          <ul className="flex items-center gap-5 md:gap-10 text-[13px] md:text-sm tracking-wider-jp text-[var(--color-ink)]">
             {NAV.map((item, i) => (
               <li
                 key={item.href}

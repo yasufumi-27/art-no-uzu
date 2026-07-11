@@ -106,28 +106,51 @@ export default function WorkDetail({ params }) {
             {work.year} の他の作品
           </h2>
           <div className="-mx-6 flex gap-4 overflow-x-auto px-6 pb-2">
-            {related.map((w) => (
-              <Link
-                key={w.id}
-                href={w.hasDetail ? `/works/${w.id}` : `/works/?year=${w.year}`}
-                className="group block w-40 shrink-0 sm:w-48"
-              >
-                <div className="relative aspect-square overflow-hidden bg-[var(--color-line)]">
-                  <img
-                    src={placeholder(w.id, 1)}
-                    alt={w.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.1]"
-                  />
-                  {w.category === "Exhibition" && (
-                    <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[9px] tracking-wider-jp text-white">
-                      Exhibition
-                    </span>
-                  )}
-                </div>
-                <p className="mt-2 text-[11px] tracking-wider-jp">{w.title}</p>
-              </Link>
-            ))}
+            {related.map((w) => {
+              const inner = (
+                <>
+                  <div className="relative aspect-square overflow-hidden bg-[var(--color-line)]">
+                    <img
+                      src={placeholder(w.id, 1)}
+                      alt={w.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.1]"
+                    />
+                    {w.category === "Exhibition" && (
+                      <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[9px] tracking-wider-jp text-white">
+                        Exhibition
+                      </span>
+                    )}
+                    {!w.hasDetail && (
+                      <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[9px] tracking-wider-jp text-white">
+                        instagram
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-2 text-[11px] tracking-wider-jp">{w.title}</p>
+                </>
+              );
+              // 詳細ページあり→詳細へ、なし→直接 Instagram へ（#1）
+              return w.hasDetail ? (
+                <Link
+                  key={w.id}
+                  href={`/works/${w.id}`}
+                  className="group block w-40 shrink-0 sm:w-48"
+                >
+                  {inner}
+                </Link>
+              ) : (
+                <a
+                  key={w.id}
+                  href={w.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block w-40 shrink-0 sm:w-48"
+                >
+                  {inner}
+                </a>
+              );
+            })}
           </div>
         </Reveal>
       )}
