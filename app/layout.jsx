@@ -2,6 +2,7 @@ import "./globals.css";
 import { Syne, Zen_Kaku_Gothic_New } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackgroundUzu from "@/components/BackgroundUzu";
 
 // 見出し：Syne（現代的で少し近未来的なディスプレイ書体）
 // 本文：Zen Kaku Gothic New（端正で余白の美しい和文ゴシック）
@@ -45,6 +46,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ja" className={`${syne.variable} ${zen.variable}`}>
       <body className="min-h-screen flex flex-col">
+        <BackgroundUzu />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

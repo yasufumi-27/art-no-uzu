@@ -14,11 +14,18 @@ function spiralPath(turns = 4, points = 300, growth = 0.28) {
   return d;
 }
 
-export default function Spiral({ className = "", strokeWidth = 0.6 }) {
+export default function Spiral({
+  className = "",
+  strokeWidth = 0.6,
+  turns = 4,
+  pathClassName = "",
+}) {
   return (
     <svg viewBox="0 0 200 200" className={className} aria-hidden="true">
       <path
-        d={spiralPath()}
+        className={pathClassName}
+        d={spiralPath(turns)}
+        pathLength="1"
         fill="none"
         stroke="currentColor"
         strokeWidth={strokeWidth}

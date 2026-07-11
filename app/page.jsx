@@ -61,7 +61,10 @@ export default function Home() {
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.1]"
                     />
-                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/55 to-transparent p-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/55 to-transparent p-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                      <p className="text-[9px] tracking-[0.2em] text-white/70">
+                        {work.category}
+                      </p>
                       <p className="text-[11px] tracking-wider-jp text-white line-clamp-1">
                         {work.title}
                       </p>
