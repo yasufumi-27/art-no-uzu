@@ -150,15 +150,14 @@ body {
   }
 }
 
-/* 近未来的なクリップ・リビール（下から立ち上がる） */
+/* 下から立ち上がるリビール
+   （clip-path / filter は使わない：残留すると子要素のホバー拡大が切り取られるため） */
 @keyframes clipUp {
   from {
-    clip-path: inset(100% 0 0 0);
-    transform: translateY(24px);
+    transform: translateY(28px);
     opacity: 0;
   }
   to {
-    clip-path: inset(0 0 0 0);
     transform: translateY(0);
     opacity: 1;
   }

@@ -45,10 +45,10 @@ export default function WorkDetail({ params }) {
 
   return (
     <div className="py-14 md:py-20">
-      <div className="container-main">
+      <div className="container-wide">
         <Link
           href="/works"
-          className="text-xs tracking-wider-jp text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+          className="inline-block text-xs tracking-wider-jp text-[var(--color-muted)] hover:text-[var(--color-ink)]"
         >
           ← Works / Exhibition
         </Link>
@@ -105,7 +105,7 @@ export default function WorkDetail({ params }) {
           <h2 className="mb-8 text-sm tracking-wider-jp text-[var(--color-muted)]">
             {work.year} の他の作品
           </h2>
-          <div className="-mx-6 flex gap-4 overflow-x-auto px-6 pb-2">
+          <div className="-mx-6 flex gap-4 overflow-x-auto px-6 pt-4 pb-6">
             {related.map((w) => {
               const inner = (
                 <>

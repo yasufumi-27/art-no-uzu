@@ -38,7 +38,7 @@ export default function Hero() {
 
   return (
     <section className="relative w-full">
-      <div className="relative w-full h-[76vh] md:h-[90vh] overflow-hidden bg-black">
+      <div className="relative w-full h-[76vh] md:h-[90vh] overflow-hidden bg-transparent">
         {SLIDES.map((slide, i) => (
           <img
             key={slide.id}

@@ -34,6 +34,8 @@ export default function Reveal({
               duration: 2,
               delay,
               ease: "power3.out",
+              // 完了後は filter を除去（残ると子要素のホバー拡大が切り取られるため）
+              onComplete: () => gsap.set(el, { clearProps: "filter" }),
             });
             observer.unobserve(el);
           }
