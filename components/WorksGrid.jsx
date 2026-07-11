@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { placeholder } from "@/lib/placeholder";
-import Spiral from "@/components/Spiral";
 
 // Works / Exhibition 統合一覧（仕様書 9）。
 // 西暦ボタンで年を切り替えて作品を表示（塩田千春サイト参考）。
@@ -97,27 +96,19 @@ export default function WorksGrid({
         ))}
       </div>
 
-      <p className="mb-8 text-lg font-light tracking-wider-jp text-[var(--color-muted)]">
+      <p className="mb-8 text-xl font-bold tracking-wider-jp text-[var(--color-muted)]">
         {activeYear}
       </p>
 
       {isComingSoon ? (
-        // Coming Soon：渦がゆっくり回り、中心から一筆で描かれる。サイトのテーマに沿った表現。
-        <div className="relative flex aspect-[16/7] w-full items-center justify-center overflow-hidden">
-          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[130%] w-[130%] -translate-x-1/2 -translate-y-1/2 text-[var(--color-line)] opacity-70">
-            <Spiral
-              turns={6}
-              strokeWidth={0.3}
-              className="uzu-bg-svg spin-slow h-full w-full"
-              pathClassName="uzu-draw"
-            />
-          </div>
-          <div className="relative text-center">
+        // Coming Soon：文字が常に波打ち続ける（背景の渦があるため専用の渦は置かない）。
+        <div className="flex aspect-[16/7] w-full items-center justify-center">
+          <div className="text-center">
             <p className="font-display text-3xl tracking-[0.35em] text-[var(--color-ink)] md:text-5xl">
               {[..."COMING"].map((c, i) => (
                 <span
                   key={i}
-                  className="char"
+                  className="cs-letter"
                   style={{ animationDelay: `${i * 0.12}s` }}
                 >
                   {c}
@@ -128,8 +119,8 @@ export default function WorksGrid({
               {[..."SOON"].map((c, i) => (
                 <span
                   key={i}
-                  className="char"
-                  style={{ animationDelay: `${0.8 + i * 0.12}s` }}
+                  className="cs-letter"
+                  style={{ animationDelay: `${(6 + i) * 0.12}s` }}
                 >
                   {c}
                 </span>

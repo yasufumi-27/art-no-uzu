@@ -177,6 +177,24 @@ body {
   }
 }
 
+/* Coming Soon：文字が常に波打つ（ずっと動く） */
+@keyframes csWave {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-0.2em);
+    opacity: 1;
+  }
+}
+.cs-letter {
+  display: inline-block;
+  white-space: pre;
+  animation: csWave 2.6s ease-in-out infinite;
+}
+
 /* 呼吸するようにゆらぐ */
 @keyframes breathe {
   0%,
@@ -305,6 +323,7 @@ body {
   .breathe,
   .char,
   .title-char,
+  .cs-letter,
   .work-in,
   .uzu-bg-rotor,
   .uzu-bg-svg,
