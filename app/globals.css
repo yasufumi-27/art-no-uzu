@@ -177,6 +177,43 @@ body {
   }
 }
 
+/* Coming Soon：新しい渦が生まれる表現。
+   中心から一筆で描かれながら回転・成長して現れ、消えては再び生まれる。 */
+@keyframes uzuBirth {
+  0% {
+    transform: rotate(-30deg) scale(0.12);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.85;
+  }
+  70% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: rotate(250deg) scale(1.08);
+    opacity: 0;
+  }
+}
+@keyframes uzuBirthDraw {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  65%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+.uzu-birth {
+  transform-origin: 50% 50%;
+  animation: uzuBirth 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
+}
+.uzu-birth-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: uzuBirthDraw 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
+}
+
 /* Coming Soon：文字が常に波打つ（ずっと動く） */
 @keyframes csWave {
   0%,
@@ -327,8 +364,13 @@ body {
   .work-in,
   .uzu-bg-rotor,
   .uzu-bg-svg,
-  .uzu-draw {
+  .uzu-draw,
+  .uzu-birth,
+  .uzu-birth-draw {
     animation: none;
+  }
+  .uzu-birth-draw {
+    stroke-dashoffset: 0;
   }
   .char,
   .title-char {
