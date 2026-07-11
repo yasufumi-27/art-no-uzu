@@ -222,48 +222,36 @@ body {
   animation: uzuBirthDraw 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
 
-/* サイト背景の渦（pathLength=1000、6巻きのスパイラル）。
-   1本の渦のライフサイクル（周期50s）：
-     0s   : 空（描き始め）
-     0–20s: 根本(中心)から先端まで描く（20秒で6回巻く）
-     15s  : 根本から消え始める（描き始めの15秒後）
-     15–35s: 根本から先端へ消えていく
-     35–50s: 空（待機）
-   2層を 25s ずらして重ねることで、
-   「消え始め（15s）の10秒後（=25s）に次の渦が描き始める」を常時繰り返す。
-   可視区間 [tail, head] を dasharray/​dashoffset で表現（pathLength=1000）。 */
+/* サイト背景の渦（pathLength=1000）。周期35sで1本の渦が生まれ変わり続ける：
+     0s    : 空（描き始め）
+     0–20s : 根本(中心)から先端まで描く（20秒かけて描画）
+     15–35s: 根本から先端へ消える（描き始め15秒目から20秒かけて消去）
+     35s   : 空 → そのまま次の描画へ（35秒目から再び描く）
+   描画と消去は 15–20s で一部重なる。可視区間 [tail, head] を dasharray/dashoffset で表現。 */
 .uzu-life {
   stroke-dasharray: 0 1000;
   stroke-dashoffset: 0;
-  animation: uzuLife 50s linear infinite;
-}
-.uzu-life-b {
-  animation-delay: 25s;
+  animation: uzuLife 35s linear infinite;
 }
 @keyframes uzuLife {
   /* head = 描画先端、tail = 消去末端。dash 長 = (head-tail)*1000、offset = -tail*1000 */
   0% {
-    /* 0s: 空 */
+    /* 0s: 空（描き始め） */
     stroke-dasharray: 0 1000;
     stroke-dashoffset: 0;
   }
-  30% {
-    /* 15s: [0, 0.75] 描画途中で根本が消え始める直前 */
+  42.86% {
+    /* 15s: [0, 0.75] 描画途中。ここから根本が消え始める */
     stroke-dasharray: 750 1000;
     stroke-dashoffset: 0;
   }
-  40% {
-    /* 20s: [0.25, 1.0] 先端まで到達、根本は消え始めている */
+  57.14% {
+    /* 20s: [0.25, 1.0] 先端到達。根本は消え始めている */
     stroke-dasharray: 750 1000;
     stroke-dashoffset: -250;
   }
-  70% {
-    /* 35s: [1.0, 1.0] 完全に消える */
-    stroke-dasharray: 0 1000;
-    stroke-dashoffset: -1000;
-  }
   100% {
-    /* 35–50s: 空のまま待機 */
+    /* 35s: [1.0, 1.0] 完全に消える → 次周期の描画へ */
     stroke-dasharray: 0 1000;
     stroke-dashoffset: -1000;
   }
