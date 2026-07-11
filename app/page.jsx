@@ -3,12 +3,10 @@ import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
 import Spiral from "@/components/Spiral";
 import { placeholder } from "@/lib/placeholder";
-import { works } from "@/lib/works";
+import FeaturedWorks from "@/components/FeaturedWorks";
 import { SOCIAL } from "@/components/Footer";
 
 export default function Home() {
-  const featured = works.slice(0, 9);
-
   return (
     <>
       <Hero />
@@ -47,33 +45,7 @@ export default function Home() {
               View all →
             </Link>
           </Reveal>
-          <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6">
-            {featured.map((work, i) => (
-              <Reveal key={work.id} delay={(i % 3) * 0.08}>
-                <Link
-                  href={work.hasDetail ? `/works/${work.id}` : "/works"}
-                  className="group block"
-                >
-                  <div className="relative aspect-square overflow-hidden bg-[var(--color-line)]">
-                    <img
-                      src={placeholder(work.id, 1)}
-                      alt={work.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.1]"
-                    />
-                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/55 to-transparent p-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                      <p className="text-[9px] tracking-[0.2em] text-white/70">
-                        {work.category}
-                      </p>
-                      <p className="text-[11px] tracking-wider-jp text-white line-clamp-1">
-                        {work.title}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
+          <FeaturedWorks />
         </section>
 
         {/* About */}

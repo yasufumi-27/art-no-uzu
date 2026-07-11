@@ -72,18 +72,22 @@ export default function Gallery({ id, count = 3 }) {
         )}
       </div>
       {count > 1 && (
-        <div className="mt-4 flex gap-2">
-          {slides.map((s, i) => (
-            <button
-              key={s}
-              onClick={() => select(i)}
-              aria-label={`画像 ${i + 1}`}
-              className="h-1 flex-1 transition-colors"
-              style={{
-                background: i === index ? "var(--color-ink)" : "var(--color-line)",
-              }}
-            />
-          ))}
+        // インジケーターは規定位置まで左右にスライドして移動する（#2）
+        <div className="relative mt-4 h-1 w-full bg-[var(--color-line)]">
+          <div
+            className="absolute top-0 h-full bg-[var(--color-ink)] transition-[left] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            style={{ width: `${100 / count}%`, left: `${index * (100 / count)}%` }}
+          />
+          <div className="absolute inset-0 flex">
+            {slides.map((s, i) => (
+              <button
+                key={s}
+                onClick={() => select(i)}
+                aria-label={`画像 ${i + 1}`}
+                className="h-full flex-1"
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>
