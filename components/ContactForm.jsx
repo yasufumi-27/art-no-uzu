@@ -73,7 +73,7 @@ export default function ContactForm() {
           name="message"
           required
           rows={6}
-          className="mt-3 w-full border-b border-[var(--color-line)] bg-transparent py-2 text-sm outline-none focus:border-[var(--color-ink)]"
+          className="mt-3 w-full rounded-2xl border border-[var(--color-line)] bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-[var(--color-ink)]"
         />
       </div>
 
@@ -104,7 +104,7 @@ function Field({ label, name, type = "text", required }) {
         type={type}
         name={name}
         required={required}
-        className="mt-3 w-full border-b border-[var(--color-line)] bg-transparent py-2 text-sm outline-none focus:border-[var(--color-ink)]"
+        className="mt-3 w-full rounded-full border border-[var(--color-line)] bg-white px-5 py-3 text-sm outline-none transition-colors focus:border-[var(--color-ink)]"
       />
     </div>
   );

@@ -229,7 +229,7 @@ body {
   will-change: transform;
 }
 .group:hover .zoom-img {
-  transform: scale(1.2);
+  transform: scale(1.05);
 }
 
 /* ホバーで表示領域ごと 1.2 倍に拡大（画像の内部ズームではなくカード全体）(#3)
@@ -239,7 +239,7 @@ body {
   will-change: transform;
 }
 .zoom-card:hover {
-  transform: scale(1.2);
+  transform: scale(1.05);
   z-index: 30;
 }
 

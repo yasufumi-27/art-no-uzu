@@ -109,12 +109,12 @@ export default function WorkDetail({ params }) {
             {related.map((w) => {
               const inner = (
                 <>
-                  <div className="relative aspect-square overflow-hidden bg-[var(--color-line)]">
+                  <div className="zoom-card relative aspect-square overflow-hidden bg-[var(--color-line)]">
                     <img
                       src={placeholder(w.id, 1)}
                       alt={w.title}
                       loading="lazy"
-                      className="zoom-img h-full w-full object-cover"
+                      className="h-full w-full object-cover"
                     />
                     {w.category === "Exhibition" && (
                       <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[9px] tracking-wider-jp text-white">
