@@ -5,22 +5,50 @@ import { gsap } from "gsap";
 import { placeholder } from "@/lib/placeholder";
 
 // 作品詳細の画像ギャラリー（仕様書 10.1）。スライダー形式・切替アニメーションあり。
+// 画像は自動で切り替わり（#5）、手動操作するとタイマーはリセットされる。
+const AUTO_INTERVAL = 5500;
+
 export default function Gallery({ id, count = 3 }) {
   const [index, setIndex] = useState(0);
   const imgRef = useRef(null);
+  const timer = useRef(null);
   const slides = Array.from({ length: count }, (_, i) => `${id}-${i}`);
 
   useEffect(() => {
     if (!imgRef.current) return;
     gsap.fromTo(
       imgRef.current,
-      { opacity: 0.2, scale: 1.02 },
-      { opacity: 1, scale: 1, duration: 0.9, ease: "power2.out" }
+      { opacity: 0.15, scale: 1.03 },
+      { opacity: 1, scale: 1, duration: 1.6, ease: "power2.out" }
     );
   }, [index]);
 
-  const go = (dir) =>
+  // 自動切替
+  useEffect(() => {
+    if (count <= 1) return;
+    timer.current = setInterval(() => {
+      setIndex((p) => (p + 1) % count);
+    }, AUTO_INTERVAL);
+    return () => clearInterval(timer.current);
+  }, [count]);
+
+  const resetTimer = () => {
+    if (!timer.current || count <= 1) return;
+    clearInterval(timer.current);
+    timer.current = setInterval(() => {
+      setIndex((p) => (p + 1) % count);
+    }, AUTO_INTERVAL);
+  };
+
+  const go = (dir) => {
     setIndex((p) => (p + dir + slides.length) % slides.length);
+    resetTimer();
+  };
+
+  const select = (i) => {
+    setIndex(i);
+    resetTimer();
+  };
 
   return (
     <div>
@@ -55,7 +83,7 @@ export default function Gallery({ id, count = 3 }) {
           {slides.map((s, i) => (
             <button
               key={s}
-              onClick={() => setIndex(i)}
+              onClick={() => select(i)}
               aria-label={`画像 ${i + 1}`}
               className="h-1 flex-1 transition-colors"
               style={{

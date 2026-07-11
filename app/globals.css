@@ -59,7 +59,7 @@ body {
 /* 画像フェードイン（Lazy Load 表示用） */
 .fade-in {
   opacity: 0;
-  transition: opacity 1.2s ease;
+  transition: opacity 2s ease;
 }
 .fade-in.is-visible {
   opacity: 1;
@@ -145,23 +145,28 @@ body {
   }
 }
 
+/* 作品グリッドの登場（ゆっくり立ち上がる） */
+.work-in {
+  animation: clipUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 .spin-slow {
-  animation: spin-slow 40s linear infinite;
+  animation: spin-slow 80s linear infinite;
 }
 .breathe {
-  animation: breathe 6s ease-in-out infinite;
+  animation: breathe 11s ease-in-out infinite;
 }
 
 /* 一文字ずつのリビール（JSX 側で inline animation-delay を付与） */
 .char {
   display: inline-block;
   white-space: pre;
-  animation: charRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: charRise 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ヘッダーのロゴ／メニューが枠外からインしてくる */
 .anim-header-item {
-  animation: slideDown 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: slideDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ナビのアンダーライン：ホバーで左から伸びる（近未来的なライン） */
@@ -178,7 +183,7 @@ body {
   background: currentColor;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .nav-link:hover::after {
   transform: scaleX(1);
@@ -188,7 +193,8 @@ body {
   .anim-header-item,
   .spin-slow,
   .breathe,
-  .char {
+  .char,
+  .work-in {
     animation: none;
   }
   .char {

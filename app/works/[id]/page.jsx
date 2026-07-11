@@ -2,7 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Gallery from "@/components/Gallery";
 import { placeholder } from "@/lib/placeholder";
-import { detailWorks, getWork, works } from "@/lib/works";
+import {
+  comingSoonYear,
+  detailWorks,
+  getWork,
+  works,
+  years,
+} from "@/lib/works";
 
 // 静的エクスポート用：専用詳細ページを持つ作品（5件）のパスを生成。
 export function generateStaticParams() {
@@ -98,7 +104,7 @@ export default function WorkDetail({ params }) {
             {related.map((w) => (
               <Link
                 key={w.id}
-                href={w.hasDetail ? `/works/${w.id}` : "/works"}
+                href={w.hasDetail ? `/works/${w.id}` : `/works/?year=${w.year}`}
                 className="group block w-40 shrink-0 sm:w-48"
               >
                 <div className="relative aspect-square overflow-hidden bg-[var(--color-line)]">
@@ -120,6 +126,28 @@ export default function WorkDetail({ params }) {
           </div>
         </div>
       )}
+
+      {/* 年号一覧：選択するとその年の Works 一覧へ（#6） */}
+      <div className="container-main mt-24">
+        <h2 className="mb-6 font-display text-sm tracking-[0.2em] text-[var(--color-muted)]">
+          Browse by Year
+        </h2>
+        <div className="flex flex-wrap gap-x-6 gap-y-3 border-t border-[var(--color-line)] pt-6 text-sm tracking-wider-jp">
+          {[comingSoonYear, ...years].map((year) => (
+            <Link
+              key={year}
+              href={`/works/?year=${year}`}
+              className={`nav-link underline-offset-4 transition-colors hover:text-[var(--color-ink)] ${
+                year === work.year
+                  ? "font-medium text-[var(--color-ink)]"
+                  : "text-[var(--color-muted)]"
+              }`}
+            >
+              {year}
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

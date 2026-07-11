@@ -26,7 +26,7 @@ export default function Reveal({ children, delay = 0, className = "" }) {
               opacity: 1,
               y: 0,
               filter: "blur(0px)",
-              duration: 1.2,
+              duration: 2,
               delay,
               ease: "power3.out",
             });

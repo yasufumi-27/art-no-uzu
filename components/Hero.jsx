@@ -13,7 +13,7 @@ const SLIDES = [
   { id: "w-uzu-kiri", title: "霧が晴れゆくように", year: 2021 },
 ];
 
-const INTERVAL = 5600;
+const INTERVAL = 8000;
 
 export default function Hero() {
   const [index, setIndex] = useState(0);
@@ -44,7 +44,7 @@ export default function Hero() {
             key={slide.id}
             src={placeholder(slide.id, 16 / 9)}
             alt={slide.title}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[2400ms] ease-in-out"
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[3600ms] ease-in-out"
             style={{ opacity: ready && i === index ? 1 : 0 }}
           />
         ))}
@@ -69,7 +69,7 @@ export default function Hero() {
               <span
                 key={`${index}-${i}`}
                 className="char"
-                style={{ animationDelay: `${0.15 + i * 0.045}s` }}
+                style={{ animationDelay: `${0.25 + i * 0.08}s` }}
               >
                 {ch}
               </span>

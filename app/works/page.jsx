@@ -1,4 +1,5 @@
-import WorksGrid from "@/components/WorksGrid";
+import { Suspense } from "react";
+import WorksSection from "@/components/WorksSection";
 import Reveal from "@/components/Reveal";
 import { works, years, comingSoonYear } from "@/lib/works";
 
@@ -20,7 +21,13 @@ export default function WorksPage() {
         </p>
       </Reveal>
 
-      <WorksGrid works={works} years={years} comingSoonYear={comingSoonYear} />
+      <Suspense fallback={null}>
+        <WorksSection
+          works={works}
+          years={years}
+          comingSoonYear={comingSoonYear}
+        />
+      </Suspense>
     </div>
   );
 }
