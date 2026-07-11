@@ -1,27 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
 import { placeholder } from "@/lib/placeholder";
 
-// 作品詳細の画像ギャラリー（仕様書 10.1）。スライダー形式・切替アニメーションあり。
-// 画像は自動で切り替わり（#5）、手動操作するとタイマーはリセットされる。
+// 作品詳細の画像ギャラリー（仕様書 10.1）。
+// 画像は自動で切り替わり（#5）、切替はフェードアウト/イン（#2）。手動操作でタイマーはリセット。
 const AUTO_INTERVAL = 5500;
 
 export default function Gallery({ id, count = 3 }) {
   const [index, setIndex] = useState(0);
-  const imgRef = useRef(null);
   const timer = useRef(null);
   const slides = Array.from({ length: count }, (_, i) => `${id}-${i}`);
-
-  useEffect(() => {
-    if (!imgRef.current) return;
-    gsap.fromTo(
-      imgRef.current,
-      { opacity: 0.15, scale: 1.03 },
-      { opacity: 1, scale: 1, duration: 1.6, ease: "power2.out" }
-    );
-  }, [index]);
 
   // 自動切替
   useEffect(() => {
@@ -53,12 +42,16 @@ export default function Gallery({ id, count = 3 }) {
   return (
     <div>
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--color-line)]">
-        <img
-          ref={imgRef}
-          src={placeholder(slides[index], 4 / 3)}
-          alt={`作品画像 ${index + 1}`}
-          className="h-full w-full object-cover"
-        />
+        {/* 各画像を重ね、opacity でフェードアウト/イン */}
+        {slides.map((s, i) => (
+          <img
+            key={s}
+            src={placeholder(s, 4 / 3)}
+            alt={`作品画像 ${i + 1}`}
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1600ms] ease-in-out"
+            style={{ opacity: i === index ? 1 : 0 }}
+          />
+        ))}
         {count > 1 && (
           <>
             <button

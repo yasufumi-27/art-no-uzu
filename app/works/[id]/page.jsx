@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Gallery from "@/components/Gallery";
+import Reveal from "@/components/Reveal";
 import { placeholder } from "@/lib/placeholder";
 import {
   comingSoonYear,
@@ -54,13 +55,13 @@ export default function WorkDetail({ params }) {
       </div>
 
       {/* 作品を大きく上部表示 */}
-      <div className="container-wide mt-10">
+      <Reveal className="container-wide mt-10">
         <Gallery id={work.id} count={work.gallery ?? 3} />
-      </div>
+      </Reveal>
 
       {/* 作品画像の下に説明文など */}
       <div className="container-main mt-14 grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr]">
-        <div>
+        <Reveal delay={0.1}>
           {work.category === "Exhibition" && (
             <span className="inline-block bg-black px-2 py-1 text-[10px] tracking-wider-jp text-white">
               Exhibition
@@ -80,9 +81,13 @@ export default function WorkDetail({ params }) {
           >
             Instagram で見る →
           </a>
-        </div>
+        </Reveal>
 
-        <dl className="space-y-3 border-t border-[var(--color-line)] pt-8 text-xs md:border-l md:border-t-0 md:pl-10 md:pt-0">
+        <Reveal
+          as="dl"
+          delay={0.2}
+          className="space-y-3 border-t border-[var(--color-line)] pt-8 text-xs md:border-l md:border-t-0 md:pl-10 md:pt-0"
+        >
           {info.map(([k, v]) => (
             <div key={k} className="flex gap-6">
               <dt className="w-24 shrink-0 tracking-wider-jp text-[var(--color-muted)]">
@@ -91,12 +96,12 @@ export default function WorkDetail({ params }) {
               <dd className="tracking-wider-jp">{v}</dd>
             </div>
           ))}
-        </dl>
+        </Reveal>
       </div>
 
       {/* フッター上：同年の他作品を横1列 */}
       {related.length > 0 && (
-        <div className="container-main mt-28">
+        <Reveal className="container-main mt-28">
           <h2 className="mb-8 text-sm tracking-wider-jp text-[var(--color-muted)]">
             {work.year} の他の作品
           </h2>
@@ -112,7 +117,7 @@ export default function WorkDetail({ params }) {
                     src={placeholder(w.id, 1)}
                     alt={w.title}
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                    className="h-full w-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.1]"
                   />
                   {w.category === "Exhibition" && (
                     <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[9px] tracking-wider-jp text-white">
@@ -124,11 +129,11 @@ export default function WorkDetail({ params }) {
               </Link>
             ))}
           </div>
-        </div>
+        </Reveal>
       )}
 
       {/* 年号一覧：選択するとその年の Works 一覧へ（#6） */}
-      <div className="container-main mt-24">
+      <Reveal className="container-main mt-24">
         <h2 className="mb-6 font-display text-sm tracking-[0.2em] text-[var(--color-muted)]">
           Browse by Year
         </h2>
@@ -147,7 +152,7 @@ export default function WorkDetail({ params }) {
             </Link>
           ))}
         </div>
-      </div>
+      </Reveal>
     </div>
   );
 }

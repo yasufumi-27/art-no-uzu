@@ -4,7 +4,12 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 // スクロール連動のフェードイン（仕様書 15「フェードイン表示」/ 16 軽量アニメーション）。
-export default function Reveal({ children, delay = 0, className = "" }) {
+export default function Reveal({
+  children,
+  delay = 0,
+  className = "",
+  as: Tag = "div",
+}) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -41,8 +46,8 @@ export default function Reveal({ children, delay = 0, className = "" }) {
   }, [delay]);
 
   return (
-    <div ref={ref} className={className}>
+    <Tag ref={ref} className={className}>
       {children}
-    </div>
+    </Tag>
   );
 }
