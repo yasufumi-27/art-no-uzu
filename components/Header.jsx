@@ -10,7 +10,7 @@ const NAV = [
 export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[var(--color-bg)]/40">
-      <div className="container-wide flex items-center justify-between h-20 md:h-28">
+      <div className="container-wide flex flex-col items-start justify-center gap-2 py-3 md:h-28 md:flex-row md:items-center md:gap-14 md:py-0">
         <Link
           href="/"
           aria-label="Yoshimi Kamitani — Home"
@@ -43,7 +43,7 @@ export default function Header() {
             {NAV.map((item, i) => (
               <li
                 key={item.href}
-                className="anim-header-item"
+                className="anim-header-item whitespace-nowrap"
                 style={{ animationDelay: `${0.15 + i * 0.12}s` }}
               >
                 <Link

@@ -22,7 +22,7 @@ html {
    スマホ・iPad（〜1279px）は現状維持。コンテナ幅/余白は px 指定のため崩れない。 */
 @media (min-width: 1280px) {
   :root {
-    font-size: 18px;
+    font-size: 20px;
   }
 }
 
