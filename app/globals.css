@@ -297,8 +297,13 @@ body {
     stroke-dasharray: 1000 3000;
     opacity: 1;
   }
+  75% {
+    /* 22.5s: フェード完了（消去を2倍速に。50→75%の7.5秒で透明化） */
+    stroke-dasharray: 1000 3000;
+    opacity: 0;
+  }
   100% {
-    /* 30s: 全体を描いたまま均一にフェードして透明に */
+    /* 30s: 透明のまま次周期まで待機 */
     stroke-dasharray: 1000 3000;
     opacity: 0;
   }
