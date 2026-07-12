@@ -222,88 +222,46 @@ body {
   animation: uzuBirthDraw 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
 
-/* サイト背景の渦（pathLength=1000）。単層・周期30sで生まれ変わり続ける：
-     0–15s : 中心の1点から先端まで描く。dash 値は「角度（巻き数）均等」に
-             配分してあり、弧長基準の線形だと一瞬で過ぎてしまう中心付近を
-             ゆっくり描くことで、中心の1点から渦が育つように見せる。
-             （dash 値は growth=0.28 / turns=6 の弧長分布に対応。形状を変えたら要再計算）
-     15–30s: 描き切った渦全体を均一にフェードアウト（方向を持たないので
-             2つ目の起点や中心の空洞が生じない）。
-     30s   : 透明のまま空へリセット → 次周期へ。gap=3000 で回り込み防止。 */
+/* サイト背景の渦（pathLength=1000）。単層・周期22.5sで生まれ変わり続ける：
+     0–15s    : 中心の1点から先端まで描く。dash 値は「角度（巻き数）均等」に
+                配分してあり、弧長基準の線形だと一瞬で過ぎてしまう中心付近を
+                ゆっくり描くことで、中心の1点から渦が育つように見せる。
+                （dash 値は growth=0.28 / turns=6 の弧長分布に対応。形状を変えたら要再計算）
+     15–22.5s : 描き切った渦全体を均一にフェードアウト（方向を持たないので
+                2つ目の起点や中心の空洞が生じない）。透明後の待機は無し。
+   gap=3000 で回り込み防止。 */
 .uzu-life {
   stroke-dasharray: 0 3000;
   stroke-dashoffset: 0;
   opacity: 1;
-  animation: uzuLife 30s linear infinite;
+  animation: uzuLife 22.5s linear infinite;
 }
 @keyframes uzuLife {
-  0% {
-    stroke-dasharray: 0 3000;
-    opacity: 1;
-  }
-  2.778% {
-    stroke-dasharray: 0.5 3000;
-  }
-  5.556% {
-    stroke-dasharray: 1.3 3000;
-  }
-  8.333% {
-    stroke-dasharray: 2.4 3000;
-  }
-  11.111% {
-    stroke-dasharray: 4 3000;
-  }
-  13.889% {
-    stroke-dasharray: 6.3 3000;
-  }
-  16.667% {
-    stroke-dasharray: 9.7 3000;
-  }
-  19.444% {
-    stroke-dasharray: 14.7 3000;
-  }
-  22.222% {
-    stroke-dasharray: 21.9 3000;
-  }
-  25% {
-    stroke-dasharray: 32.5 3000;
-  }
-  27.778% {
-    stroke-dasharray: 48 3000;
-  }
-  30.556% {
-    stroke-dasharray: 70.3 3000;
-  }
-  33.333% {
-    stroke-dasharray: 103.1 3000;
-  }
-  36.111% {
-    stroke-dasharray: 151 3000;
-  }
-  38.889% {
-    stroke-dasharray: 220.3 3000;
-  }
-  41.667% {
-    stroke-dasharray: 322 3000;
-  }
-  44.444% {
-    stroke-dasharray: 470.2 3000;
-  }
-  47.222% {
-    stroke-dasharray: 685 3000;
-  }
-  50% {
-    /* 15s: 全体を描き切った状態 */
+  0.000% { stroke-dasharray: 0 3000; opacity: 1; }
+  3.704% { stroke-dasharray: 0.5 3000; }
+  7.407% { stroke-dasharray: 1.3 3000; }
+  11.111% { stroke-dasharray: 2.4 3000; }
+  14.815% { stroke-dasharray: 4 3000; }
+  18.519% { stroke-dasharray: 6.3 3000; }
+  22.222% { stroke-dasharray: 9.7 3000; }
+  25.926% { stroke-dasharray: 14.7 3000; }
+  29.630% { stroke-dasharray: 21.9 3000; }
+  33.333% { stroke-dasharray: 32.5 3000; }
+  37.037% { stroke-dasharray: 48 3000; }
+  40.741% { stroke-dasharray: 70.3 3000; }
+  44.444% { stroke-dasharray: 103.1 3000; }
+  48.148% { stroke-dasharray: 151 3000; }
+  51.852% { stroke-dasharray: 220.3 3000; }
+  55.556% { stroke-dasharray: 322 3000; }
+  59.259% { stroke-dasharray: 470.2 3000; }
+  62.963% { stroke-dasharray: 685 3000; }
+  66.667% {
+    /* 15s: 全体を描き切った状態。ここからフェード開始 */
     stroke-dasharray: 1000 3000;
     opacity: 1;
-  }
-  75% {
-    /* 22.5s: フェード完了（消去を2倍速に。50→75%の7.5秒で透明化） */
-    stroke-dasharray: 1000 3000;
-    opacity: 0;
   }
   100% {
-    /* 30s: 透明のまま次周期まで待機 */
+    /* 22.5s: フェード完了 → そのまま次周期の描画へ */
     stroke-dasharray: 1000 3000;
     opacity: 0;
   }

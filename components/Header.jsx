@@ -14,7 +14,7 @@ export default function Header() {
         <Link
           href="/"
           aria-label="Yoshimi Kamitani — Home"
-          className="header-legible font-display text-xl md:text-3xl tracking-[0.18em] font-normal leading-tight"
+          className="header-legible text-xl md:text-3xl tracking-[0.18em] font-light leading-tight"
         >
           {Array.from("Yoshimi").map((ch, i) => (
             <span
