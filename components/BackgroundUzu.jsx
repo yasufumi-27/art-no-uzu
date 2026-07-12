@@ -7,13 +7,14 @@ export default function BackgroundUzu() {
   return (
     <div className="uzu-bg" aria-hidden="true">
       <div className="relative h-[150vmax] w-[150vmax]">
-        {/* turns=6。growth=0.113 は 6 巻きの最終半径が viewBox(半径100)に
-            ちょうど収まる値で、画面全体を満たす外径(=従来のサイズ)を保ちつつ
-            外周を画面外にはみ出させない。はみ出すと見えない区間をアニメーションが
-            往復し、可視領域で描画・消去が中心以外から始まって見えるため。 */}
+        {/* turns=6・growth=0.28（従来サイズの緩い巻き）。外周(約0.8巻き)は
+            画面外にはみ出すが、消去は全体フェードなので方向的な破綻は起きない。
+            描画の時間配分は globals.css の uzuLife キーフレームで「角度均等」に
+            している（この螺旋の弧長分布に合わせた値。turns/growth を変える場合は
+            キーフレームの dash 値も再計算が必要）。 */}
         <Spiral
           turns={6}
-          growth={0.113}
+          growth={0.28}
           strokeWidth={0.3}
           pathLength={1000}
           className="absolute inset-0 h-full w-full"
