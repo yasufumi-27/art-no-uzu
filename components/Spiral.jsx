@@ -20,12 +20,13 @@ export default function Spiral({
   turns = 4,
   pathClassName = "",
   pathLength = 1,
+  growth = 0.28,
 }) {
   return (
     <svg viewBox="0 0 200 200" className={className} aria-hidden="true">
       <path
         className={pathClassName}
-        d={spiralPath(turns)}
+        d={spiralPath(turns, 300, growth)}
         pathLength={pathLength}
         fill="none"
         stroke="currentColor"
