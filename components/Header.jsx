@@ -2,6 +2,7 @@ import Link from "next/link";
 
 // グローバルナビゲーション（仕様書 7）。ロゴクリックで TOP へ遷移。
 const NAV = [
+  { href: "/", label: "Home" },
   { href: "/works", label: "Works / Exhibition" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },

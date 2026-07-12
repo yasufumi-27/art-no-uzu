@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Opening from "@/components/Opening";
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
 import Spiral from "@/components/Spiral";
@@ -9,6 +10,7 @@ import { SOCIAL } from "@/components/Footer";
 export default function Home() {
   return (
     <>
+      <Opening />
       <Hero />
 
       <div className="container-main">
