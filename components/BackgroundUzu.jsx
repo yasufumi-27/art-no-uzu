@@ -7,12 +7,13 @@ export default function BackgroundUzu() {
   return (
     <div className="uzu-bg" aria-hidden="true">
       <div className="relative h-[150vmax] w-[150vmax]">
-        {/* turns=5.2: 元サイズ(growth=0.28)のまま、viewBox(半径100)に収まる巻き数。
-            turns=7 だと外周1.8巻き(パス弧長の約87%)が画面外にクリップされ、
-            その見えない区間をアニメーションが往復するため、可視領域では
-            描画・消去が中心以外の位置から始まって見えてしまう。 */}
+        {/* turns=6。growth=0.113 は 6 巻きの最終半径が viewBox(半径100)に
+            ちょうど収まる値で、画面全体を満たす外径(=従来のサイズ)を保ちつつ
+            外周を画面外にはみ出させない。はみ出すと見えない区間をアニメーションが
+            往復し、可視領域で描画・消去が中心以外から始まって見えるため。 */}
         <Spiral
-          turns={5.2}
+          turns={6}
+          growth={0.113}
           strokeWidth={0.3}
           pathLength={1000}
           className="absolute inset-0 h-full w-full"
