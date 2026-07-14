@@ -2,11 +2,18 @@ import { Suspense } from "react";
 import WorksSection from "@/components/WorksSection";
 import Reveal from "@/components/Reveal";
 import { works, years, comingSoonYear } from "@/lib/works";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Works / Exhibition",
   description:
     "作品と展示記録の統合アーカイブ。年別に Works / Exhibition を一覧できます。",
+  alternates: { canonical: `${SITE_URL}/works/` },
+  openGraph: {
+    title: "Works / Exhibition — ART NO UZU",
+    description:
+      "作品と展示記録の統合アーカイブ。年別に Works / Exhibition を一覧できます。",
+  },
 };
 
 export default function WorksPage() {

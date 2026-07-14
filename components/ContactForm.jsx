@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 // お問い合わせフォーム（仕様書 12.2）。
 // 必須：名前 / メールアドレス / 内容。送信完了画面あり。
@@ -80,6 +81,12 @@ export default function ContactForm() {
       {error && <p className="text-xs text-[#b03a2e]">{error}</p>}
 
       <p className="text-[10px] leading-relaxed text-[var(--color-muted)]">
+        ※ 送信いただいた個人情報は
+        <Link href="/privacy" className="underline underline-offset-2 hover:text-[var(--color-ink)]">
+          プライバシーポリシー
+        </Link>
+        に基づき取り扱います。
+        <br />
         ※ 本番環境では reCAPTCHA によるスパム対策を導入します。
       </p>
 

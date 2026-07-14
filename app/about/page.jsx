@@ -1,11 +1,19 @@
 import Reveal from "@/components/Reveal";
 import Spiral from "@/components/Spiral";
+import FadeImg from "@/components/FadeImg";
 import { placeholder } from "@/lib/placeholder";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "About",
   description:
     "神谷佳美（Kamitani Yoshimi）。1994年東京生まれ。2014年より渦を描き続けるアーティストのプロフィール・ステートメント・活動歴。",
+  alternates: { canonical: `${SITE_URL}/about/` },
+  openGraph: {
+    title: "About — ART NO UZU",
+    description:
+      "神谷佳美（Kamitani Yoshimi）。1994年東京生まれ。2014年より渦を描き続けるアーティストのプロフィール・ステートメント・活動歴。",
+  },
 };
 
 // 経歴（ARTIST_PROFILE.md より）
@@ -27,7 +35,7 @@ export default function AboutPage() {
       <div className="grid grid-cols-1 gap-16 md:grid-cols-[1fr_1.2fr]">
         <Reveal>
           <div className="relative aspect-[4/5] w-full overflow-hidden bg-[var(--color-line)]">
-            <img
+            <FadeImg
               src={placeholder("about-portrait", 4 / 5)}
               alt="神谷佳美 ポートレート"
               className="h-full w-full object-cover"

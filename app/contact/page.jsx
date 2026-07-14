@@ -1,11 +1,17 @@
 import Reveal from "@/components/Reveal";
 import ContactForm from "@/components/ContactForm";
 import { SOCIAL } from "@/components/Footer";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
   title: "Contact",
   description:
     "お問い合わせフォームおよび各種SNS・外部サービスへのリンク。",
+  alternates: { canonical: `${SITE_URL}/contact/` },
+  openGraph: {
+    title: "Contact — ART NO UZU",
+    description: "お問い合わせフォームおよび各種SNS・外部サービスへのリンク。",
+  },
 };
 
 export default function ContactPage() {

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import FadeImg from "@/components/FadeImg";
 import { placeholder } from "@/lib/placeholder";
 import { works } from "@/lib/works";
 
@@ -30,10 +31,9 @@ export default function FeaturedWorks() {
       {items.map((work, i) => {
         const inner = (
           <div className="zoom-card relative aspect-square overflow-hidden bg-[var(--color-line)]">
-            <img
+            <FadeImg
               src={placeholder(work.id, 1)}
               alt={work.title}
-              loading="lazy"
               className="h-full w-full object-cover"
             />
             <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/55 to-transparent p-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">

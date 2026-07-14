@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Gallery from "@/components/Gallery";
 import Reveal from "@/components/Reveal";
+import FadeImg from "@/components/FadeImg";
 import { placeholder } from "@/lib/placeholder";
 import {
   comingSoonYear,
@@ -10,6 +11,37 @@ import {
   works,
   years,
 } from "@/lib/works";
+import { SITE_URL, ARTIST_ID } from "@/lib/site";
+
+// 作品ごとの構造化データ（E-E-A-T）。作品は VisualArtwork、展示は ExhibitionEvent
+// として出力し、creator / performer を layout の Person（@id）に連結する。
+function workJsonLd(work) {
+  const url = `${SITE_URL}/works/${work.id}/`;
+  if (work.category === "Exhibition") {
+    return {
+      "@context": "https://schema.org",
+      "@type": "ExhibitionEvent",
+      name: work.title,
+      startDate: String(work.year),
+      description: work.description,
+      url,
+      performer: { "@id": ARTIST_ID },
+      organizer: { "@id": ARTIST_ID },
+    };
+  }
+  return {
+    "@context": "https://schema.org",
+    "@type": "VisualArtwork",
+    name: work.title,
+    dateCreated: String(work.year),
+    artform: "絵画",
+    artMedium: work.material ?? undefined,
+    description: work.description,
+    url,
+    creator: { "@id": ARTIST_ID },
+    copyrightHolder: { "@id": ARTIST_ID },
+  };
+}
 
 // 静的エクスポート用：専用詳細ページを持つ作品（5件）のパスを生成。
 export function generateStaticParams() {
@@ -22,6 +54,12 @@ export function generateMetadata({ params }) {
   return {
     title: work.title,
     description: work.description,
+    alternates: { canonical: `${SITE_URL}/works/${work.id}/` },
+    // OGP はルートの openGraph.title を継承しないため、ページ別に明示する（仕様書 17）
+    openGraph: {
+      title: `${work.title} — ART NO UZU`,
+      description: work.description,
+    },
   };
 }
 
@@ -45,6 +83,10 @@ export default function WorkDetail({ params }) {
 
   return (
     <div className="py-14 md:py-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(workJsonLd(work)) }}
+      />
       <div className="container-wide">
         <Link
           href="/works"
@@ -110,10 +152,9 @@ export default function WorkDetail({ params }) {
               const inner = (
                 <>
                   <div className="zoom-card relative aspect-square overflow-hidden bg-[var(--color-line)]">
-                    <img
+                    <FadeImg
                       src={placeholder(w.id, 1)}
                       alt={w.title}
-                      loading="lazy"
                       className="h-full w-full object-cover"
                     />
                     {w.category === "Exhibition" && (

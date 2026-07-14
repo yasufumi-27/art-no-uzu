@@ -2,6 +2,7 @@ import Link from "next/link";
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
 import Spiral from "@/components/Spiral";
+import FadeImg from "@/components/FadeImg";
 import { placeholder } from "@/lib/placeholder";
 import FeaturedWorks from "@/components/FeaturedWorks";
 import { SOCIAL } from "@/components/Footer";
@@ -53,10 +54,9 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-14 md:grid-cols-[1fr_1.3fr] md:items-center">
             <Reveal>
               <div className="aspect-[4/5] w-full overflow-hidden bg-[var(--color-line)]">
-                <img
+                <FadeImg
                   src={placeholder("about-portrait", 4 / 5)}
                   alt="神谷佳美"
-                  loading="lazy"
                   className="h-full w-full object-cover"
                 />
               </div>

@@ -48,6 +48,8 @@ export default function Gallery({ id, count = 3 }) {
             key={s}
             src={placeholder(s, 4 / 3)}
             alt={`作品画像 ${i + 1}`}
+            // 先頭はファーストビューのため即時、2枚目以降は遅延読み込み（仕様書 15 / 16）
+            loading={i === 0 ? "eager" : "lazy"}
             className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1600ms] ease-in-out"
             style={{ opacity: i === index ? 1 : 0 }}
           />

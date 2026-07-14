@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
 
 // スクロール連動のフェードイン（仕様書 15「フェードイン表示」/ 16 軽量アニメーション）。
+// 初期表示速度を最優先するため（仕様書 16）、外部ライブラリを使わず
+// IntersectionObserver + CSS トランジションのみで実装する。
 export default function Reveal({
   children,
   delay = 0,
@@ -16,27 +17,28 @@ export default function Reveal({
     const el = ref.current;
     if (!el) return;
 
+    // reduced-motion 時はアニメーションなしで即表示（クラスを付けない）
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      gsap.set(el, { opacity: 1, y: 0 });
-      return;
-    }
+    if (reduce) return;
 
-    gsap.set(el, { opacity: 0, y: 36, filter: "blur(8px)" });
+    el.style.transitionDelay = `${delay}s`;
+    el.classList.add("reveal-init");
+
+    // 完了後はクラスを除去して素の状態に戻す
+    // （filter が残ると子要素のホバー拡大が切り取られるため）
+    const onEnd = (e) => {
+      if (e.target !== el || e.propertyName !== "opacity") return;
+      el.classList.remove("reveal-init", "reveal-in");
+      el.style.transitionDelay = "";
+      el.removeEventListener("transitionend", onEnd);
+    };
+    el.addEventListener("transitionend", onEnd);
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            gsap.to(el, {
-              opacity: 1,
-              y: 0,
-              filter: "blur(0px)",
-              duration: 2,
-              delay,
-              ease: "power3.out",
-              // 完了後は filter を除去（残ると子要素のホバー拡大が切り取られるため）
-              onComplete: () => gsap.set(el, { clearProps: "filter" }),
-            });
+            el.classList.add("reveal-in");
             observer.unobserve(el);
           }
         });
@@ -44,7 +46,10 @@ export default function Reveal({
       { threshold: 0.15 }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      el.removeEventListener("transitionend", onEnd);
+    };
   }, [delay]);
 
   return (

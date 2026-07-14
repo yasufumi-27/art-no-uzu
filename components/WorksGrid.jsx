@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import FadeImg from "@/components/FadeImg";
 import { placeholder } from "@/lib/placeholder";
 
 // Works / Exhibition 統合一覧（仕様書 9）。
@@ -11,10 +12,9 @@ import { placeholder } from "@/lib/placeholder";
 function Card({ work, index }) {
   const inner = (
     <div className="zoom-card relative aspect-square w-full overflow-hidden bg-[var(--color-line)]">
-      <img
+      <FadeImg
         src={placeholder(work.id, 1)}
         alt={work.title}
-        loading="lazy"
         className="h-full w-full object-cover"
       />
       {work.category === "Exhibition" && (

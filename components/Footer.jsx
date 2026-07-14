@@ -52,6 +52,9 @@ export default function Footer() {
             <Link href="/about" className="hover:text-[var(--color-ink)]">
               About
             </Link>
+            <Link href="/privacy" className="hover:text-[var(--color-ink)]">
+              Privacy Policy
+            </Link>
           </div>
           <p className="text-[10px] text-[var(--color-muted)]">
             © {new Date().getFullYear()} ART NO UZU. All rights reserved.

@@ -4,14 +4,14 @@
 > 作業を進めたら該当項目のチェックを更新し、必要に応じて「メモ／決定事項」に追記してください。
 > 相対日付は使わず、日付は `YYYY-MM-DD` 形式で記載します。
 
-最終更新: 2026-07-05
+最終更新: 2026-07-14
 
 ---
 
 ## 現在のステータス
 
 - [x] 仕様書・開発環境の整理
-- [x] Next.js + Tailwind + GSAP でデモサイト実装
+- [x] Next.js + Tailwind でデモサイト実装（GSAP は仕様 16「アニメーション軽量化」のため 2026-07-14 に撤去し CSS へ置換）
 - [x] 静的エクスポート（`output: export`）でのビルド確認
 - [x] GitHub リポジトリ作成・push
 - [x] GitHub Actions による GitHub Pages 自動デプロイ設定
@@ -66,9 +66,10 @@
 ## フェーズ6：SEO・公開前チェック
 
 - [ ] 各ページ title / description 最終調整 ※仕様 17
-- [ ] OGP 画像作成・設定
-- [ ] sitemap.xml / robots.txt 生成
-- [ ] 構造化データ（必要に応じて）
+- [x] OGP 画像作成・設定（`app/opengraph-image.jsx` でビルド時に PNG 生成。2026-07-14）
+- [x] sitemap.xml / robots.txt 生成（`app/sitemap.js` / `app/robots.js`。2026-07-14）
+- [x] 構造化データ（JSON-LD：WebSite + Person を `app/layout.jsx`、VisualArtwork / ExhibitionEvent を作品詳細で出力。2026-07-14）
+- [x] E-E-A-T 対応（canonical URL・authors/creator メタ・Person 強化（受賞歴/sameAs全SNS）・プライバシーポリシー `/privacy` 新設。2026-07-14）
 - [ ] Lighthouse でパフォーマンス／アクセシビリティ確認 ※仕様 16
 - [ ] 対応環境での動作確認（Chrome 149 / Safari 26.5、Win11 / iOS26 / Android16）※仕様 4
 
