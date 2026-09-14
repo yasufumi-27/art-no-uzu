@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
+import ScrollSpiralGauge from "@/components/ScrollSpiralGauge";
 import Reveal from "@/components/Reveal";
 import Spiral from "@/components/Spiral";
 import FadeImg from "@/components/FadeImg";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <ScrollSpiralGauge />
 
       <div className="container-main">
         {/* ステートメント：渦のコンセプト */}

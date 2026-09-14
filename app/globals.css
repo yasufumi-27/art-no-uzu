@@ -387,6 +387,11 @@ select,
   box-decoration-break: clone;
 }
 
+/* TOP 右下の「80年分の渦」（ScrollSpiralGauge.jsx）：読み込み後にふっと現れる */
+.gauge-in {
+  animation: fadeIn 2s ease 1.2s both;
+}
+
 /* 呼吸するようにゆらぐ */
 @keyframes breathe {
   0%,
