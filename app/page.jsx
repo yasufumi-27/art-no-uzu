@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
+import ScrollUzu from "@/components/ScrollUzu";
 import Spiral from "@/components/Spiral";
 import FadeImg from "@/components/FadeImg";
 import { asset } from "@/lib/asset";
@@ -36,8 +37,9 @@ export default function Home() {
         {/* Works / Exhibition */}
         <section className="pb-10">
           <Reveal className="mb-12 flex items-baseline justify-between">
-            <h2 className="font-display text-4xl tracking-[0.15em]">
+            <h2 className="font-display flex items-center gap-4 text-4xl tracking-[0.15em]">
               Works / Exhibition
+              <ScrollUzu className="hidden sm:inline-block" />
             </h2>
             <Link
               href="/works"
@@ -62,7 +64,7 @@ export default function Home() {
               </div>
             </Reveal>
             <Reveal delay={0.1}>
-              <h2 className="font-display text-4xl tracking-[0.15em]">About</h2>
+              <h2 className="font-display flex items-center gap-4 text-4xl tracking-[0.15em]">About<ScrollUzu /></h2>
               <p className="mt-8 text-sm leading-loose">
                 神谷佳美（YOSHIMI KAMITANI）。1994年東京生まれ。
                 2015年から、「渦」を描き続けている。
@@ -84,7 +86,7 @@ export default function Home() {
         {/* Contact */}
         <section className="border-t border-[var(--color-line)] py-24 md:py-32 text-center">
           <Reveal>
-            <h2 className="font-display text-4xl tracking-[0.15em]">Contact</h2>
+            <h2 className="font-display inline-flex items-center gap-4 text-4xl tracking-[0.15em]">Contact<ScrollUzu /></h2>
             <p className="mt-6 text-sm leading-loose text-[var(--color-muted)]">
               作品のご購入・ご依頼・お問い合わせは、
               <br className="md:hidden" />

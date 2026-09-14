@@ -239,6 +239,28 @@ select,
   animation: csBirth 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
 
+/* Coming Soon の画像：渦の誕生（7s 周期）に合わせて生まれ、消えてまた生まれる */
+@keyframes csImage {
+  0% { opacity: 0; transform: scale(0.8); filter: blur(6px); }
+  18% { opacity: 1; transform: scale(1); filter: blur(0); }
+  70% { opacity: 1; transform: scale(1.02); filter: blur(0); }
+  100% { opacity: 0; transform: scale(1.08); filter: blur(4px); }
+}
+.cs-image {
+  animation: csImage 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
+}
+@keyframes popupIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.cs-popup {
+  animation: popupIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+/* Works の拡大表示 */
+.preview-in {
+  animation: fadeIn 0.45s ease both;
+}
+
 /* 呼吸するようにゆらぐ */
 @keyframes breathe {
   0%,
@@ -398,6 +420,9 @@ select,
   .char,
   .title-char,
   .cs-letter,
+  .cs-image,
+  .cs-popup,
+  .preview-in,
   .work-in,
   .uzu-birth,
   .uzu-birth-draw {

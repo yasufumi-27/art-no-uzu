@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import ScrollUzu from "@/components/ScrollUzu";
 import ContactForm from "@/components/ContactForm";
 import { SOCIAL } from "@/components/Footer";
 import { SITE_URL } from "@/lib/site";
@@ -20,8 +21,9 @@ export default function ContactPage() {
       <div className="grid grid-cols-1 gap-20 md:grid-cols-[1fr_1.2fr]">
         <div>
           <Reveal>
-            <h1 className="font-display text-3xl font-light tracking-[0.1em]">
+            <h1 className="font-display flex items-center gap-4 text-3xl font-light tracking-[0.1em]">
               Contact
+              <ScrollUzu />
             </h1>
             <p className="mt-8 text-sm leading-relaxed text-[var(--color-muted)]">
               作品のご購入・ご依頼・その他お問い合わせは、下記フォームまたは各SNSよりお気軽にご連絡ください。

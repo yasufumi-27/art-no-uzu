@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import WorksSection from "@/components/WorksSection";
 import Reveal from "@/components/Reveal";
+import ScrollUzu from "@/components/ScrollUzu";
 import { works, years, comingSoonYear } from "@/lib/works";
 import { YEAR_EXTRAS } from "@/lib/work-links";
 import { SITE_URL } from "@/lib/site";
@@ -21,8 +22,9 @@ export default function WorksPage() {
   return (
     <div className="container-main py-20 md:py-28">
       <Reveal className="mb-20 max-w-xl">
-        <h1 className="font-display text-3xl font-light tracking-[0.08em]">
+        <h1 className="font-display flex items-center gap-4 text-3xl font-light tracking-[0.08em]">
           Works / Exhibition
+          <ScrollUzu />
         </h1>
         <p className="mt-6 text-sm leading-relaxed text-[var(--color-muted)]">
 作品と展示を同一の時間軸で辿るアーカイブ。西暦を選ぶとその年の作品に切り替わります。
