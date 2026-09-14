@@ -27,9 +27,8 @@ export default function ClickUzu() {
       path.setAttribute("pathLength", "1");
       path.setAttribute("fill", "none");
       path.setAttribute("stroke", "currentColor");
-      // 線幅は画面上のピクセルで固定（渦の大きさを変えても線の太さは変わらない）
-      path.setAttribute("stroke-width", "1.3");
-      path.setAttribute("vector-effect", "non-scaling-stroke");
+            // 線幅は渦の大きさに比例（132px で約1.3px）。vector-effect で固定すると描画アニメーションが崩れるため使わない
+      path.setAttribute("stroke-width", "2");
       path.setAttribute("stroke-linecap", "round");
       svg.appendChild(path);
       document.body.appendChild(svg);

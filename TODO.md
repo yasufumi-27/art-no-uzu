@@ -109,7 +109,7 @@
 
 - 画像：`../素材/受領_20260914/`（原本）→ `../素材/scripts/convert.py` で WebP 化 → `public/images/works/<年>/`
 - 一覧：`scripts/gen-works.mjs` が画像から `lib/works.generated.js` を生成（build/dev 前に自動実行）
-- Instagram 投稿URL：`lib/instagram-links.js` に「作品ID → URL」で追記（**2015年の8件のみ登録済み**。未登録はアカウントトップへ）
+- リンク先：`lib/work-links.js` に「作品ID → URL」で登録（2026-09-14 スプレッドシートから125件。未登録の 2022_7・2026_16・2026_17 はアカウントトップへ）
 - タイトル等・詳細ページ化：`lib/works.js` の `DETAILS`。詳細ページは対象0件のため `app/works/_detail` に退避中（対象が決まったら `[id]` に戻す）
 
 ### 保留（クライアント回答待ち・未着手）

@@ -165,7 +165,7 @@ export default function WorkDetail({ params }) {
                         Exhibition
                       </span>
                     )}
-                    {!w.hasDetail && <InstagramBadge small />}
+                    {!w.hasDetail && <InstagramBadge label={w.linkLabel} small />}
                   </div>
                   <p className="mt-2 text-[0.6875rem] tracking-wider-jp">{w.title}</p>
                 </>

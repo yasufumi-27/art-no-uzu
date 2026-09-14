@@ -24,7 +24,7 @@ function Card({ work, index }) {
         </span>
       )}
       {/* 詳細ページを持たない作品は Instagram へ誘導するラベルを表示 */}
-      {!work.hasDetail && <InstagramBadge />}
+      {!work.hasDetail && <InstagramBadge label={work.linkLabel} />}
       {/* フォーカス時：作品名 */}
       {work.title && (
         <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity duration-700 group-hover:opacity-100">

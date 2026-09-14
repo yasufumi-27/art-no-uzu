@@ -6,8 +6,6 @@ import { readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const ROOT = "public/images/works";
-// 受領ファイル名に「exhibition」と付いていた作品（変換時に表記を落としているためここで指定）
-const EXHIBITIONS = new Set(["2018_4", "2018_5", "2018_6"]);
 
 const works = [];
 for (const year of readdirSync(ROOT).filter((d) => /^\d{4}$/.test(d))) {
@@ -26,7 +24,6 @@ for (const year of readdirSync(ROOT).filter((d) => /^\d{4}$/.test(d))) {
       id,
       year: Number(year),
       no,
-      category: EXHIBITIONS.has(id) ? "Exhibition" : "Works",
       images: imgs.sort((a, b) => a.page - b.page).map((i) => i.src),
     });
   }
