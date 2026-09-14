@@ -25,7 +25,7 @@ const HISTORY = [
   ] },
   { year: "2025", items: [
     "展示「渦に沈む」",
-    "「アートゴールデン街」（GOOD DESIGN賞受賞）（NoxGallery × Superchief × Brillia）Yahoo!ニュース掲載",
+    { text: "「アートゴールデン街」（GOOD DESIGN賞受賞）（NoxGallery × Superchief × Brillia）Yahoo!ニュース掲載", href: "https://www.g-mark.org/gallery/winners/30972" },
     "SEKAI NO OWARI「図鑑」リリース記念ショートムービー制作",
   ], exhibitions: ["concent shibuya（渋谷）個展「生まれた喜び」"] },
   { year: "2023", items: [
@@ -132,9 +132,22 @@ export default function AboutPage() {
                   </dt>
                   <dd className="tracking-wider-jp leading-relaxed">
                     <ul className="space-y-1">
-                      {items.map((t) => (
-                        <li key={t}>{t}</li>
-                      ))}
+                      {items.map((t) =>
+                        typeof t === "string" ? (
+                          <li key={t}>{t}</li>
+                        ) : (
+                          <li key={t.text}>
+                            <a
+                              href={t.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline underline-offset-4 hover:opacity-60"
+                            >
+                              {t.text} ↗
+                            </a>
+                          </li>
+                        )
+                      )}
                     </ul>
                     {exhibitions && (
                       <div className="mt-2">

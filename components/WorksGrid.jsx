@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import FadeImg from "@/components/FadeImg";
 import InstagramBadge from "@/components/InstagramBadge";
+import Spiral from "@/components/Spiral";
 import { workAlt } from "@/lib/works";
 
 // Works / Exhibition 統合一覧（仕様書 9）。
@@ -62,11 +63,42 @@ function Card({ work, index }) {
   );
 }
 
+// 作品画像を持たない関連リンク（エッセイ・受賞ページなど）を、作品と同じ正方形の文字カードで出す
+function ExtraCard({ extra, index }) {
+  return (
+    <a
+      href={extra.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="work-in group block"
+      style={{ animationDelay: `${(index % 8) * 0.09}s` }}
+    >
+      <div className="zoom-card relative flex aspect-square w-full flex-col justify-between overflow-hidden border border-[var(--color-line)] bg-white p-4 md:p-5">
+        <span className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 text-[var(--color-line)]">
+          <Spiral className="spin-slow h-full w-full" />
+        </span>
+        <p className="relative text-[0.625rem] tracking-[0.2em] text-[var(--color-muted)]">
+          {extra.kind} ↗
+        </p>
+        <div className="relative">
+          <p className="text-sm leading-snug tracking-wider-jp md:text-base">
+            {extra.title}
+          </p>
+          <p className="mt-2 text-[0.625rem] leading-relaxed tracking-wider-jp text-[var(--color-muted)]">
+            {extra.note}
+          </p>
+        </div>
+      </div>
+    </a>
+  );
+}
+
 export default function WorksGrid({
   works,
   years,
   comingSoonYear,
   initialYear,
+  extras = [],
 }) {
   // 左端を 2027（Coming Soon）とし、以降 2026 → 2015 の降順。
   const tabs = [comingSoonYear, ...years];
@@ -74,6 +106,7 @@ export default function WorksGrid({
   const [activeYear, setActiveYear] = useState(valid);
 
   const items = works.filter((w) => w.year === activeYear);
+  const yearExtras = extras.filter((e) => e.year === activeYear);
   const isComingSoon = activeYear === comingSoonYear;
 
   return (
@@ -138,6 +171,9 @@ export default function WorksGrid({
         >
           {items.map((work, i) => (
             <Card key={work.id} work={work} index={i} />
+          ))}
+          {yearExtras.map((extra, i) => (
+            <ExtraCard key={extra.href} extra={extra} index={items.length + i} />
           ))}
         </div>
       )}

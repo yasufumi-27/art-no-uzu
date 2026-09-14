@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import WorksSection from "@/components/WorksSection";
 import Reveal from "@/components/Reveal";
 import { works, years, comingSoonYear } from "@/lib/works";
+import { YEAR_EXTRAS } from "@/lib/work-links";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
@@ -33,6 +34,7 @@ export default function WorksPage() {
           works={works}
           years={years}
           comingSoonYear={comingSoonYear}
+          extras={YEAR_EXTRAS}
         />
       </Suspense>
     </div>
