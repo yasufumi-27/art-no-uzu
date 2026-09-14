@@ -70,7 +70,7 @@ export default function AboutPage() {
   return (
     <div className="container-main py-20 md:py-28">
       <div className="grid grid-cols-1 gap-16 md:grid-cols-[1fr_1.2fr]">
-        <Reveal>
+        <Reveal className="md:sticky md:top-28 md:self-start">
           <div className="relative aspect-[4/5] w-full overflow-hidden bg-[var(--color-line)]">
             <FadeImg
               src={asset("/images/about/artist.webp")}
@@ -120,54 +120,56 @@ export default function AboutPage() {
             </div>
           </Reveal>
 
-          <Reveal className="mt-14">
-            <h2 className="font-display text-sm tracking-[0.2em] text-[var(--color-muted)]">
-              History
-            </h2>
-            <dl className="mt-6 space-y-5 border-t border-[var(--color-line)] pt-6 text-xs">
-              {HISTORY.map(({ year, items, exhibitions }) => (
-                <div key={year} className="flex gap-6">
-                  <dt className="w-14 shrink-0 tracking-wider-jp text-[var(--color-muted)]">
-                    {year}
-                  </dt>
-                  <dd className="tracking-wider-jp leading-relaxed">
-                    <ul className="space-y-1">
-                      {items.map((t) =>
-                        typeof t === "string" ? (
-                          <li key={t}>{t}</li>
-                        ) : (
-                          <li key={t.text}>
-                            <a
-                              href={t.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="underline underline-offset-4 hover:opacity-60"
-                            >
-                              {t.text} ↗
-                            </a>
-                          </li>
-                        )
-                      )}
-                    </ul>
-                    {exhibitions && (
-                      <div className="mt-2">
-                        <p className="text-[0.625rem] tracking-[0.2em] text-[var(--color-muted)]">
-                          Exhibition
-                        </p>
-                        <ul className="space-y-1">
-                          {exhibitions.map((t) => (
-                            <li key={t}>{t}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
         </div>
       </div>
+
+      {/* History：縦に長くなりすぎないよう、全幅で年ごとのブロックを段組み（SP 1列 / タブレット 2列 / PC 3列） */}
+      <Reveal className="mt-24 md:mt-32">
+        <div className="flex items-baseline justify-between border-b border-[var(--color-line)] pb-4">
+          <h2 className="font-display text-sm tracking-[0.2em] text-[var(--color-muted)]">
+            History
+          </h2>
+          <p className="text-[0.625rem] tracking-[0.2em] text-[var(--color-muted)]">
+            {HISTORY[HISTORY.length - 1].year} — {HISTORY[0].year}
+          </p>
+        </div>
+        <div className="mt-10 gap-x-12 sm:columns-2 lg:columns-3">
+          {HISTORY.map(({ year, items, exhibitions }) => (
+            <section key={year} className="mb-9 break-inside-avoid">
+              <h3 className="flex items-center gap-3 text-[0.6875rem] tracking-[0.25em] text-[var(--color-muted)]">
+                {year}
+                <span className="h-px flex-1 bg-[var(--color-line)]" />
+              </h3>
+              <ul className="mt-3 space-y-1.5 text-xs leading-relaxed tracking-wider-jp">
+                {items.map((t) =>
+                  typeof t === "string" ? (
+                    <li key={t}>{t}</li>
+                  ) : (
+                    <li key={t.text}>
+                      <a
+                        href={t.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-4 hover:opacity-60"
+                      >
+                        {t.text} ↗
+                      </a>
+                    </li>
+                  )
+                )}
+                {exhibitions?.map((t) => (
+                  <li key={t}>
+                    <span className="mr-2 inline-block border border-[var(--color-ink)] px-1.5 text-[0.5625rem] leading-4 tracking-[0.15em] align-[1px]">
+                      Exhibition
+                    </span>
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </Reveal>
     </div>
   );
 }

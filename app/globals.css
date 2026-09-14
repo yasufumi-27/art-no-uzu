@@ -263,9 +263,48 @@ select,
   transform: translate(-50%, -50%);
   animation: csPop 9s linear forwards;
 }
-/* Works の拡大表示 */
-.preview-in {
-  animation: fadeIn 0.45s ease both;
+/* TOP の WORKS / EXHIBITION の拡大表示：
+   ホバーしたマスの上で渦がひと巻き描かれ（0.5s）、その中心から円が広がって作品が現れる。
+   画像は少しねじれた状態からほどけるように正位置へ戻る。起点は --ox / --oy（FeaturedWorks.jsx が設定） */
+@keyframes previewIris {
+  0% { clip-path: circle(var(--r0) at var(--ox) var(--oy)); opacity: 0; }
+  10% { opacity: 1; }
+  100% { clip-path: circle(150% at var(--ox) var(--oy)); opacity: 1; }
+}
+@keyframes previewUnwind {
+  from { transform: rotate(-12deg) scale(1.35); filter: blur(8px) saturate(0.4); }
+  to { transform: rotate(0) scale(1); filter: blur(0) saturate(1); }
+}
+@keyframes previewSpiral {
+  0% { opacity: 0.9; transform: rotate(0deg) scale(0.6); }
+  60% { opacity: 0.9; }
+  100% { opacity: 0; transform: rotate(200deg) scale(1.8); }
+}
+@keyframes previewSpiralDraw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes previewCaption {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.preview-iris {
+  transform-origin: var(--ox) var(--oy);
+  animation: previewIris 0.85s cubic-bezier(0.7, 0, 0.2, 1) 0.25s both;
+}
+.preview-iris-img {
+  transform-origin: var(--ox) var(--oy);
+  animation: previewUnwind 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+.preview-spiral {
+  animation: previewSpiral 0.9s cubic-bezier(0.33, 0, 0.2, 1) both;
+}
+.preview-spiral-path {
+  stroke-dasharray: 1;
+  animation: previewSpiralDraw 0.45s ease-out both;
+}
+.preview-caption {
+  animation: previewCaption 0.6s ease 0.9s both;
 }
 
 /* 呼吸するようにゆらぐ */
@@ -429,7 +468,9 @@ select,
   .cs-letter,
   .cs-image,
   .cs-pop,
-  .preview-in,
+  .preview-iris,
+  .preview-iris-img,
+  .preview-caption,
   .work-in,
   .uzu-birth,
   .uzu-birth-draw {
@@ -437,6 +478,9 @@ select,
   }
   .uzu-birth-draw {
     stroke-dashoffset: 0;
+  }
+  .preview-spiral {
+    display: none;
   }
   .char,
   .title-char {

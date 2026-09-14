@@ -5,6 +5,7 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import FadeImg from "@/components/FadeImg";
 import InstagramBadge from "@/components/InstagramBadge";
+import Spiral from "@/components/Spiral";
 import { works, workAlt } from "@/lib/works";
 
 // index の Works / Exhibition。訪問ごとにランダムで9作品を選ぶ（#3）。
@@ -41,7 +42,10 @@ export default function FeaturedWorks() {
     let bottom = center + rowH;
     if (top < 0) { bottom -= top; top = 0; }
     if (bottom > g.height) { top = Math.max(0, top - (bottom - g.height)); bottom = g.height; }
-    setPreview({ work, top, height: bottom - top });
+    // 拡大表示の中で、ホバーした作品のマスがどこにあるか（ここを起点に円が広がって画像が現れる）
+    const ox = r.left - g.left + r.width / 2;
+    const oy = center - top;
+    setPreview({ work, top, height: bottom - top, ox, oy, size: r.width });
   };
 
   useEffect(() => {
@@ -101,16 +105,36 @@ export default function FeaturedWorks() {
       {preview && (
         <div
           key={preview.work.id}
-          className="preview-in pointer-events-none absolute left-0 z-40 flex w-full items-center justify-center bg-[var(--color-bg)]/95 shadow-[0_10px_40px_rgba(0,0,0,0.12)]"
-          style={{ top: preview.top, height: preview.height }}
+          className="pointer-events-none absolute left-0 z-30 w-full"
+          style={{
+            top: preview.top,
+            height: preview.height,
+            "--ox": `${preview.ox}px`,
+            "--oy": `${preview.oy}px`,
+            "--r0": `${preview.size * 0.5}px`,
+          }}
         >
-          <img
-            src={preview.work.images[0]}
-            alt=""
-            className="h-full w-full object-contain p-3"
-          />
-          <span className="absolute bottom-3 right-3 bg-black/70 px-2 py-1 text-[0.625rem] tracking-wider-jp text-white">
-            {preview.work.title || preview.work.year} · {preview.work.linkLabel} ↗
+          {/* ホバーしたマスから、渦がひと巻き描かれ、その中心から円が広がって作品が現れる */}
+          <div className="preview-iris absolute inset-0 overflow-hidden bg-[var(--color-bg)] shadow-[0_10px_40px_rgba(0,0,0,0.12)]">
+            <img
+              src={preview.work.images[0]}
+              alt=""
+              className="preview-iris-img h-full w-full object-contain p-3"
+            />
+            <span className="preview-caption absolute bottom-3 right-3 bg-black/70 px-2 py-1 text-[0.625rem] tracking-wider-jp text-white">
+              {preview.work.title || preview.work.year} · {preview.work.linkLabel} ↗
+            </span>
+          </div>
+          <span
+            className="preview-spiral absolute text-[var(--color-ink)]"
+            style={{
+              left: preview.ox - preview.size * 0.6,
+              top: preview.oy - preview.size * 0.6,
+              width: preview.size * 1.2,
+              height: preview.size * 1.2,
+            }}
+          >
+            <Spiral turns={3} strokeWidth={1.2} className="h-full w-full" pathClassName="preview-spiral-path" />
           </span>
         </div>
       )}
