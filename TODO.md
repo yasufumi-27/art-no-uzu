@@ -107,9 +107,10 @@
 
 ### 過去の打ち合わせメモの反映（2026-09-14）
 
-- 見出し横に、スクロールに連動して横移動・回転する渦（`components/ScrollUzu.jsx`。TOP の各セクション・Works・Contact）
 - TOP の WORKS / EXHIBITION コーナー（3×3）：ホバーした作品を「横3列分・その作品を中心に上下へ半段ずつ」拡大表示（PCのみ）。/works/ の一覧は変更なし
-- Coming Soon：花のマーク画像のアニメーション＋クリックでポップアップ、公式LINEへのリンク（`components/ComingSoon.jsx`）
+- Coming Soon：花のマーク画像のアニメーション＋クリックで作品画像のランダムなスライドショー（`components/ComingSoon.jsx`）。公式LINEのリンクは常設
+  - **ポップアップ用の画像は後日受領予定** → `public/images/coming-soon/` に置き、`lib/coming-soon.js` に並べる（空のあいだは解像度の高い作品で代用）
+- TOP の WORKS / EXHIBITION は解像度の高い作品（細部スコア2以上・62作品）からランダム表示。スコアは `../素材/scripts/sharpness.py` で計測し `lib/work-quality.json` に出力
 - 反映しなかったもの：「フォント 固め・丸みなし」→ 確認シート回答（丸文字系で統一）と衝突するため、回答を優先
 - 対応済みだったもの：タイトルはロゴか大文字／ゴシック体
 

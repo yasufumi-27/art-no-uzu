@@ -256,6 +256,14 @@ select,
 .cs-popup {
   animation: popupIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+/* Coming Soon のスライドショー：表示中の画像がゆっくり寄っていく */
+@keyframes csSlideZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+.cs-slide.opacity-100 {
+  animation: csSlideZoom 4.6s ease-out both;
+}
 /* Works の拡大表示 */
 .preview-in {
   animation: fadeIn 0.45s ease both;
@@ -422,6 +430,7 @@ select,
   .cs-letter,
   .cs-image,
   .cs-popup,
+  .cs-slide,
   .preview-in,
   .work-in,
   .uzu-birth,

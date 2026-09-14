@@ -4,26 +4,63 @@ import { useEffect, useState } from "react";
 import Spiral from "@/components/Spiral";
 import { asset } from "@/lib/asset";
 import { SOCIAL } from "@/components/Footer";
+import { works } from "@/lib/works";
+import { COMING_SOON_IMAGES } from "@/lib/coming-soon";
 
-// Coming Soon（2027年）。打ち合わせメモ：画像を使ってアニメーションし、クリックでポップアップ。ポップアップに LINE のリンクを出す。
-// 画像はクライアント提供ロゴの花のマーク（渦を抱いた花）。渦が描かれるのに合わせて花が生まれ、消えてまた生まれる。
+// Coming Soon（2027年）。
+// ・花のマーク画像（クライアント提供ロゴ）が、渦の誕生に合わせて生まれては消えるアニメーション
+// ・クリックでポップアップを開き、作品画像をランダムにスライドショー表示
+//   （ポップアップ用の画像は後日受領予定。lib/coming-soon.js が空のあいだは解像度の高い作品画像で代用）
+// ・公式LINEのリンクはポップアップ内ではなく常設で置く
 const LINE = SOCIAL.find((s) => s.label === "LINE")?.href;
+const INTERVAL = 3200;
+
+function shuffled(list) {
+  const a = [...list];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function sourceImages() {
+  if (COMING_SOON_IMAGES.length) return COMING_SOON_IMAGES.map((src) => asset(src));
+  return works.filter((w) => w.sharp).map((w) => w.images[0]);
+}
 
 export default function ComingSoon({ year }) {
   const [open, setOpen] = useState(false);
+  const [slides, setSlides] = useState([]);
+  const [index, setIndex] = useState(0);
+
+  const openShow = () => {
+    setSlides(shuffled(sourceImages()));
+    setIndex(0);
+    setOpen(true);
+  };
 
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    const timer = setInterval(() => setIndex((i) => i + 1), INTERVAL);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      clearInterval(timer);
+    };
   }, [open]);
 
+  // 表示中の前後だけ描画して、読み込みを最小限にする
+  const n = slides.length;
+  const visible = n ? [index - 1, index, index + 1].map((i) => ((i % n) + n) % n) : [];
+  const current = n ? index % n : 0;
+
   return (
-    <>
+    <div className="flex flex-col items-center">
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={openShow}
         aria-haspopup="dialog"
         className="group relative flex aspect-[16/9] w-full items-center justify-center overflow-hidden md:aspect-[16/7]"
       >
@@ -41,56 +78,64 @@ export default function ComingSoon({ year }) {
             Coming Soon
           </span>
           <span className="mt-3 text-[11px] tracking-wider-jp text-[var(--color-muted)] transition-colors group-hover:text-[var(--color-ink)]">
-            {year} — 新たな渦が、生まれる。（クリック）
+            {year} — 新たな渦が、生まれる。
           </span>
         </span>
       </button>
+
+      {/* 公式LINE（常設） */}
+      {LINE && (
+        <div className="mt-2 text-center">
+          <p className="text-xs leading-loose tracking-wider-jp text-[var(--color-muted)]">
+            作品の公開や最新情報は、公式LINEでお知らせします。
+          </p>
+          <a
+            href={LINE}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-block border border-[var(--color-ink)] px-10 py-3 text-xs tracking-wider-jp transition-colors hover:bg-[var(--color-ink)] hover:text-white"
+          >
+            LINE で友だち追加 ↗
+          </a>
+        </div>
+      )}
 
       {open && (
         <div
           role="dialog"
           aria-modal="true"
           aria-label={`${year} Coming Soon`}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4"
           onClick={() => setOpen(false)}
         >
           <div
-            className="cs-popup relative w-full max-w-sm bg-white px-8 py-12 text-center"
+            className="cs-popup relative h-[min(80vh,860px)] w-full max-w-4xl"
             onClick={(e) => e.stopPropagation()}
           >
+            {visible.map((i) => (
+              <img
+                key={`${i}-${slides[i]}`}
+                src={slides[i]}
+                alt=""
+                className={`cs-slide absolute inset-0 h-full w-full object-contain transition-opacity duration-[1400ms] ease-in-out ${
+                  i === current ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
+            <p className="absolute -bottom-9 left-0 right-0 text-center font-display text-xs tracking-[0.4em] text-white/70">
+              {year} Coming Soon
+            </p>
             <button
               type="button"
               onClick={() => setOpen(false)}
               aria-label="閉じる"
-              className="absolute right-4 top-3 text-lg text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+              className="absolute -top-10 right-0 text-2xl text-white/80 hover:text-white"
             >
               ×
             </button>
-            <img
-              src={asset("/images/logo/mark.png")}
-              alt=""
-              aria-hidden="true"
-              className="mx-auto h-24 w-auto"
-            />
-            <p className="mt-6 font-display text-sm tracking-[0.4em]">{year} Coming Soon</p>
-            <p className="mt-4 text-xs leading-loose tracking-wider-jp text-[var(--color-muted)]">
-              新たな渦が、生まれる。
-              <br />
-              作品の公開や最新情報は、公式LINEでお知らせします。
-            </p>
-            {LINE && (
-              <a
-                href={LINE}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 inline-block border border-[var(--color-ink)] px-10 py-3 text-xs tracking-wider-jp transition-colors hover:bg-[var(--color-ink)] hover:text-white"
-              >
-                LINE で友だち追加 ↗
-              </a>
-            )}
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

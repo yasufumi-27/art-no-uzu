@@ -8,6 +8,7 @@ import InstagramBadge from "@/components/InstagramBadge";
 import { works, workAlt } from "@/lib/works";
 
 // index の Works / Exhibition。訪問ごとにランダムで9作品を選ぶ（#3）。
+// 大きく拡大表示するため、解像度の高い作品（works.sharp）だけから選ぶ。
 // SSR ではハイドレーション不一致を避けるため決定的に先頭9件を描画し、
 // マウント後にクライアント側でシャッフルして差し替える。
 function pickRandom(list, n) {
@@ -19,8 +20,10 @@ function pickRandom(list, n) {
   return a.slice(0, n);
 }
 
+const SHARP_WORKS = works.filter((w) => w.sharp);
+
 export default function FeaturedWorks() {
-  const [items, setItems] = useState(() => works.slice(0, 9));
+  const [items, setItems] = useState(() => SHARP_WORKS.slice(0, 9));
   const gridRef = useRef(null);
   const [preview, setPreview] = useState(null);
 
@@ -42,7 +45,7 @@ export default function FeaturedWorks() {
   };
 
   useEffect(() => {
-    setItems(pickRandom(works, 9));
+    setItems(pickRandom(SHARP_WORKS, 9));
   }, []);
 
   return (
