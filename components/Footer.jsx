@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { asset } from "@/lib/asset";
 
 // 外部SNS導線（仕様書 12.1）と著作権・免責（仕様書 20）。
 export const SOCIAL = [
@@ -20,6 +21,12 @@ export default function Footer() {
     <footer className="mt-32 border-t border-[var(--color-line)] py-16">
       <div className="container-main flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
         <div>
+          <img
+            src={asset("/images/logo/mark.png")}
+            alt=""
+            aria-hidden="true"
+            className="mb-4 h-16 w-auto opacity-80"
+          />
           <p className="font-display text-sm tracking-[0.25em]">ART NO UZU</p>
           <p className="mt-2 text-[11px] tracking-wider-jp text-[var(--color-muted)]">
             神谷佳美 — 渦は、感情であり、呼吸であり、記録であり、祈り。

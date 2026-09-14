@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { asset } from "@/lib/asset";
 
 // グローバルナビゲーション（仕様書 7）。ロゴクリックで TOP へ遷移。
 const NAV = [
@@ -17,17 +18,14 @@ export default function Header() {
         <Link
           href="/"
           aria-label="YOSHIMI KAMITANI — Home"
-          className="text-[calc(13px+1pt)] md:text-[calc(0.875rem+1pt)] tracking-[0.18em] font-light leading-tight whitespace-nowrap"
+          className="text-[calc(13px+1pt)] md:text-[calc(0.875rem+1pt)] block leading-none"
         >
-          {Array.from("Yoshimi Kamitani").map((ch, i) => (
-            <span
-              key={i}
-              className="title-char"
-              style={{ animationDelay: `${i * 0.09}s` }}
-            >
-              {ch}
-            </span>
-          ))}
+          {/* 受領ロゴ（logo_b_kakutei_moji）。文字の高さをメニュー +1pt 相当に合わせる */}
+          <img
+            src={asset("/images/logo/logotype.png")}
+            alt="YOSHIMI KAMITANI"
+            className="anim-header-item block h-[0.8em] w-auto"
+          />
         </Link>
         <nav>
           <ul className="flex items-center gap-5 md:gap-10 text-[13px] md:text-sm tracking-wider-jp text-[var(--color-ink)]">

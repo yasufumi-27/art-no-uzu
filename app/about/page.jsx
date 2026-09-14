@@ -1,7 +1,7 @@
 import Reveal from "@/components/Reveal";
 import Spiral from "@/components/Spiral";
 import FadeImg from "@/components/FadeImg";
-import { placeholder } from "@/lib/placeholder";
+import { asset } from "@/lib/asset";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
@@ -73,7 +73,7 @@ export default function AboutPage() {
         <Reveal>
           <div className="relative aspect-[4/5] w-full overflow-hidden bg-[var(--color-line)]">
             <FadeImg
-              src={placeholder("about-portrait", 4 / 5)}
+              src={asset("/images/about/artist.webp")}
               alt="神谷佳美 ポートレート"
               className="h-full w-full object-cover"
             />

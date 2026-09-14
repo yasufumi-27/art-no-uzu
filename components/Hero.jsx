@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { placeholder } from "@/lib/placeholder";
+import { asset } from "@/lib/asset";
 import Spiral from "@/components/Spiral";
 
 // TOP メインビジュアル（仕様書 8）。
-// 実在作品をスライド表示。フェードイン/アウトで切替、自動 + 手動。
-// 初期ロード時：作品画像がゆっくりフェードイン、タイトルは一文字ずつ立ち上がる。
-const SLIDES = [
-  { id: "w-uzu-jyuku", title: "生まれた喜び『淑』", year: 2026 },
-  { id: "w-uzu-kurage", title: "夜を泳ぐ海月", year: 2024 },
-  { id: "w-uzu-kiri", title: "霧が晴れゆくように", year: 2021 },
-];
+// クライアント提供の TOP 画像（2026-09 受領 top1〜5）をスライド表示。フェードイン/アウトで切替、自動 + 手動。
+// title / year を入れるとキャプションを一文字ずつ立ち上げて表示する（空なら出さない）。
+const SLIDES = [1, 2, 3, 4, 5].map((n) => ({
+  id: `top${n}`,
+  src: asset(`/images/top/top${n}.webp`),
+  title: "",
+  year: "",
+}));
 
 const INTERVAL = 8000;
 
@@ -42,8 +43,8 @@ export default function Hero() {
         {SLIDES.map((slide, i) => (
           <img
             key={slide.id}
-            src={placeholder(slide.id, 16 / 9)}
-            alt={slide.title}
+            src={slide.src}
+            alt={slide.title || "神谷佳美 作品"}
             className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[3600ms] ease-in-out"
             style={{ opacity: ready && i === index ? 1 : 0 }}
           />
@@ -56,6 +57,7 @@ export default function Hero() {
         </div>
 
         {/* キャプション：一文字ずつ立ち上がる */}
+        {current.title && (
         <div className="absolute bottom-12 left-0 container-wide text-white">
           <p
             key={`y-${index}`}
@@ -76,6 +78,7 @@ export default function Hero() {
             ))}
           </h1>
         </div>
+        )}
 
         {/* 手動切替 */}
         <div className="absolute bottom-12 right-0 container-wide flex justify-end gap-3">
