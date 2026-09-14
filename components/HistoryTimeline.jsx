@@ -1,18 +1,25 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Spiral from "@/components/Spiral";
 
 // About の History。年を横一列のタイムラインに並べ、選んだ年の項目だけを1つの枠に出す。
 // 項目が増えても縦に伸びない（枠の高さは最も項目の多い年に合わせて固定）。
-// ・年を選ぶと、タイムライン上の渦がその年まで転がって移動し、項目がペンで書き出されるように現れる
+// ・年を選ぶと、タイムラインの線がその年まで伸び、項目がペンで書き出されるように現れる
+// ・画面に入っている間は自動で次の年へ進む（最新年の次は最も古い年へ戻る）。
+//   マウスを乗せている間・キーボード操作中は止まり、手動で年を変えると間隔がリセットされる。停止／再生ボタンあり
 // ・← → ボタン／キーボードの左右キー／スマホの左右スワイプでも年を移動できる
 // ・全年の項目は常にページ内にある（非表示の年も文字として残るため検索エンジンにも読まれる）
+const AUTO_INTERVAL = 5000;
+
 export default function HistoryTimeline({ history }) {
   // 左が古い年 → 右が新しい年。初期表示は最新年
   const years = [...history].sort((a, b) => a.year - b.year);
   const [active, setActive] = useState(years.length - 1);
   const [played, setPlayed] = useState(false);
+  const [inView, setInView] = useState(false);
+  const [hover, setHover] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [tick, setTick] = useState(0); // 手動操作で自動送りの間隔をリセットするため
   const root = useRef(null);
   const touchX = useRef(null);
 
@@ -20,12 +27,11 @@ export default function HistoryTimeline({ history }) {
   useEffect(() => {
     const el = root.current;
     if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPaused(true);
     const io = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting) {
-          setPlayed(true);
-          io.disconnect();
-        }
+        setInView(e.isIntersecting);
+        if (e.isIntersecting) setPlayed(true);
       },
       { rootMargin: "0px 0px -15% 0px" }
     );
@@ -33,12 +39,24 @@ export default function HistoryTimeline({ history }) {
     return () => io.disconnect();
   }, []);
 
-  const go = (i) => setActive(Math.max(0, Math.min(years.length - 1, i)));
+  // 自動送り
+  useEffect(() => {
+    if (!inView || hover || paused) return;
+    const t = setTimeout(() => setActive((a) => (a + 1) % years.length), AUTO_INTERVAL);
+    return () => clearTimeout(t);
+  }, [active, inView, hover, paused, tick, years.length]);
+
+  const go = (i) => {
+    setActive(Math.max(0, Math.min(years.length - 1, i)));
+    setTick((t) => t + 1);
+  };
   const pos = years.length > 1 ? (active / (years.length - 1)) * 100 : 50;
 
   return (
     <div
       ref={root}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       onKeyDown={(e) => {
         if (e.key === "ArrowLeft") go(active - 1);
         if (e.key === "ArrowRight") go(active + 1);
@@ -58,19 +76,6 @@ export default function HistoryTimeline({ history }) {
           className="history-progress absolute left-2 top-[1.15rem] h-px bg-[var(--color-ink)]"
           style={{ width: `calc((100% - 1rem) * ${pos / 100})` }}
         />
-        {/* 選択中の年まで転がって移動する渦 */}
-        <span
-          aria-hidden="true"
-          className="history-knob pointer-events-none absolute top-[1.15rem] h-6 w-6 text-[var(--color-ink)]"
-          style={{
-            left: `calc(0.5rem + (100% - 1rem) * ${pos / 100})`,
-            transform: `translate(-50%, -50%) rotate(${active * 150}deg)`,
-          }}
-        >
-          <span className="block h-full w-full rounded-full bg-[var(--color-bg)]">
-            <Spiral turns={3} strokeWidth={9} className="h-full w-full" />
-          </span>
-        </span>
         <ol className="relative flex justify-between" role="tablist" aria-label="年を選ぶ">
           {years.map((y, i) => (
             <li key={y.year} className="flex w-0 flex-col items-center">
@@ -82,11 +87,18 @@ export default function HistoryTimeline({ history }) {
                 onClick={() => go(i)}
                 className="group flex flex-col items-center gap-2 px-1 pb-1"
               >
-                <span
-                  className={`mt-[0.95rem] block h-[0.4rem] w-[0.4rem] rounded-full transition-colors duration-500 ${
-                    i <= active ? "bg-[var(--color-ink)]" : "bg-[var(--color-line)]"
-                  }`}
-                />
+                {/* 点：選択中の年は大きく */}
+                <span className="mt-[0.7rem] flex h-[0.9rem] w-[0.9rem] items-center justify-center">
+                  <span
+                    className={`history-dot block rounded-full ${
+                      i === active
+                        ? "h-[0.8rem] w-[0.8rem] bg-[var(--color-ink)]"
+                        : i < active
+                          ? "h-[0.4rem] w-[0.4rem] bg-[var(--color-ink)]"
+                          : "h-[0.4rem] w-[0.4rem] bg-[var(--color-line)]"
+                    }`}
+                  />
+                </span>
                 <span
                   className={`mt-2 whitespace-nowrap text-[0.625rem] tracking-[0.15em] transition-colors duration-500 md:text-[0.6875rem] ${
                     i === active
@@ -122,6 +134,14 @@ export default function HistoryTimeline({ history }) {
             className="text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)] disabled:opacity-20"
           >
             →
+          </button>
+          <button
+            type="button"
+            onClick={() => setPaused((p) => !p)}
+            aria-label={paused ? "自動送りを再生" : "自動送りを停止"}
+            className="mt-2 text-[0.625rem] text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+          >
+            {paused ? "▶" : "❚❚"}
           </button>
         </div>
         <div className="grid">
