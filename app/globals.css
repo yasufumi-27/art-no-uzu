@@ -309,44 +309,48 @@ select,
   animation: previewCaption 0.8s ease 1.4s both;
 }
 
-/* About の History（HistoryYear.jsx）
-   1. 年の横の小さな渦がひと巻き描かれ（0–0.8s）、年がふっと現れる
-   2. 年の右の線が左から伸びる
-   3. 各行：ペン先（1px の縦線）が左→右へ走り、通ったところから文字が書き出される
-   各行の開始は li の --delay（page.jsx で 0.12s ずつずらす） */
-.history-mark-path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 0.8s cubic-bezier(0.33, 0, 0.2, 1);
+/* About の History（HistoryTimeline.jsx）
+   タイムライン：選んだ年まで線が伸び、渦が転がって移動する */
+.history-progress {
+  transition: width 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 }
-.history-year.is-in .history-mark-path {
-  stroke-dashoffset: 0;
+.history-knob {
+  transition:
+    left 0.9s cubic-bezier(0.65, 0, 0.35, 1),
+    transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 }
-.history-yeartext {
+/* 年ごとの枠：全年を同じマスに重ね、選択中だけ見せる（高さは最大の年で一定） */
+.history-panel {
+  visibility: hidden;
   opacity: 0;
-  transition: opacity 0.8s ease 0.35s;
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
 }
-.history-year.is-in .history-yeartext {
+.history-panel.is-on {
+  visibility: visible;
   opacity: 1;
+  transition: opacity 0.4s ease;
 }
-.history-line {
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
+/* 大きな年：下からせり上がる */
+.history-bigyear {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(0.3em);
+  transition: clip-path 0.9s cubic-bezier(0.65, 0, 0.35, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.history-year.is-in .history-line {
-  transform: scaleX(1);
+.history-panel.is-in .history-bigyear {
+  clip-path: inset(0 0 -10% 0);
+  transform: translateY(0);
 }
+/* 各行：ペン先（1px の縦線）が左→右へ走り、通ったところから文字が書き出される。開始は li の --delay */
 .history-item {
   position: relative;
 }
 .history-ink {
   display: block;
   clip-path: inset(0 100% 0 0);
-  transition: clip-path 1.1s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0s);
 }
-.history-year.is-in .history-ink {
+.history-panel.is-in .history-ink {
   clip-path: inset(0 0 0 0);
+  transition: clip-path 1.1s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0s);
 }
 .history-item::after {
   content: "";
@@ -358,7 +362,7 @@ select,
   background: var(--color-ink);
   opacity: 0;
 }
-.history-year.is-in .history-item::after {
+.history-panel.is-in .history-item::after {
   animation: historyPen 1.1s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0s) both;
 }
 @keyframes historyPen {
@@ -366,6 +370,23 @@ select,
   8% { opacity: 0.8; }
   85% { opacity: 0.8; }
   100% { left: calc(100% - 1px); opacity: 0; }
+}
+
+/* About の Statement（StatementInk.jsx）：スクロールに合わせて、左から墨色が染み込んでいく。
+   --p（0〜1）は各行の満ち具合 */
+.statement-line {
+  --p: 0;
+  color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    var(--color-ink) calc(var(--p) * (100% + 4em) - 4em),
+    #c8c4bb calc(var(--p) * (100% + 4em))
+  );
+  background-size: 100% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 /* 呼吸するようにゆらぐ */
@@ -543,9 +564,10 @@ select,
   .preview-spiral {
     display: none;
   }
-  .history-mark-path,
-  .history-yeartext,
-  .history-line,
+  .history-progress,
+  .history-knob,
+  .history-panel,
+  .history-bigyear,
   .history-ink {
     transition: none !important;
   }

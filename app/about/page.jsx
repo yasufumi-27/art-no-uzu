@@ -1,5 +1,6 @@
 import Reveal from "@/components/Reveal";
-import HistoryYear from "@/components/HistoryYear";
+import HistoryTimeline from "@/components/HistoryTimeline";
+import StatementInk from "@/components/StatementInk";
 import Spiral from "@/components/Spiral";
 import FadeImg from "@/components/FadeImg";
 import { asset } from "@/lib/asset";
@@ -108,23 +109,16 @@ export default function AboutPage() {
                 Statement
               </h2>
             </div>
-            <div className="space-y-6 text-sm leading-loose">
-              {STATEMENT.map((lines, i) => (
-                <p key={i}>
-                  {lines.map((line, j) => (
-                    <span key={j} className="block">
-                      {line}
-                    </span>
-                  ))}
-                </p>
-              ))}
-            </div>
+            <StatementInk
+              paragraphs={STATEMENT}
+              emphasis="「渦を80年描き続けた、100歳のおばあちゃん」"
+            />
           </Reveal>
 
         </div>
       </div>
 
-      {/* History：縦に長くなりすぎないよう、全幅で年ごとのブロックを段組み（SP 1列 / タブレット 2列 / PC 3列） */}
+      {/* History：年のタイムラインで選んだ年だけを表示（項目が増えても縦に伸びない） */}
       <Reveal className="mt-24 md:mt-32">
         <div className="flex items-baseline justify-between border-b border-[var(--color-line)] pb-4">
           <h2 className="font-display text-sm tracking-[0.2em] text-[var(--color-muted)]">
@@ -134,47 +128,8 @@ export default function AboutPage() {
             {HISTORY[HISTORY.length - 1].year} — {HISTORY[0].year}
           </p>
         </div>
+        <HistoryTimeline history={HISTORY} />
       </Reveal>
-      <div className="mt-10 gap-x-12 sm:columns-2 lg:columns-3">
-        {HISTORY.map(({ year, items, exhibitions }) => (
-          <HistoryYear key={year} year={year}>
-            <ul className="mt-3 space-y-1.5 text-xs leading-relaxed tracking-wider-jp">
-              {[
-                ...items.map((t) =>
-                  typeof t === "string" ? (
-                    t
-                  ) : (
-                    <a
-                      href={t.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline underline-offset-4 hover:opacity-60"
-                    >
-                      {t.text} ↗
-                    </a>
-                  )
-                ),
-                ...(exhibitions ?? []).map((t) => (
-                  <>
-                    <span className="mr-2 inline-block border border-[var(--color-ink)] px-1.5 text-[0.5625rem] leading-4 tracking-[0.15em] align-[1px]">
-                      Exhibition
-                    </span>
-                    {t}
-                  </>
-                )),
-              ].map((node, i) => (
-                <li
-                  key={i}
-                  className="history-item"
-                  style={{ "--delay": `${0.5 + i * 0.12}s` }}
-                >
-                  <span className="history-ink">{node}</span>
-                </li>
-              ))}
-            </ul>
-          </HistoryYear>
-        ))}
-      </div>
     </div>
   );
 }
