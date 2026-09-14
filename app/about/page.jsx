@@ -135,7 +135,7 @@ export default function AboutPage() {
           </p>
         </div>
       </Reveal>
-      <div className="history-grid mt-10 gap-x-12 sm:columns-2 lg:columns-3">
+      <div className="mt-10 gap-x-12 sm:columns-2 lg:columns-3">
         {HISTORY.map(({ year, items, exhibitions }) => (
           <HistoryYear key={year} year={year}>
             <ul className="mt-3 space-y-1.5 text-xs leading-relaxed tracking-wider-jp">
@@ -166,9 +166,9 @@ export default function AboutPage() {
                 <li
                   key={i}
                   className="history-item"
-                  style={{ transitionDelay: `${0.45 + i * 0.12}s` }}
+                  style={{ "--delay": `${0.5 + i * 0.12}s` }}
                 >
-                  {node}
+                  <span className="history-ink">{node}</span>
                 </li>
               ))}
             </ul>
