@@ -20,40 +20,61 @@ export const metadata = {
 
 // 活動歴（2026-09 クライアント提供の確定リスト）。
 // exhibitions は原稿の「●EXHIBITION」以下の項目。
+// links は項目の出典・関連ページ（2026-09-15 に公式サイト・一次情報を中心に確認できた分だけ付与。見つからない項目は空のまま）。
+const L = (label, href) => ({ label, href });
 const HISTORY = [
   { year: "2026", items: [
-    "南種子島ふるさと納税返礼品・ひいらぎ 銀座本店 抹茶マカロン パッケージデザイン（Shinfula）",
-    "曙酒造 domaine dawn ワインパッケージデザイン",
+    { text: "南種子島ふるさと納税返礼品・ひいらぎ 銀座本店 抹茶マカロン パッケージデザイン（Shinfula）" },
+    { text: "曙酒造 domaine dawn ワインパッケージデザイン" },
   ] },
   { year: "2025", items: [
-    "展示「渦に沈む」",
-    { text: "「アートゴールデン街」（GOOD DESIGN賞受賞）（NoxGallery × Superchief × Brillia）Yahoo!ニュース掲載", href: "https://www.g-mark.org/gallery/winners/30972" },
-    "SEKAI NO OWARI「図鑑」リリース記念ショートムービー制作",
-  ], exhibitions: ["concent shibuya（渋谷）個展「生まれた喜び」"] },
+    { text: "展示「渦に沈む」" },
+    { text: "「アートゴールデン街」（GOOD DESIGN賞受賞）（NoxGallery × Superchief × Brillia）Yahoo!ニュース掲載", links: [
+      L("GOOD DESIGN", "https://www.g-mark.org/gallery/winners/30972"),
+      L("東京建物", "https://tatemono.com/news/20241127.html"),
+    ] },
+    { text: "SEKAI NO OWARI「図鑑」リリース記念ショートムービー制作" },
+  ], exhibitions: [
+    { text: "concent shibuya（渋谷）個展「生まれた喜び」", links: [L("YouTube", "https://www.youtube.com/watch?v=gL5-xlRYAus")] },
+  ] },
   { year: "2023", items: [
-    "PSG（パリ・サンジェルマンFC）コラボ",
-    "NIKE エアフォース1 広告出演",
-    "第8回インフルエンサー・アワード・ジャパン2023 ENTERTAINMENT部門 最優秀賞",
+    { text: "PSG（パリ・サンジェルマンFC）コラボ", links: [L("PSG Japan", "https://x.com/psgjapan/status/1726534038146715772")] },
+    { text: "NIKE エアフォース1 広告出演" },
+    { text: "第8回インフルエンサー・アワード・ジャパン2023 ENTERTAINMENT部門 最優秀賞", links: [L("IAJ 2023", "https://lp.spirit-japan.com/iaj/2023/")] },
   ] },
-  { year: "2022", items: ["劇団アレン舞台「いい人間の教科書」衣装提供（カンゲキ大賞受賞）"] },
-  { year: "2021", items: ["白石聖 写真展「COLOR」衣装提供"] },
-  { year: "2020", items: ["劇団アレン舞台「シカク」衣装提供"] },
+  { year: "2022", items: [
+    { text: "劇団アレン舞台「いい人間の教科書」衣装提供（カンゲキ大賞受賞）" },
+  ] },
+  { year: "2021", items: [
+    { text: "白石聖 写真展「COLOR」衣装提供", links: [L("TOKION", "https://tokion.jp/2020/11/24/sei-shiraishi-color/")] },
+  ] },
+  { year: "2020", items: [
+    { text: "劇団アレン舞台「シカク」衣装提供", links: [L("公式", "http://allen-co.com/allen-shikaku/")] },
+  ] },
   { year: "2019", items: [
-    "劇団アレン舞台「積チノカベ」衣装提供",
-    "EYESCREAM 写真連載「Paris et Tourbillon」（全6回）",
-  ], exhibitions: ["Case Gallery（代々木八幡）「渦写展」"] },
-  { year: "2018", items: [
-    "Asia Design Exhibition Consortium",
-    "カンボジア王立プノンペン大学 展示",
-    "映画「猫は抱くもの」衣装ペインティング",
-  ], exhibitions: ["Case Gallery（代々木八幡）「渦展」"] },
-  { year: "2017", items: [
-    "スターバックス 二子玉川店 作品展示",
-    "郷ひろみ 全国ツアー「My Dear」衣装ペインティング",
-    "Girls Award 2017 AAA（SHINJIRO ATAE）衣装",
+    { text: "劇団アレン舞台「積チノカベ」衣装提供", links: [L("公式", "http://allen-co.com/the-wall/")] },
+    { text: "EYESCREAM 写真連載「Paris et Tourbillon」（全6回）", links: [L("EYESCREAM", "https://eyescream.jp/culture/49622/")] },
+  ], exhibitions: [
+    { text: "Case Gallery（代々木八幡）「渦写展」" },
   ] },
-  { year: "2016", items: ["Superfly「Into The Circle」全国ツアー・紅白歌合戦・TV衣装ペインティング"] },
-  { year: "2015", items: ["Superfly「WHITE」衣装ペインティング"] },
+  { year: "2018", items: [
+    { text: "Asia Design Exhibition Consortium", links: [L("公式", "https://asiadesignart.wixsite.com/ada2018")] },
+    { text: "カンボジア王立プノンペン大学 展示", links: [L("公式", "https://asiadesignart.wixsite.com/ada2018")] },
+    { text: "映画「猫は抱くもの」衣装ペインティング", links: [L("映画.com", "https://eiga.com/movie/88358/")] },
+  ], exhibitions: [
+    { text: "Case Gallery（代々木八幡）「渦展」" },
+  ] },
+  { year: "2017", items: [
+    { text: "スターバックス 二子玉川店 作品展示" },
+    { text: "郷ひろみ 全国ツアー「My Dear」衣装ペインティング", links: [L("Sony Music", "https://www.sonymusic.co.jp/artist/HiromiGo/discography/SRBL-1774")] },
+    { text: "Girls Award 2017 AAA（SHINJIRO ATAE）衣装" },
+  ] },
+  { year: "2016", items: [
+    { text: "Superfly「Into The Circle」全国ツアー・紅白歌合戦・TV衣装ペインティング", links: [L("Superfly", "https://www.superfly-web.com/discography/?id=80")] },
+  ] },
+  { year: "2015", items: [
+    { text: "Superfly「WHITE」衣装ペインティング", links: [L("Warner Music", "https://wmg.jp/superfly/discography/15121/")] },
+  ] },
 ];
 
 // プロフィール／ステートメント（2026-09 クライアント提供の最終原稿）。段落ごとに配列化。

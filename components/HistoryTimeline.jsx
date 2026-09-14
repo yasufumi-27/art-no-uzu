@@ -171,19 +171,19 @@ export default function HistoryTimeline({ history }) {
                             Exhibition
                           </span>
                         )}
-                        {typeof t === "string" ? (
-                          t
-                        ) : (
+                        {t.text}
+                        {t.links?.map((l) => (
                           <a
-                            href={t.href}
+                            key={l.href + l.label}
+                            href={l.href}
                             target="_blank"
                             rel="noopener noreferrer"
                             tabIndex={on ? 0 : -1}
-                            className="underline underline-offset-4 hover:opacity-60"
+                            className="history-link ml-2 inline-block whitespace-nowrap border-b border-[var(--color-muted)] text-[0.625rem] tracking-[0.12em] text-[var(--color-muted)] transition-colors hover:border-[var(--color-ink)] hover:text-[var(--color-ink)]"
                           >
-                            {t.text} ↗
+                            {l.label} ↗
                           </a>
-                        )}
+                        ))}
                       </span>
                     </li>
                   ))}
