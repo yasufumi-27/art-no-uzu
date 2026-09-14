@@ -249,18 +249,19 @@ select,
 .cs-image {
   animation: csImage 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
-/* Coming Soon 枠内の作品画像ポップアップ（6s）：
-   0–2s フェードイン（透明度60%まで）→ 2–5s そのまま表示 → 5–6s フェードアウト */
+/* Coming Soon 枠内の作品画像ポップアップ（9s）：
+   0–3s フェードイン（透明度60%まで）→ 3–7s そのまま表示 → 7–9s フェードアウト
+   （2026-09-15 に各段階 +1秒。元は 2s / 3s / 1s の計6s） */
 @keyframes csPop {
   0% { opacity: 0; }
   33.333% { opacity: 0.6; }
-  83.333% { opacity: 0.6; }
+  77.778% { opacity: 0.6; }
   100% { opacity: 0; }
 }
 .cs-pop {
   opacity: 0;
   transform: translate(-50%, -50%);
-  animation: csPop 6s linear forwards;
+  animation: csPop 9s linear forwards;
 }
 /* Works の拡大表示 */
 .preview-in {

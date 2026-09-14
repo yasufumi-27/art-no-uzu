@@ -10,12 +10,12 @@ import { COMING_SOON_IMAGES } from "@/lib/coming-soon";
 // Coming Soon（2027年）。
 // ・中央：花のマーク画像（クライアント提供ロゴ）が、渦の誕生に合わせて生まれては消える
 // ・Coming Soon 枠内のランダムな位置に、作品画像がロゴと同じくらいの大きさ・透明度60%でポップアップし続ける
-//   （2秒かけてフェードイン → 3秒表示 → 1秒でフェードアウト。見た目は globals.css の .cs-pop）
+//   （3秒かけてフェードイン → 4秒表示 → 2秒でフェードアウト。見た目は globals.css の .cs-pop）
 //   ポップアップ用の画像は後日受領予定。lib/coming-soon.js が空のあいだは解像度の高い作品画像で代用
 // ・公式LINEのリンクは常設
 const LINE = SOCIAL.find((s) => s.label === "LINE")?.href;
-const LIFETIME = 6000; // 2s 登場 + 3s 表示 + 1s フェードアウト（.cs-pop と合わせる）
-const SPAWN_EVERY = 2000; // 同時に見えるのは3枚ほど
+const LIFETIME = 9000; // 3s 登場 + 4s 表示 + 2s フェードアウト（.cs-pop と合わせる）
+const SPAWN_EVERY = 3000; // 同時に見えるのは3枚ほど
 
 function sourceImages() {
   if (COMING_SOON_IMAGES.length) return COMING_SOON_IMAGES.map((src) => asset(src));
