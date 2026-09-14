@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import FadeImg from "@/components/FadeImg";
 import InstagramBadge from "@/components/InstagramBadge";
-import { placeholder } from "@/lib/placeholder";
+import { workAlt } from "@/lib/works";
 
 // Works / Exhibition 統合一覧（仕様書 9）。
 // 西暦ボタンで年を切り替えて作品を表示（塩田千春サイト参考）。
@@ -14,8 +14,8 @@ function Card({ work, index }) {
   const inner = (
     <div className="zoom-card relative aspect-square w-full overflow-hidden bg-[var(--color-line)]">
       <FadeImg
-        src={placeholder(work.id, 1)}
-        alt={work.title}
+        src={work.thumb}
+        alt={workAlt(work)}
         className="h-full w-full object-cover"
       />
       {work.category === "Exhibition" && (
@@ -26,9 +26,11 @@ function Card({ work, index }) {
       {/* 詳細ページを持たない作品は Instagram へ誘導するラベルを表示 */}
       {!work.hasDetail && <InstagramBadge />}
       {/* フォーカス時：作品名 */}
-      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
-        <p className="text-xs tracking-wider-jp text-white">{work.title}</p>
-      </div>
+      {work.title && (
+        <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+          <p className="text-xs tracking-wider-jp text-white">{work.title}</p>
+        </div>
+      )}
     </div>
   );
 

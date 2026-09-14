@@ -5,8 +5,7 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import FadeImg from "@/components/FadeImg";
 import InstagramBadge from "@/components/InstagramBadge";
-import { placeholder } from "@/lib/placeholder";
-import { works } from "@/lib/works";
+import { works, workAlt } from "@/lib/works";
 
 // index の Works / Exhibition。訪問ごとにランダムで9作品を選ぶ（#3）。
 // SSR ではハイドレーション不一致を避けるため決定的に先頭9件を描画し、
@@ -33,8 +32,8 @@ export default function FeaturedWorks() {
         const inner = (
           <div className="zoom-card relative aspect-square overflow-hidden bg-[var(--color-line)]">
             <FadeImg
-              src={placeholder(work.id, 1)}
-              alt={work.title}
+              src={work.thumb}
+              alt={workAlt(work)}
               className="h-full w-full object-cover"
             />
             {!work.hasDetail && <InstagramBadge small />}
@@ -43,7 +42,7 @@ export default function FeaturedWorks() {
                 {work.category}
               </p>
               <p className="text-[0.6875rem] tracking-wider-jp text-white line-clamp-1">
-                {work.title}
+                {work.title || work.year}
               </p>
             </div>
           </div>

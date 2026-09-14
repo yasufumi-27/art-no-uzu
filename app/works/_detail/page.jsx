@@ -1,15 +1,17 @@
+// 【一時退避】詳細ページを持つ作品が0件の間は、静的書き出しで [id] ルートが使えないため _detail（非公開フォルダ）に置いている。
+// 詳細ページ化する作品を lib/works.js の DETAILS に hasDetail: true で登録したら、フォルダ名を [id] に戻す。
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Gallery from "@/components/Gallery";
 import Reveal from "@/components/Reveal";
 import FadeImg from "@/components/FadeImg";
 import InstagramBadge from "@/components/InstagramBadge";
-import { placeholder } from "@/lib/placeholder";
 import {
   comingSoonYear,
   detailWorks,
   getWork,
   works,
+  workAlt,
   years,
 } from "@/lib/works";
 import { SITE_URL, ARTIST_ID } from "@/lib/site";
@@ -99,7 +101,7 @@ export default function WorkDetail({ params }) {
 
       {/* 作品を大きく上部表示 */}
       <Reveal className="container-wide mt-10">
-        <Gallery id={work.id} count={work.gallery ?? 3} />
+        <Gallery images={work.images} alt={workAlt(work)} />
       </Reveal>
 
       {/* 作品画像の下に説明文など */}
@@ -154,8 +156,8 @@ export default function WorkDetail({ params }) {
                 <>
                   <div className="zoom-card relative aspect-square overflow-hidden bg-[var(--color-line)]">
                     <FadeImg
-                      src={placeholder(w.id, 1)}
-                      alt={w.title}
+                      src={w.thumb}
+                      alt={workAlt(w)}
                       className="h-full w-full object-cover"
                     />
                     {w.category === "Exhibition" && (

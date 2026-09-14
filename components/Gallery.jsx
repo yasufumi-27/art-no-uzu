@@ -1,16 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { placeholder } from "@/lib/placeholder";
 
 // 作品詳細の画像ギャラリー（仕様書 10.1）。
 // 画像は自動で切り替わり（#5）、切替はフェードアウト/イン（#2）。手動操作でタイマーはリセット。
 const AUTO_INTERVAL = 5500;
 
-export default function Gallery({ id, count = 3 }) {
+export default function Gallery({ images, alt = "作品画像" }) {
+  const count = images.length;
   const [index, setIndex] = useState(0);
   const timer = useRef(null);
-  const slides = Array.from({ length: count }, (_, i) => `${id}-${i}`);
+  const slides = images;
 
   // 自動切替
   useEffect(() => {
@@ -46,11 +46,11 @@ export default function Gallery({ id, count = 3 }) {
         {slides.map((s, i) => (
           <img
             key={s}
-            src={placeholder(s, 4 / 3)}
-            alt={`作品画像 ${i + 1}`}
+            src={s}
+            alt={`${alt} ${i + 1}`}
             // 先頭はファーストビューのため即時、2枚目以降は遅延読み込み（仕様書 15 / 16）
             loading={i === 0 ? "eager" : "lazy"}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1600ms] ease-in-out"
+            className="absolute inset-0 h-full w-full object-contain transition-opacity duration-[1600ms] ease-in-out"
             style={{ opacity: i === index ? 1 : 0 }}
           />
         ))}

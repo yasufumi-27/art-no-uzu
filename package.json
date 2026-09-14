@@ -7,7 +7,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen:works": "node scripts/gen-works.mjs",
+    "prebuild": "node scripts/gen-works.mjs",
+    "predev": "node scripts/gen-works.mjs"
   },
   "dependencies": {
     "next": "^15.4.0",
