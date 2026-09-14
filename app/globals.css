@@ -12,6 +12,13 @@
   --color-line: #e2e0db;
   --max-width: 1500px;
   --content-width: 1180px;
+
+  /* クリック時の渦（ClickUzu.jsx）の設定。ここの値だけ変えれば切り替わる。
+     大きさ：元のサイズは 132px。2026-09-14 に 5倍（660px）→ 3倍（396px）へ変更。
+             元に戻すときは 132px にする。
+     濃さ  ：元は 1。2026-09-14 に 0.5（50%）へ変更。 */
+  --click-uzu-size: 396px;
+  --click-uzu-strength: 0.5;
 }
 
 html {
@@ -353,10 +360,10 @@ select,
 .click-uzu {
   position: fixed;
   z-index: 60;
-  /* 2026-09-14 クライアント要望でサイズ5倍（132px → 660px）・濃さ50% */
-  width: 660px;
-  height: 660px;
-  margin: -330px 0 0 -330px;
+  /* 大きさ・濃さは :root の --click-uzu-size / --click-uzu-strength で設定 */
+  width: var(--click-uzu-size);
+  height: var(--click-uzu-size);
+  margin: calc(var(--click-uzu-size) / -2) 0 0 calc(var(--click-uzu-size) / -2);
   pointer-events: none;
   color: var(--color-muted);
   animation: clickUzuSpread 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -369,10 +376,10 @@ select,
 @keyframes clickUzuSpread {
   0% {
     transform: scale(0.25) rotate(-60deg);
-    opacity: 0.45;
+    opacity: calc(0.9 * var(--click-uzu-strength));
   }
   55% {
-    opacity: 0.35;
+    opacity: calc(0.7 * var(--click-uzu-strength));
   }
   100% {
     transform: scale(1) rotate(40deg);
