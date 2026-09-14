@@ -387,9 +387,70 @@ select,
   box-decoration-break: clone;
 }
 
-/* TOP 右下の「80年分の渦」（ScrollSpiralGauge.jsx）：読み込み後にふっと現れる */
+/* TOP 右下の「80年分の渦」（ScrollSpiralGauge.jsx） */
 .gauge-in {
   animation: fadeIn 2s ease 1.2s both;
+}
+/* スクロール中は渦がふくらみ、年と年齢が大きく出る。止まると元に戻る */
+.gauge-svg {
+  transform-origin: 100% 100%;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.gauge.is-scrolling .gauge-svg {
+  transform: scale(2);
+}
+.gauge-labels {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.gauge.is-scrolling .gauge-labels {
+  transform: translateX(-4.5rem);
+}
+.gauge-year {
+  font-size: 0.625rem;
+  transition: font-size 0.7s cubic-bezier(0.16, 1, 0.3, 1), letter-spacing 0.7s ease;
+}
+.gauge.is-scrolling .gauge-year {
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+}
+.gauge-age {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.gauge.is-scrolling .gauge-age {
+  opacity: 0.7;
+}
+/* 1年＝1点。過ぎた年は墨、いまの年は大きく、これからの年はうっすら */
+.gauge-dot {
+  fill: currentColor;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.gauge-dot[data-state="future"] {
+  opacity: 0.14;
+  transform: scale(0.7);
+}
+.gauge-dot[data-state="past"] {
+  opacity: 0.85;
+  transform: scale(1);
+}
+.gauge-dot[data-state="now"] {
+  opacity: 1;
+  transform: scale(2.2);
+}
+/* 10年の節目を越えたときの波紋 */
+.gauge-ripple {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gaugeRipple 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes gaugeRipple {
+  from { transform: scale(1); opacity: 0.9; }
+  to { transform: scale(7); opacity: 0; }
 }
 
 /* 呼吸するようにゆらぐ */
@@ -566,6 +627,12 @@ select,
   }
   .preview-spiral {
     display: none;
+  }
+  .gauge-svg,
+  .gauge-labels,
+  .gauge-year,
+  .gauge-dot {
+    transition: none !important;
   }
   .history-progress,
   .history-dot,
