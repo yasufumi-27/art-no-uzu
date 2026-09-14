@@ -353,9 +353,10 @@ select,
 .click-uzu {
   position: fixed;
   z-index: 60;
-  width: 132px;
-  height: 132px;
-  margin: -66px 0 0 -66px;
+  /* 2026-09-14 クライアント要望でサイズ5倍（132px → 660px）・濃さ50% */
+  width: 660px;
+  height: 660px;
+  margin: -330px 0 0 -330px;
   pointer-events: none;
   color: var(--color-muted);
   animation: clickUzuSpread 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -368,10 +369,10 @@ select,
 @keyframes clickUzuSpread {
   0% {
     transform: scale(0.25) rotate(-60deg);
-    opacity: 0.9;
+    opacity: 0.45;
   }
   55% {
-    opacity: 0.7;
+    opacity: 0.35;
   }
   100% {
     transform: scale(1) rotate(40deg);
