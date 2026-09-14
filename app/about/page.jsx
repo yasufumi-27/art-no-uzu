@@ -7,26 +7,63 @@ import { SITE_URL } from "@/lib/site";
 export const metadata = {
   title: "About",
   description:
-    "神谷佳美（Kamitani Yoshimi）。1994年東京生まれ。2014年より渦を描き続けるアーティストのプロフィール・ステートメント・活動歴。",
+    "神谷佳美（YOSHIMI KAMITANI）。1994年東京生まれ。2015年から渦を描き続けるアーティストのプロフィール・ステートメント・活動歴。",
   alternates: { canonical: `${SITE_URL}/about/` },
   openGraph: {
     title: "About — ART NO UZU",
     description:
-      "神谷佳美（Kamitani Yoshimi）。1994年東京生まれ。2014年より渦を描き続けるアーティストのプロフィール・ステートメント・活動歴。",
+      "神谷佳美（YOSHIMI KAMITANI）。1994年東京生まれ。2015年から渦を描き続けるアーティストのプロフィール・ステートメント・活動歴。",
   },
 };
 
-// 経歴（ARTIST_PROFILE.md より）
+// 活動歴（2026-09 クライアント提供の確定リスト）。
+// exhibitions は原稿の「●EXHIBITION」以下の項目。
 const HISTORY = [
-  ["2025", "SEKAI NO OWARI 新曲『図鑑』ショートムービー制作"],
-  ["2024", "SNS総再生回数 5,100万回突破"],
-  ["2023", "NIKE／エアフォース1 広告出演 / インフルエンサー・アワード・ジャパン ENTERTAINMENT部門 最優秀賞"],
-  ["2019", "個展「渦写展」/ Case Gallery, 代々木八幡 ・ パリを中心に海外活動へ"],
-  ["2018", "個展「渦展」/ Case Gallery, 代々木八幡 ・ 映画『猫は抱くもの』衣装制作"],
-  ["2017", "郷ひろみ 全国ツアー「My Dear」/ Girls Award 2017 AAA"],
-  ["2016", "個展 / 原宿DOG ・ Superfly「Into The Circle」衣装ペインティング"],
-  ["2015", "Superfly「WHITE」衣装ペインティング（NHK紅白歌合戦）"],
-  ["2014", "渦を描き始める"],
+  { year: "2026", items: [
+    "南種子島ふるさと納税返礼品・ひいらぎ 銀座本店 抹茶マカロン パッケージデザイン（Shinfula）",
+    "曙酒造 domaine dawn ワインパッケージデザイン",
+  ] },
+  { year: "2025", items: [
+    "展示「渦に沈む」",
+    "「アートゴールデン街」（GOOD DESIGN賞受賞）（NoxGallery × Superchief × Brillia）Yahoo!ニュース掲載",
+    "SEKAI NO OWARI「図鑑」リリース記念ショートムービー制作",
+  ], exhibitions: ["concent shibuya（渋谷）個展「生まれた喜び」"] },
+  { year: "2023", items: [
+    "PSG（パリ・サンジェルマンFC）コラボ",
+    "NIKE エアフォース1 広告出演",
+    "第8回インフルエンサー・アワード・ジャパン2023 ENTERTAINMENT部門 最優秀賞",
+  ] },
+  { year: "2022", items: ["劇団アレン舞台「いい人間の教科書」衣装提供（カンゲキ大賞受賞）"] },
+  { year: "2021", items: ["白石聖 写真展「COLOR」衣装提供"] },
+  { year: "2020", items: ["劇団アレン舞台「シカク」衣装提供"] },
+  { year: "2019", items: [
+    "劇団アレン舞台「積チノカベ」衣装提供",
+    "EYESCREAM 写真連載「Paris et Tourbillon」（全6回）",
+  ], exhibitions: ["Case Gallery（代々木八幡）「渦写展」"] },
+  { year: "2018", items: [
+    "Asia Design Exhibition Consortium",
+    "カンボジア王立プノンペン大学 展示",
+    "映画「猫は抱くもの」衣装ペインティング",
+  ], exhibitions: ["Case Gallery（代々木八幡）「渦展」"] },
+  { year: "2017", items: [
+    "スターバックス 二子玉川店 作品展示",
+    "郷ひろみ 全国ツアー「My Dear」衣装ペインティング",
+    "Girls Award 2017 AAA（SHINJIRO ATAE）衣装",
+  ] },
+  { year: "2016", items: ["Superfly「Into The Circle」全国ツアー・紅白歌合戦・TV衣装ペインティング"] },
+  { year: "2015", items: ["Superfly「WHITE」衣装ペインティング"] },
+];
+
+// プロフィール／ステートメント（2026-09 クライアント提供の最終原稿）。段落ごとに配列化。
+const STATEMENT = [
+  ["苦痛を昇華するために始まった渦に、その時々の人生から生まれた詩と言葉を重ねてきた。"],
+  ["渦は、同じ場所を巡っているように見えながら、少しずつ位置を変え、同じ地点には二度と戻らない。", "私の人生もまた、同じ悩みに何度も戻る。けれど、そこに向き合う自分は毎回違う。"],
+  ["私が変われば、渦も変わる。", "生きる時代が変われば、問いも変わる。", "だから、同じ渦を描いても同じ渦にはならない。"],
+  ["私は、この行為を続けた先に、", "「渦を80年描き続けた、100歳のおばあちゃん」", "になることを目指している。"],
+  ["毎年、「渦とは何か」「なぜ私は渦を描き続けるのか」を問い直し、その年の探究を作品として残す。", "同時に、その年の渦を自らの顔と身体に描き、言葉と写真とともに、一年ずつ記録していく。"],
+  ["一人の人間が、生涯ひとつの形を反復し続けたとき、何が変わり、何が最後まで残るのか。"],
+  ["80年分の渦を並べた時、そこに私がどう生き、どう変わり、それでも何を手放さなかったのかが残っていてほしい。"],
+  ["私は、自分の人生そのものを使って、その変化を記録し続ける。"],
 ];
 
 export default function AboutPage() {
@@ -52,12 +89,12 @@ export default function AboutPage() {
               神谷佳美
             </h1>
             <p className="mt-1 text-xs tracking-[0.2em] text-[var(--color-muted)]">
-              KAMITANI YOSHIMI
+              Yoshimi Kamitani
             </p>
             <p className="mt-8 text-sm leading-loose">
-              1994年東京生まれ。2014年より、ただひとつのモチーフ「渦」を描き続けている。
-              目指すのは、80年間渦を描き続けた100歳のおばあちゃんになること。
-              生涯の最後の一筆まで、渦を描いていく。
+              1994年東京生まれ。
+              <br />
+              2015年から、「渦」を描き続けている。
             </p>
           </Reveal>
 
@@ -70,26 +107,48 @@ export default function AboutPage() {
                 Statement
               </h2>
             </div>
-            <p className="text-sm leading-loose">
-              渦は、感情であり、呼吸であり、記録であり、祈り。
-              <br />
-              私は、飾るための絵は描いていない。
-              歳を重ねるほどに絵は深みを増し、あなたがあなたらしく生きていく生涯に、そっと寄り添っていく。
-              一筆ずつ重ねた反復の集積は、そのまま生きた時間の記録になる。
-            </p>
+            <div className="space-y-6 text-sm leading-loose">
+              {STATEMENT.map((lines, i) => (
+                <p key={i}>
+                  {lines.map((line, j) => (
+                    <span key={j} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </p>
+              ))}
+            </div>
           </Reveal>
 
           <Reveal className="mt-14">
             <h2 className="font-display text-sm tracking-[0.2em] text-[var(--color-muted)]">
-              Selected Works &amp; History
+              History
             </h2>
-            <dl className="mt-6 space-y-3 border-t border-[var(--color-line)] pt-6 text-xs">
-              {HISTORY.map(([year, text]) => (
+            <dl className="mt-6 space-y-5 border-t border-[var(--color-line)] pt-6 text-xs">
+              {HISTORY.map(({ year, items, exhibitions }) => (
                 <div key={year} className="flex gap-6">
                   <dt className="w-14 shrink-0 tracking-wider-jp text-[var(--color-muted)]">
                     {year}
                   </dt>
-                  <dd className="tracking-wider-jp leading-relaxed">{text}</dd>
+                  <dd className="tracking-wider-jp leading-relaxed">
+                    <ul className="space-y-1">
+                      {items.map((t) => (
+                        <li key={t}>{t}</li>
+                      ))}
+                    </ul>
+                    {exhibitions && (
+                      <div className="mt-2">
+                        <p className="text-[0.625rem] tracking-[0.2em] text-[var(--color-muted)]">
+                          Exhibition
+                        </p>
+                        <ul className="space-y-1">
+                          {exhibitions.map((t) => (
+                            <li key={t}>{t}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </dd>
                 </div>
               ))}
             </dl>

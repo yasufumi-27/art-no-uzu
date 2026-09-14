@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Gallery from "@/components/Gallery";
 import Reveal from "@/components/Reveal";
 import FadeImg from "@/components/FadeImg";
+import InstagramBadge from "@/components/InstagramBadge";
 import { placeholder } from "@/lib/placeholder";
 import {
   comingSoonYear,
@@ -162,11 +163,7 @@ export default function WorkDetail({ params }) {
                         Exhibition
                       </span>
                     )}
-                    {!w.hasDetail && (
-                      <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[0.5625rem] tracking-wider-jp text-white">
-                        instagram
-                      </span>
-                    )}
+                    {!w.hasDetail && <InstagramBadge small />}
                   </div>
                   <p className="mt-2 text-[0.6875rem] tracking-wider-jp">{w.title}</p>
                 </>

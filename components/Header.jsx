@@ -8,39 +8,29 @@ const NAV = [
   { href: "/contact", label: "Contact" },
 ];
 
+// 2026-09 クライアント回答：背景は白 100% で塗り、高さは従来の約 2/3、
+// ロゴ（YOSHIMI KAMITANI）はメニュー文字より 1pt 大きく。追従（sticky）はそのまま。
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[var(--color-bg)]/40">
-      <div className="container-wide flex flex-col items-start justify-center gap-2 py-3 md:h-28 md:flex-row md:items-center md:justify-between md:gap-8 md:py-0">
+    <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-white">
+      <div className="container-wide flex flex-col items-start justify-center gap-1 py-2 md:h-[75px] md:flex-row md:items-center md:justify-between md:gap-8 md:py-0">
         <Link
           href="/"
-          aria-label="Yoshimi Kamitani — Home"
-          className="header-legible text-xl md:text-3xl tracking-[0.18em] font-light leading-tight"
+          aria-label="YOSHIMI KAMITANI — Home"
+          className="text-[calc(13px+1pt)] md:text-[calc(0.875rem+1pt)] tracking-[0.18em] font-light leading-tight whitespace-nowrap"
         >
-          {Array.from("Yoshimi").map((ch, i) => (
+          {Array.from("Yoshimi Kamitani").map((ch, i) => (
             <span
-              key={`f-${i}`}
+              key={i}
               className="title-char"
               style={{ animationDelay: `${i * 0.09}s` }}
             >
               {ch}
             </span>
           ))}
-          {/* スマホは改行、PC/iPad は半角スペース */}
-          <br className="md:hidden" />
-          <span className="hidden md:inline">{" "}</span>
-          {Array.from("Kamitani").map((ch, i) => (
-            <span
-              key={`l-${i}`}
-              className="title-char"
-              style={{ animationDelay: `${(8 + i) * 0.09}s` }}
-            >
-              {ch}
-            </span>
-          ))}
         </Link>
         <nav>
-          <ul className="header-legible flex items-center gap-5 md:gap-10 text-[13px] md:text-sm tracking-wider-jp text-[var(--color-ink)]">
+          <ul className="flex items-center gap-5 md:gap-10 text-[13px] md:text-sm tracking-wider-jp text-[var(--color-ink)]">
             {NAV.map((item, i) => (
               <li
                 key={item.href}

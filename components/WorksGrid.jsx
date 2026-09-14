@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import FadeImg from "@/components/FadeImg";
+import InstagramBadge from "@/components/InstagramBadge";
 import { placeholder } from "@/lib/placeholder";
 
 // Works / Exhibition 統合一覧（仕様書 9）。
@@ -23,11 +24,7 @@ function Card({ work, index }) {
         </span>
       )}
       {/* 詳細ページを持たない作品は Instagram へ誘導するラベルを表示 */}
-      {!work.hasDetail && (
-        <span className="absolute left-3 top-3 bg-black/70 px-2 py-1 text-[0.625rem] tracking-wider-jp text-white">
-          instagram
-        </span>
-      )}
+      {!work.hasDetail && <InstagramBadge />}
       {/* フォーカス時：作品名 */}
       <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
         <p className="text-xs tracking-wider-jp text-white">{work.title}</p>

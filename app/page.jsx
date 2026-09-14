@@ -27,9 +27,9 @@ export default function Home() {
             記録であり、祈り。
           </p>
           <p className="mt-8 text-xs leading-loose text-[var(--color-muted)]">
-            2014年から、ただひたすらに渦を描き続けている。
+            2015年から、「渦」を描き続けている。
             <br />
-            一筆ずつ重ねた反復が、生きた時間そのものになる。
+            私が変われば、渦も変わる。
           </p>
         </Reveal>
 
@@ -64,13 +64,12 @@ export default function Home() {
             <Reveal delay={0.1}>
               <h2 className="font-display text-4xl tracking-[0.15em]">About</h2>
               <p className="mt-8 text-sm leading-loose">
-                神谷佳美（Kamitani Yoshimi）。1994年東京生まれ。
-                2014年より「渦」だけを描き続けている。
-                目指すのは、80年間渦を描き続けた100歳のおばあちゃんになること。
+                神谷佳美（YOSHIMI KAMITANI）。1994年東京生まれ。
+                2015年から、「渦」を描き続けている。
               </p>
               <p className="mt-4 text-sm leading-loose text-[var(--color-muted)]">
-                飾るための絵は描いていない。歳を重ねるごとに深まり、
-                その人らしく生きる生涯に寄り添う——そんな一枚を渦に託している。
+                目指すのは、「渦を80年描き続けた、100歳のおばあちゃん」になること。
+                毎年「渦とは何か」を問い直し、その年の探究を作品として残している。
               </p>
               <Link
                 href="/about"

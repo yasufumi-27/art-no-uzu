@@ -17,6 +17,7 @@
 
 > デモは GitHub Pages で配信するため Next.js を `output: "export"` で静的化しています。
 > 本番は Vercel + microCMS への移行を想定しています（[TODO.md](./TODO.md) 参照）。
+> 公開後の運用（毎年の見積もり・ドメイン更新・新年度ページ更新）は [OPERATIONS.md](./OPERATIONS.md)。
 
 ## 実装済み仕様（抜粋）
 

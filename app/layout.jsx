@@ -1,8 +1,8 @@
 import "./globals.css";
-import { Syne, Zen_Kaku_Gothic_New } from "next/font/google";
+import { Zen_Kaku_Gothic_New } from "next/font/google";
 import Header from "@/components/Header";
 import Footer, { SOCIAL } from "@/components/Footer";
-import BackgroundUzu from "@/components/BackgroundUzu";
+import ClickUzu from "@/components/ClickUzu";
 import {
   SITE_ORIGIN,
   SITE_URL,
@@ -11,14 +11,8 @@ import {
   ARTIST_ID,
 } from "@/lib/site";
 
-// 見出し：Syne（現代的で少し近未来的なディスプレイ書体）
-// 本文：Zen Kaku Gothic New（端正で余白の美しい和文ゴシック）
-const syne = Syne({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-display",
-  display: "swap",
-});
+// 書体は Zen Kaku Gothic New に統一（2026-09 クライアント回答：
+// 欧文も TOP の和文フォントに合わせる。見出し用の Syne は撤去）
 const zen = Zen_Kaku_Gothic_New({
   subsets: ["latin"],
   weight: ["300", "400", "500"],
@@ -77,10 +71,10 @@ const jsonLd = {
       "@type": "Person",
       "@id": ARTIST_ID,
       name: "神谷佳美",
-      alternateName: ["Kamitani Yoshimi", "ART NO UZU"],
+      alternateName: ["YOSHIMI KAMITANI", "ART NO UZU"],
       jobTitle: "画家 / アーティスト",
       description:
-        "1994年東京生まれ。2014年より、ただひとつのモチーフ「渦」を描き続けている。",
+        "1994年東京生まれ。2015年から「渦」を描き続けている。",
       url: SITE_URL,
       mainEntityOfPage: `${SITE_URL}/about/`,
       award:
@@ -97,13 +91,13 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ja" className={`${syne.variable} ${zen.variable}`}>
+    <html lang="ja" className={zen.variable}>
       <body className="min-h-screen flex flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <BackgroundUzu />
+        <ClickUzu />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

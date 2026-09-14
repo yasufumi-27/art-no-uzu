@@ -17,7 +17,7 @@ export const metadata = {
 const SECTIONS = [
   {
     title: "基本方針",
-    body: "本サイト（ART NO UZU／運営者：神谷佳美）は、訪問者の個人情報の重要性を認識し、個人情報の保護に関する法律および関連法令を遵守して、適切に取り扱います。",
+    body: "本サイト（運営者：ART NO UZU Inc. 神谷佳美）は、訪問者の個人情報の重要性を認識し、個人情報の保護に関する法律および関連法令を遵守して、適切に取り扱います。",
   },
   {
     title: "取得する情報",
@@ -38,6 +38,11 @@ const SECTIONS = [
   {
     title: "外部リンク",
     body: "本サイトからリンクする外部サイト（Instagram・YouTube・TikTok・LINE・BASE 等）における個人情報の取り扱いについて、本サイトは責任を負いません。各サイトのプライバシーポリシーをご確認ください。",
+  },
+  {
+    title: "お問い合わせ窓口",
+    body: "個人情報の取り扱いに関するお問い合わせは、下記のメールアドレスまでご連絡ください。",
+    email: "art.no.uzu@gmail.com",
   },
   {
     title: "改定",
@@ -64,12 +69,19 @@ export default function PrivacyPage() {
             <p className="mt-3 text-xs leading-loose text-[var(--color-muted)]">
               {s.body}
             </p>
+            {s.email && (
+              <p className="keep-case mt-2 text-xs">
+                <a href={`mailto:${s.email}`} className="underline underline-offset-4 hover:opacity-60">
+                  {s.email}
+                </a>
+              </p>
+            )}
           </section>
         ))}
         <p className="border-t border-[var(--color-line)] pt-8 text-[11px] text-[var(--color-muted)]">
           制定日：2026年7月14日
           <br />
-          運営者：神谷佳美（ART NO UZU）
+          運営者：ART NO UZU Inc. 神谷佳美
         </p>
       </Reveal>
     </div>

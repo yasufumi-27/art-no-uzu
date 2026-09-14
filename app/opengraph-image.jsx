@@ -4,7 +4,7 @@ import { ImageResponse } from "next/og";
 // Satori のデフォルトフォントは和文グリフを持たないため、文言は欧文のみで構成。
 export const dynamic = "force-static";
 
-export const alt = "ART NO UZU — Kamitani Yoshimi Official Site";
+export const alt = "ART NO UZU — YOSHIMI KAMITANI Official Site";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -70,7 +70,7 @@ export default function OpengraphImage() {
             color: "#8a877f",
           }}
         >
-          KAMITANI YOSHIMI — OFFICIAL SITE
+          YOSHIMI KAMITANI — OFFICIAL SITE
         </div>
       </div>
     ),

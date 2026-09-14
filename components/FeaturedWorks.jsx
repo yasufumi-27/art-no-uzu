@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import FadeImg from "@/components/FadeImg";
+import InstagramBadge from "@/components/InstagramBadge";
 import { placeholder } from "@/lib/placeholder";
 import { works } from "@/lib/works";
 
@@ -36,6 +37,7 @@ export default function FeaturedWorks() {
               alt={work.title}
               className="h-full w-full object-cover"
             />
+            {!work.hasDetail && <InstagramBadge small />}
             <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/55 to-transparent p-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
               <p className="text-[0.5625rem] tracking-[0.2em] text-white/70">
                 {work.category}

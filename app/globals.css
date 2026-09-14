@@ -36,11 +36,20 @@ body {
   letter-spacing: 0.04em;
   line-height: 1.95;
   -webkit-font-smoothing: antialiased;
+  /* 英語は基本的に全大文字（2026-09 クライアント回答）。和文には影響しない */
+  text-transform: uppercase;
 }
 
-/* 見出し用ディスプレイ書体（Syne） */
+/* 入力値・メールアドレス等は大文字化しない */
+input,
+textarea,
+select,
+.keep-case {
+  text-transform: none;
+}
+
+/* 見出し。書体は本文と同じ（和文フォントに統一）で字間だけ調整 */
 .font-display {
-  font-family: var(--font-display), var(--font-body), sans-serif;
   letter-spacing: 0.02em;
 }
 
@@ -129,51 +138,6 @@ body {
   }
 }
 
-/* サイト全体の背景に置く大きな渦（#3, #4） */
-.uzu-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  pointer-events: none;
-  opacity: 0.5;
-  color: var(--color-muted);
-}
-.uzu-bg-rotor {
-  width: 170vmax;
-  height: 170vmax;
-  /* 渦の巻き：非常にゆっくり回転 */
-  animation: spin-slow 160s linear infinite;
-}
-.uzu-bg-svg {
-  width: 100%;
-  height: 100%;
-  /* 呼吸するようにゆっくり拡縮 */
-  animation: uzu-pulse 18s ease-in-out infinite;
-}
-/* 中心から一筆で描かれる（読み込み時） */
-.uzu-draw {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: uzu-draw 5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-@keyframes uzu-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-@keyframes uzu-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.06);
-  }
-}
 
 /* 下から立ち上がるリビール
    （clip-path / filter は使わない：残留すると子要素のホバー拡大が切り取られるため） */
@@ -239,50 +203,6 @@ body {
   animation: uzuBirthDraw 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
 
-/* サイト背景の渦（pathLength=1000）。単層・周期22.5sで生まれ変わり続ける：
-     0–15s    : 中心の1点から先端まで描く。dash 値は「角度（巻き数）均等」に
-                配分してあり、弧長基準の線形だと一瞬で過ぎてしまう中心付近を
-                ゆっくり描くことで、中心の1点から渦が育つように見せる。
-                （dash 値は growth=0.28 / turns=6 の弧長分布に対応。形状を変えたら要再計算）
-     15–22.5s : 描き切った渦全体を均一にフェードアウト（方向を持たないので
-                2つ目の起点や中心の空洞が生じない）。透明後の待機は無し。
-   gap=3000 で回り込み防止。 */
-.uzu-life {
-  stroke-dasharray: 0 3000;
-  stroke-dashoffset: 0;
-  opacity: 1;
-  animation: uzuLife 22.5s linear infinite;
-}
-@keyframes uzuLife {
-  0.000% { stroke-dasharray: 0 3000; opacity: 1; }
-  3.704% { stroke-dasharray: 0.5 3000; }
-  7.407% { stroke-dasharray: 1.3 3000; }
-  11.111% { stroke-dasharray: 2.4 3000; }
-  14.815% { stroke-dasharray: 4 3000; }
-  18.519% { stroke-dasharray: 6.3 3000; }
-  22.222% { stroke-dasharray: 9.7 3000; }
-  25.926% { stroke-dasharray: 14.7 3000; }
-  29.630% { stroke-dasharray: 21.9 3000; }
-  33.333% { stroke-dasharray: 32.5 3000; }
-  37.037% { stroke-dasharray: 48 3000; }
-  40.741% { stroke-dasharray: 70.3 3000; }
-  44.444% { stroke-dasharray: 103.1 3000; }
-  48.148% { stroke-dasharray: 151 3000; }
-  51.852% { stroke-dasharray: 220.3 3000; }
-  55.556% { stroke-dasharray: 322 3000; }
-  59.259% { stroke-dasharray: 470.2 3000; }
-  62.963% { stroke-dasharray: 685 3000; }
-  66.667% {
-    /* 15s: 全体を描き切った状態。ここからフェード開始 */
-    stroke-dasharray: 1000 3000;
-    opacity: 1;
-  }
-  100% {
-    /* 22.5s: フェード完了 → そのまま次周期の描画へ */
-    stroke-dasharray: 1000 3000;
-    opacity: 0;
-  }
-}
 
 /* Coming Soon：文字も渦のように回転しながら生まれ、やがて消えて再び生まれる（渦の誕生と同期） */
 @keyframes csBirth {
@@ -350,13 +270,6 @@ body {
   animation: slideDown 3s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* メニュー文字の可読性：背景色のハローを回して、後ろの文字と被っても読めるように(#1) */
-.header-legible {
-  text-shadow:
-    0 0 6px var(--color-bg),
-    0 0 6px var(--color-bg),
-    0 0 12px var(--color-bg);
-}
 
 /* 作品画像のホバー拡大（transform ベースで確実に動作させる）(#2) */
 .zoom-img {
@@ -435,6 +348,42 @@ body {
   transform: scaleX(1);
 }
 
+/* クリックした位置に小さな渦が生まれ、波紋のように広がって消える（ClickUzu.jsx）。
+   2026-09 クライアント回答：全面の背景渦はやめ、クリック時だけ・均等な間隔の渦に。 */
+.click-uzu {
+  position: fixed;
+  z-index: 60;
+  width: 132px;
+  height: 132px;
+  margin: -66px 0 0 -66px;
+  pointer-events: none;
+  color: var(--color-muted);
+  animation: clickUzuSpread 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.click-uzu path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: clickUzuDraw 1.1s cubic-bezier(0.33, 0, 0.2, 1) forwards;
+}
+@keyframes clickUzuSpread {
+  0% {
+    transform: scale(0.25) rotate(-60deg);
+    opacity: 0.9;
+  }
+  55% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1) rotate(40deg);
+    opacity: 0;
+  }
+}
+@keyframes clickUzuDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .anim-header-item,
   .spin-slow,
@@ -443,15 +392,9 @@ body {
   .title-char,
   .cs-letter,
   .work-in,
-  .uzu-life,
   .uzu-birth,
   .uzu-birth-draw {
     animation: none;
-  }
-  .uzu-life {
-    /* 静止時は渦を全体表示 [0,1] */
-    stroke-dasharray: 1000 3000;
-    stroke-dashoffset: 0;
   }
   .uzu-birth-draw {
     stroke-dashoffset: 0;

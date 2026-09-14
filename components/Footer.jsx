@@ -57,7 +57,7 @@ export default function Footer() {
             </Link>
           </div>
           <p className="text-[10px] text-[var(--color-muted)]">
-            © {new Date().getFullYear()} ART NO UZU. All rights reserved.
+            ©YOSHIMI KAMITANI
           </p>
         </div>
       </div>
