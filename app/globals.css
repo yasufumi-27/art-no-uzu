@@ -266,6 +266,7 @@ select,
 /* TOP の WORKS / EXHIBITION の拡大表示：
    ホバーしたマスの上で渦がひと巻き描かれ（0.5s）、その中心から円が広がって作品が現れる。
    画像は少しねじれた状態からほどけるように正位置へ戻る。起点は --ox / --oy（FeaturedWorks.jsx が設定） */
+/* 速度は 2026-09-15 に約1.5倍ゆっくりへ（元：渦0.9s / 円0.85s・遅延0.25s / 画像1.2s / 文字0.6s・遅延0.9s） */
 @keyframes previewIris {
   0% { clip-path: circle(var(--r0) at var(--ox) var(--oy)); opacity: 0; }
   10% { opacity: 1; }
@@ -275,10 +276,10 @@ select,
   from { transform: rotate(-12deg) scale(1.35); filter: blur(8px) saturate(0.4); }
   to { transform: rotate(0) scale(1); filter: blur(0) saturate(1); }
 }
-/* 渦の濃さは 2026-09-15 に 50% へ（元は 0.9） */
+/* 渦の濃さは 2026-09-15 に 10% へ（元は 0.9 → 0.45 → 0.1） */
 @keyframes previewSpiral {
-  0% { opacity: 0.45; transform: rotate(0deg) scale(0.6); }
-  60% { opacity: 0.45; }
+  0% { opacity: 0.1; transform: rotate(0deg) scale(0.6); }
+  60% { opacity: 0.1; }
   100% { opacity: 0; transform: rotate(200deg) scale(1.8); }
 }
 @keyframes previewSpiralDraw {
@@ -291,21 +292,77 @@ select,
 }
 .preview-iris {
   transform-origin: var(--ox) var(--oy);
-  animation: previewIris 0.85s cubic-bezier(0.7, 0, 0.2, 1) 0.25s both;
+  animation: previewIris 1.3s cubic-bezier(0.7, 0, 0.2, 1) 0.4s both;
 }
 .preview-iris-img {
   transform-origin: var(--ox) var(--oy);
-  animation: previewUnwind 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+  animation: previewUnwind 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
 .preview-spiral {
-  animation: previewSpiral 0.9s cubic-bezier(0.33, 0, 0.2, 1) both;
+  animation: previewSpiral 1.4s cubic-bezier(0.33, 0, 0.2, 1) both;
 }
 .preview-spiral-path {
   stroke-dasharray: 1;
-  animation: previewSpiralDraw 0.45s ease-out both;
+  animation: previewSpiralDraw 0.7s ease-out both;
 }
 .preview-caption {
-  animation: previewCaption 0.6s ease 0.9s both;
+  animation: previewCaption 0.8s ease 1.4s both;
+}
+
+/* About の History（HistoryYear.jsx）
+   年の数字：各桁が 0〜9 のリールで、画面に入るとその数字まで回って止まる */
+.history-digit {
+  display: inline-block;
+  height: 1.5em;
+  line-height: 1.5em;
+  overflow: hidden;
+  transition: none;
+}
+.history-digit-reel {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0);
+  transition: transform 1.4s cubic-bezier(0.2, 0.9, 0.1, 1);
+  transition-delay: inherit;
+}
+.history-year.is-in .history-digit-reel {
+  transform: translateY(calc(var(--d) * -1.5em));
+}
+/* 年の右の線：左から伸びる */
+.history-line {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+}
+.history-year.is-in .history-line {
+  transform: scaleX(1);
+}
+/* 項目：字間が詰まりながら、にじむように浮かび上がる */
+.history-item {
+  opacity: 0;
+  letter-spacing: 0.6em;
+  filter: blur(4px);
+  transform: translateY(6px);
+  transition:
+    opacity 1s ease,
+    letter-spacing 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1s ease,
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.history-year.is-in .history-item {
+  opacity: 1;
+  letter-spacing: 0.22em;
+  filter: blur(0);
+  transform: translateY(0);
+}
+/* マウスを乗せた年に焦点を合わせ、ほかの年を薄くする */
+.history-year {
+  transition: opacity 0.5s ease;
+}
+@media (hover: hover) {
+  .history-grid:has(.history-year:hover) .history-year:not(:hover) {
+    opacity: 0.3;
+  }
 }
 
 /* 呼吸するようにゆらぐ */
@@ -482,6 +539,11 @@ select,
   }
   .preview-spiral {
     display: none;
+  }
+  .history-digit-reel,
+  .history-line,
+  .history-item {
+    transition: none !important;
   }
   .char,
   .title-char {

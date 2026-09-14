@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import HistoryYear from "@/components/HistoryYear";
 import Spiral from "@/components/Spiral";
 import FadeImg from "@/components/FadeImg";
 import { asset } from "@/lib/asset";
@@ -133,43 +134,47 @@ export default function AboutPage() {
             {HISTORY[HISTORY.length - 1].year} — {HISTORY[0].year}
           </p>
         </div>
-        <div className="mt-10 gap-x-12 sm:columns-2 lg:columns-3">
-          {HISTORY.map(({ year, items, exhibitions }) => (
-            <section key={year} className="mb-9 break-inside-avoid">
-              <h3 className="flex items-center gap-3 text-[0.6875rem] tracking-[0.25em] text-[var(--color-muted)]">
-                {year}
-                <span className="h-px flex-1 bg-[var(--color-line)]" />
-              </h3>
-              <ul className="mt-3 space-y-1.5 text-xs leading-relaxed tracking-wider-jp">
-                {items.map((t) =>
+      </Reveal>
+      <div className="history-grid mt-10 gap-x-12 sm:columns-2 lg:columns-3">
+        {HISTORY.map(({ year, items, exhibitions }) => (
+          <HistoryYear key={year} year={year}>
+            <ul className="mt-3 space-y-1.5 text-xs leading-relaxed tracking-wider-jp">
+              {[
+                ...items.map((t) =>
                   typeof t === "string" ? (
-                    <li key={t}>{t}</li>
+                    t
                   ) : (
-                    <li key={t.text}>
-                      <a
-                        href={t.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline underline-offset-4 hover:opacity-60"
-                      >
-                        {t.text} ↗
-                      </a>
-                    </li>
+                    <a
+                      href={t.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-4 hover:opacity-60"
+                    >
+                      {t.text} ↗
+                    </a>
                   )
-                )}
-                {exhibitions?.map((t) => (
-                  <li key={t}>
+                ),
+                ...(exhibitions ?? []).map((t) => (
+                  <>
                     <span className="mr-2 inline-block border border-[var(--color-ink)] px-1.5 text-[0.5625rem] leading-4 tracking-[0.15em] align-[1px]">
                       Exhibition
                     </span>
                     {t}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-        </div>
-      </Reveal>
+                  </>
+                )),
+              ].map((node, i) => (
+                <li
+                  key={i}
+                  className="history-item"
+                  style={{ transitionDelay: `${0.45 + i * 0.12}s` }}
+                >
+                  {node}
+                </li>
+              ))}
+            </ul>
+          </HistoryYear>
+        ))}
+      </div>
     </div>
   );
 }
