@@ -249,20 +249,18 @@ select,
 .cs-image {
   animation: csImage 7s cubic-bezier(0.33, 0, 0.2, 1) infinite;
 }
-@keyframes popupIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Coming Soon 枠内の作品画像ポップアップ（6s）：
+   0–2s フェードイン（透明度60%まで）→ 2–5s そのまま表示 → 5–6s フェードアウト */
+@keyframes csPop {
+  0% { opacity: 0; }
+  33.333% { opacity: 0.6; }
+  83.333% { opacity: 0.6; }
+  100% { opacity: 0; }
 }
-.cs-popup {
-  animation: popupIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-/* Coming Soon のスライドショー：表示中の画像がゆっくり寄っていく */
-@keyframes csSlideZoom {
-  from { transform: scale(1); }
-  to { transform: scale(1.06); }
-}
-.cs-slide.opacity-100 {
-  animation: csSlideZoom 4.6s ease-out both;
+.cs-pop {
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation: csPop 6s linear forwards;
 }
 /* Works の拡大表示 */
 .preview-in {
@@ -429,8 +427,7 @@ select,
   .title-char,
   .cs-letter,
   .cs-image,
-  .cs-popup,
-  .cs-slide,
+  .cs-pop,
   .preview-in,
   .work-in,
   .uzu-birth,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Spiral from "@/components/Spiral";
 import { asset } from "@/lib/asset";
 import { SOCIAL } from "@/components/Footer";
@@ -8,66 +8,65 @@ import { works } from "@/lib/works";
 import { COMING_SOON_IMAGES } from "@/lib/coming-soon";
 
 // Coming Soon（2027年）。
-// ・花のマーク画像（クライアント提供ロゴ）が、渦の誕生に合わせて生まれては消えるアニメーション
-// ・クリックでポップアップを開き、作品画像をランダムにスライドショー表示
-//   （ポップアップ用の画像は後日受領予定。lib/coming-soon.js が空のあいだは解像度の高い作品画像で代用）
-// ・公式LINEのリンクはポップアップ内ではなく常設で置く
+// ・中央：花のマーク画像（クライアント提供ロゴ）が、渦の誕生に合わせて生まれては消える
+// ・Coming Soon 枠内のランダムな位置に、作品画像がロゴと同じくらいの大きさ・透明度60%でポップアップし続ける
+//   （2秒かけてフェードイン → 3秒表示 → 1秒でフェードアウト。見た目は globals.css の .cs-pop）
+//   ポップアップ用の画像は後日受領予定。lib/coming-soon.js が空のあいだは解像度の高い作品画像で代用
+// ・公式LINEのリンクは常設
 const LINE = SOCIAL.find((s) => s.label === "LINE")?.href;
-const INTERVAL = 3200;
-
-function shuffled(list) {
-  const a = [...list];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+const LIFETIME = 6000; // 2s 登場 + 3s 表示 + 1s フェードアウト（.cs-pop と合わせる）
+const SPAWN_EVERY = 2000; // 同時に見えるのは3枚ほど
 
 function sourceImages() {
   if (COMING_SOON_IMAGES.length) return COMING_SOON_IMAGES.map((src) => asset(src));
-  return works.filter((w) => w.sharp).map((w) => w.images[0]);
+  return works.filter((w) => w.sharp).map((w) => w.thumb);
 }
 
 export default function ComingSoon({ year }) {
-  const [open, setOpen] = useState(false);
-  const [slides, setSlides] = useState([]);
-  const [index, setIndex] = useState(0);
+  const [pops, setPops] = useState([]);
+  const seq = useRef(0);
+  const images = useRef([]);
 
-  const openShow = () => {
-    setSlides(shuffled(sourceImages()));
-    setIndex(0);
-    setOpen(true);
+  const spawn = () => {
+    const list = images.current;
+    if (!list.length) return;
+    const id = ++seq.current;
+    const src = list[Math.floor(Math.random() * list.length)];
+    // 位置は枠に対する割合。画像が枠からはみ出しにくい範囲でランダム
+    const left = 12 + Math.random() * 76;
+    const top = 18 + Math.random() * 64;
+    setPops((p) => [...p, { id, src, left, top }]);
+    setTimeout(() => setPops((p) => p.filter((q) => q.id !== id)), LIFETIME);
   };
 
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => e.key === "Escape" && setOpen(false);
-    window.addEventListener("keydown", onKey);
-    const timer = setInterval(() => setIndex((i) => i + 1), INTERVAL);
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      clearInterval(timer);
-    };
-  }, [open]);
-
-  // 表示中の前後だけ描画して、読み込みを最小限にする
-  const n = slides.length;
-  const visible = n ? [index - 1, index, index + 1].map((i) => ((i % n) + n) % n) : [];
-  const current = n ? index % n : 0;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    images.current = sourceImages();
+    spawn();
+    const timer = setInterval(() => spawn(), SPAWN_EVERY);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="flex flex-col items-center">
-      <button
-        type="button"
-        onClick={openShow}
-        aria-haspopup="dialog"
-        className="group relative flex aspect-[16/9] w-full items-center justify-center overflow-hidden md:aspect-[16/7]"
+      <div
+        className="relative flex aspect-[4/5] w-full items-center justify-center overflow-hidden sm:aspect-[16/9] md:aspect-[16/7]"
       >
+        {/* 作品画像のポップアップ（ロゴの後ろ） */}
+        {pops.map((p) => (
+          <img
+            key={p.id}
+            src={p.src}
+            alt=""
+            aria-hidden="true"
+            className="cs-pop pointer-events-none absolute h-40 w-auto max-w-[45%] object-contain md:h-56"
+            style={{ left: `${p.left}%`, top: `${p.top}%` }}
+          />
+        ))}
         <span className="pointer-events-none absolute left-1/2 top-1/2 h-[min(70vw,420px)] w-[min(70vw,420px)] -translate-x-1/2 -translate-y-1/2 text-[var(--color-line)]">
           <Spiral turns={5} strokeWidth={0.8} className="uzu-birth h-full w-full" pathClassName="uzu-birth-draw" />
         </span>
-        <span className="relative flex flex-col items-center">
+        <span className="pointer-events-none relative flex flex-col items-center">
           <img
             src={asset("/images/logo/mark.png")}
             alt=""
@@ -77,11 +76,11 @@ export default function ComingSoon({ year }) {
           <span className="mt-6 font-display text-lg tracking-[0.5em] text-[var(--color-ink)] md:text-2xl">
             Coming Soon
           </span>
-          <span className="mt-3 text-[11px] tracking-wider-jp text-[var(--color-muted)] transition-colors group-hover:text-[var(--color-ink)]">
+          <span className="mt-3 text-[11px] tracking-wider-jp text-[var(--color-muted)]">
             {year} — 新たな渦が、生まれる。
           </span>
         </span>
-      </button>
+      </div>
 
       {/* 公式LINE（常設） */}
       {LINE && (
@@ -97,43 +96,6 @@ export default function ComingSoon({ year }) {
           >
             LINE で友だち追加 ↗
           </a>
-        </div>
-      )}
-
-      {open && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${year} Coming Soon`}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4"
-          onClick={() => setOpen(false)}
-        >
-          <div
-            className="cs-popup relative h-[min(80vh,860px)] w-full max-w-4xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {visible.map((i) => (
-              <img
-                key={`${i}-${slides[i]}`}
-                src={slides[i]}
-                alt=""
-                className={`cs-slide absolute inset-0 h-full w-full object-contain transition-opacity duration-[1400ms] ease-in-out ${
-                  i === current ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            ))}
-            <p className="absolute -bottom-9 left-0 right-0 text-center font-display text-xs tracking-[0.4em] text-white/70">
-              {year} Coming Soon
-            </p>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="閉じる"
-              className="absolute -top-10 right-0 text-2xl text-white/80 hover:text-white"
-            >
-              ×
-            </button>
-          </div>
         </div>
       )}
     </div>
