@@ -7,24 +7,38 @@ import FadeImg from "@/components/FadeImg";
 import InstagramBadge from "@/components/InstagramBadge";
 import Spiral from "@/components/Spiral";
 import { works, workAlt } from "@/lib/works";
+import { SAME_IMAGE_GROUPS } from "@/lib/work-links";
 
 // index の Works / Exhibition。訪問ごとにランダムで9作品を選ぶ（#3）。
 // 大きく拡大表示するため、解像度の高い作品（works.sharp）だけから選ぶ。
 // SSR ではハイドレーション不一致を避けるため決定的に先頭9件を描画し、
 // マウント後にクライアント側でシャッフルして差し替える。
+// 同じ画像の作品（SAME_IMAGE_GROUPS）は、並べる順に見て最初の1つだけを残す
+const groupOf = new Map(SAME_IMAGE_GROUPS.flatMap((g, i) => g.map((id) => [id, i])));
+function uniqueImages(list) {
+  const seen = new Set();
+  return list.filter((w) => {
+    const g = groupOf.get(w.id);
+    if (g === undefined) return true;
+    if (seen.has(g)) return false;
+    seen.add(g);
+    return true;
+  });
+}
+
 function pickRandom(list, n) {
   const a = [...list];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [a[i], a[j]] = [a[j], a[i]];
   }
-  return a.slice(0, n);
+  return uniqueImages(a).slice(0, n);
 }
 
 const SHARP_WORKS = works.filter((w) => w.sharp);
 
 export default function FeaturedWorks() {
-  const [items, setItems] = useState(() => SHARP_WORKS.slice(0, 9));
+  const [items, setItems] = useState(() => uniqueImages(SHARP_WORKS).slice(0, 9));
   const gridRef = useRef(null);
   const [preview, setPreview] = useState(null);
 
