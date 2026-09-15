@@ -18,7 +18,7 @@ export default function Header() {
         <Link
           href="/"
           aria-label="YOSHIMI KAMITANI — Home"
-          className="text-[calc(13px+1pt)] md:text-[calc(0.875rem+1pt)] block leading-none"
+          className="text-[calc(11px+1pt)] min-[400px]:text-[calc(12px+1pt)] md:text-[calc(0.875rem+1pt)] block leading-none"
         >
           {/* 受領ロゴ（logo_b_kakutei_moji）。文字の高さをメニュー +1pt 相当に合わせる */}
           <img
@@ -27,8 +27,9 @@ export default function Header() {
             className="anim-header-item block h-[0.8em] w-auto"
           />
         </Link>
-        <nav>
-          <ul className="flex items-center gap-5 md:gap-10 text-[13px] md:text-sm tracking-wider-jp text-[var(--color-ink)]">
+        <nav className="w-full md:w-auto">
+          {/* スマホは4項目を画面幅いっぱいに均等配置し、字間を詰めて1行に収める（2026-09-15：iPhone で CONTACT が見切れていた） */}
+          <ul className="flex w-full items-center justify-between text-[11px] tracking-[0.1em] text-[var(--color-ink)] min-[400px]:text-xs md:w-auto md:justify-start md:gap-10 md:text-sm md:tracking-[0.22em]">
             {NAV.map((item, i) => (
               <li
                 key={item.href}

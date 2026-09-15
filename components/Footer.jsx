@@ -29,7 +29,9 @@ export default function Footer() {
           />
           <p className="font-display text-sm tracking-[0.25em]">ART NO UZU</p>
           <p className="mt-2 text-[11px] tracking-wider-jp text-[var(--color-muted)]">
-            神谷佳美 — 渦は、感情であり、呼吸であり、記録であり、祈り。
+            神谷佳美<span className="hidden sm:inline"> — </span>
+            <br className="sm:hidden" />
+            渦は、感情であり、呼吸であり、記録であり、祈り。
           </p>
           <p className="mt-3 text-xs text-[var(--color-muted)] leading-relaxed">
             画像・作品の無断転載および商用利用を禁止します。

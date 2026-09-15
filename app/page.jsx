@@ -37,13 +37,13 @@ export default function Home() {
 
         {/* Works / Exhibition */}
         <section className="pb-10">
-          <Reveal className="mb-12 flex items-baseline justify-between">
-            <h2 className="font-display text-4xl tracking-[0.15em]">
+          <Reveal className="mb-12 flex items-baseline justify-between gap-4">
+            <h2 className="font-display text-2xl tracking-[0.12em] sm:text-4xl sm:tracking-[0.15em]">
               Works / Exhibition
             </h2>
             <Link
               href="/works"
-              className="nav-link text-xs tracking-wider-jp text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+              className="nav-link whitespace-nowrap text-xs tracking-wider-jp text-[var(--color-muted)] hover:text-[var(--color-ink)]"
             >
               View all →
             </Link>
@@ -64,7 +64,7 @@ export default function Home() {
               </div>
             </Reveal>
             <Reveal delay={0.1}>
-              <h2 className="font-display text-4xl tracking-[0.15em]">About</h2>
+              <h2 className="font-display text-2xl tracking-[0.12em] sm:text-4xl sm:tracking-[0.15em]">About</h2>
               <p className="mt-8 text-sm leading-loose">
                 神谷佳美（YOSHIMI KAMITANI）。1994年東京生まれ。
                 2015年から、「渦」を描き続けている。
@@ -86,7 +86,7 @@ export default function Home() {
         {/* Contact */}
         <section className="border-t border-[var(--color-line)] py-24 md:py-32 text-center">
           <Reveal>
-            <h2 className="font-display text-4xl tracking-[0.15em]">Contact</h2>
+            <h2 className="font-display text-2xl tracking-[0.12em] sm:text-4xl sm:tracking-[0.15em]">Contact</h2>
             <p className="mt-6 text-sm leading-loose text-[var(--color-muted)]">
               作品のご購入・ご依頼・お問い合わせは、
               <br className="md:hidden" />

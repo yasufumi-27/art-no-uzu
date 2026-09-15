@@ -114,7 +114,8 @@ export default function WorksGrid({
   return (
     <div>
       {/* 西暦ボタン */}
-      <div className="mb-14 flex flex-wrap gap-x-5 gap-y-3 border-b border-[var(--color-line)] pb-6 text-sm tracking-wider-jp">
+      {/* スマホは7列の格子で2行に収める（2026-09-15：3行目に1年だけ残っていた） */}
+      <div className="mb-14 grid grid-cols-7 gap-y-3 border-b border-[var(--color-line)] pb-6 text-[13px] tracking-[0.08em] sm:flex sm:flex-wrap sm:gap-x-5 sm:text-sm sm:tracking-[0.22em]">
         {tabs.map((year) => (
           <button
             key={year}

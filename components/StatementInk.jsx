@@ -49,7 +49,7 @@ export default function StatementInk({ paragraphs, emphasis }) {
             <span key={j} className="block">
               <span
                 className={`statement-line ${
-                  line === emphasis ? "text-base tracking-[0.12em] md:text-lg" : ""
+                  line === emphasis ? "text-sm tracking-[0.06em] sm:text-base sm:tracking-[0.12em] md:text-lg" : ""
                 }`}
               >
                 {line}
