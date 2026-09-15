@@ -13,17 +13,10 @@ import { SAME_IMAGE_GROUPS } from "@/lib/work-links";
 // 大きく拡大表示するため、解像度の高い作品（works.sharp）だけから選ぶ。
 // SSR ではハイドレーション不一致を避けるため決定的に先頭9件を描画し、
 // マウント後にクライアント側でシャッフルして差し替える。
-// 同じ画像の作品（SAME_IMAGE_GROUPS）は、並べる順に見て最初の1つだけを残す
-const groupOf = new Map(SAME_IMAGE_GROUPS.flatMap((g, i) => g.map((id) => [id, i])));
+// 同じ画像の作品（SAME_IMAGE_GROUPS）は、指定した show の作品だけを残し、hide の作品は TOP に出さない
+const HIDDEN_ON_TOP = new Set(SAME_IMAGE_GROUPS.flatMap((g) => g.hide));
 function uniqueImages(list) {
-  const seen = new Set();
-  return list.filter((w) => {
-    const g = groupOf.get(w.id);
-    if (g === undefined) return true;
-    if (seen.has(g)) return false;
-    seen.add(g);
-    return true;
-  });
+  return list.filter((w) => !HIDDEN_ON_TOP.has(w.id));
 }
 
 function pickRandom(list, n) {
