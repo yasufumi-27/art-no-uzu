@@ -7,7 +7,7 @@ import { spiralPath } from "@/components/Spiral";
 // 常時表示の背景渦の代わり（2026-09 クライアント回答）。見た目は globals.css の .click-uzu。
 const PATH = spiralPath(2, 240, 92);
 const MAX_ALIVE = 6;
-const LIFETIME = 2600;
+const LIFETIME = 3100;
 
 export default function ClickUzu() {
   useEffect(() => {
@@ -29,6 +29,7 @@ export default function ClickUzu() {
       path.setAttribute("stroke", "currentColor");
       // 波紋として広がる細い線。
       path.setAttribute("stroke-width", "0.8");
+      path.setAttribute("vector-effect", "non-scaling-stroke");
       path.setAttribute("stroke-linecap", "round");
       svg.appendChild(path);
       document.body.appendChild(svg);

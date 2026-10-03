@@ -17,7 +17,7 @@
      大きさ：元のサイズ 132px（2026-09-14 に5倍・3倍を試したが、見た目が不自然で元に戻した）
      濃さ  ：元は 1。2026-09-14 に 0.5（50%）へ変更 */
   --click-uzu-size: 132px;
-  --click-uzu-strength: 0.5;
+  --click-uzu-strength: 1;
 }
 
 html {
@@ -523,31 +523,17 @@ select,
   height: var(--click-uzu-size);
   margin: calc(var(--click-uzu-size) / -2) 0 0 calc(var(--click-uzu-size) / -2);
   pointer-events: none;
-  color: var(--color-muted);
-  animation: clickUzuSpread 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  color: var(--color-ink);
+  animation: clickUzuRipple 3s linear forwards;
 }
-.click-uzu path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: clickUzuDraw 1.1s cubic-bezier(0.33, 0, 0.2, 1) forwards;
-}
-@keyframes clickUzuSpread {
-  0% {
-    transform: scale(0.25) rotate(-60deg);
-    opacity: calc(0.9 * var(--click-uzu-strength));
-  }
-  55% {
-    opacity: calc(0.7 * var(--click-uzu-strength));
-  }
-  100% {
-    transform: scale(1) rotate(40deg);
-    opacity: 0;
-  }
-}
-@keyframes clickUzuDraw {
-  to {
-    stroke-dashoffset: 0;
-  }
+/* 波紋はクリック直後から見せ、広がりとともに濃さを落とす。 */
+@keyframes clickUzuRipple {
+  0% { transform: scale(0.3); opacity: calc(0.9 * var(--click-uzu-strength)); }
+  5% { transform: scale(0.48); opacity: calc(0.8 * var(--click-uzu-strength)); }
+  15% { transform: scale(0.83); opacity: calc(0.5 * var(--click-uzu-strength)); }
+  30% { transform: scale(1.15); opacity: calc(0.1 * var(--click-uzu-strength)); }
+  60% { transform: scale(1.48); opacity: calc(0.035 * var(--click-uzu-strength)); }
+  100% { transform: scale(1.7); opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -624,13 +610,6 @@ select,
 .exhibition-card > div { width: calc(87.5% - 0.875rem); }
 @media (min-width: 640px) { .works-grid { --cols: 3; } }
 @media (min-width: 768px) { .works-grid { --cols: 4; } }
-.click-uzu { animation: clickUzuRipple 2.5s ease-out forwards; }
-.click-uzu path { animation-duration: 0.55s; }
-@keyframes clickUzuRipple {
-  0% { transform: scale(0.2); opacity: 0.5; }
-  22% { opacity: 0.1; }
-  100% { transform: scale(1.65); opacity: 0; }
-}
 .history-panel { transform-origin: left center; backface-visibility: hidden; }
 .history-panel.is-on { animation: historyPageTurn 0.8s ease-out both; }
 .history-photo { width: 100%; height: 260px; object-fit: contain; margin-bottom: 24px; }
