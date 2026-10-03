@@ -603,7 +603,19 @@ select,
 .exhibition-card { grid-column: span 2; grid-row: span 2; display: grid; place-items: center; }
 /* 親の幅から通常1枠の高さを算出し、展示に確実に2行を割り当てる。 */
 .works-archive { container-type: inline-size; }
-.works-grid { --cols: 2; grid-auto-rows: calc((100cqw - (var(--cols) - 1) * 1rem) / var(--cols)); }
+.works-grid {
+  --cols: 2;
+  --tile: calc((100cqw - (var(--cols) - 1) * 1rem) / var(--cols));
+  gap: 2rem 1rem;
+  /* 各カードに専用の枠と表紙タイトルの高さを確保し、座標移動で重ねない。 */
+  grid-auto-rows: calc(var(--tile) + 2.5rem);
+}
+.works-grid > a:not(.exhibition-card) {
+  width: var(--card-width, 100%);
+  justify-self: var(--card-horizontal, start);
+  align-self: var(--card-vertical, start);
+}
+/* 拡大率は通常の最大画像幅を基準に固定。4枠の中央に配置。 */
 .exhibition-card > div { width: calc(87.5% - 0.875rem); }
 @media (min-width: 640px) { .works-grid { --cols: 3; } }
 @media (min-width: 768px) { .works-grid { --cols: 4; } }

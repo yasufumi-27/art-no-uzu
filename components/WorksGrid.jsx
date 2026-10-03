@@ -12,6 +12,30 @@ import { workAlt } from "@/lib/works";
 // 西暦ボタンで年を切り替えて作品を表示（塩田千春サイト参考）。
 // 詳細ページあり作品 → 詳細ページへ。なし作品 → 直接 Instagram へ（左上に instagram ラベル）。
 
+// 年度ごとに固定した並べ替え。再描画で順序が飛ばず、各カードは一度だけ表示。
+function mixedOrder(entries, year) {
+  let seed = year * 2654435761 >>> 0;
+  const result = [...entries];
+  for (let i = result.length - 1; i > 0; i--) {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    const j = seed % (i + 1);
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  if (result.length > 1 && result.every((item, i) => item === entries[i])) result.push(result.shift());
+  return result;
+}
+
+function cardStyle(index, year) {
+  const variants = [
+    ["100%", "start", "start"], ["78%", "end", "center"],
+    ["90%", "center", "end"], ["84%", "start", "center"],
+    ["96%", "end", "start"], ["74%", "center", "end"],
+  ];
+  const [width, horizontal, vertical] = variants[(index * 5 + year) % variants.length];
+  return { animationDelay: `${(index % 8) * 0.09}s`, "--card-width": width,
+    "--card-horizontal": horizontal, "--card-vertical": vertical };
+}
+
 function Card({ work, index }) {
   const inner = (
     <div className="zoom-card relative aspect-square w-full overflow-hidden bg-[var(--color-line)]">
@@ -37,7 +61,7 @@ function Card({ work, index }) {
   );
 
   // 登場アニメーション（#7）。年切替時に再生されるよう key は呼び出し側で制御。
-  const style = { animationDelay: `${(index % 8) * 0.09}s` };
+  const style = cardStyle(index, work.year);
 
   if (work.hasDetail) {
     return (
@@ -70,7 +94,7 @@ function ExtraCard({ extra, index }) {
     return (
       <a href={extra.href} target="_blank" rel="noopener noreferrer"
         className="work-in group block"
-        style={{ animationDelay: `${(index % 8) * 0.09}s` }}>
+        style={cardStyle(index, extra.year)}>
         <div className="zoom-card relative aspect-square w-full overflow-hidden bg-white">
           <FadeImg src={extra.image} alt={`${extra.title}の表紙`} className="h-full w-full object-contain" />
           <span className="absolute left-3 top-3 bg-black/70 px-2 py-1 text-[0.625rem] tracking-wider-jp text-white">{extra.kind} ↗</span>
@@ -85,7 +109,7 @@ function ExtraCard({ extra, index }) {
       target="_blank"
       rel="noopener noreferrer"
       className="work-in group block"
-      style={{ animationDelay: `${(index % 8) * 0.09}s` }}
+      style={cardStyle(index, extra.year)}
     >
       <div className="zoom-card relative flex aspect-square w-full flex-col justify-between overflow-hidden border border-[var(--color-line)] bg-white p-4 md:p-5">
         <span className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 text-[var(--color-line)]">
@@ -122,6 +146,10 @@ export default function WorksGrid({
   const items = works.filter((w) => w.year === activeYear);
   const yearExtras = extras.filter((e) => e.year === activeYear);
   const isComingSoon = activeYear === comingSoonYear;
+  const cards = mixedOrder([
+    ...items.map(work => ({ id: work.id, work })),
+    ...yearExtras.map(extra => ({ id: extra.href, extra })),
+  ], activeYear);
 
 
   return (
@@ -154,14 +182,11 @@ export default function WorksGrid({
         // key に activeYear を含めることで、年切替時にグリッドが再アニメーション。
         <div
           key={activeYear}
-          className="works-grid grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4"
+          className="works-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
         >
-          {items.map((work, i) => (
-            <Card key={work.id} work={work} index={i} />
-          ))}
-          {yearExtras.map((extra, i) => (
-            <ExtraCard key={extra.href} extra={extra} index={items.length + i} />
-          ))}
+          {cards.map((card, i) => card.work
+            ? <Card key={card.id} work={card.work} index={i} />
+            : <ExtraCard key={card.id} extra={card.extra} index={i} />)}
         </div>
       )}
     </div>
