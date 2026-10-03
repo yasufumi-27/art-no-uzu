@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { HISTORY_IMAGES } from "@/lib/history-images";
+import { asset } from "@/lib/asset";
 
 // About の History。年を横一列のタイムラインに並べ、選んだ年の項目だけを1つの枠に出す。
 // 項目が増えても縦に伸びない（枠の高さは最も項目の多い年に合わせて固定）。
@@ -159,6 +161,7 @@ export default function HistoryTimeline({ history }) {
                 aria-hidden={!on}
                 className={`history-panel [grid-area:1/1] ${on ? "is-on" : ""} ${on && played ? "is-in" : ""}`}
               >
+                {HISTORY_IMAGES[y.year] && <img src={asset(HISTORY_IMAGES[y.year])} alt={`${y.year}年の活動記録`} className="history-photo" loading="lazy" />}
                 <h3 className="history-bigyear font-display text-4xl font-light tracking-[0.12em] md:text-6xl">
                   {y.year}
                 </h3>

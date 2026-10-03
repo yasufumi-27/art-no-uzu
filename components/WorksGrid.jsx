@@ -43,7 +43,7 @@ function Card({ work, index }) {
     return (
       <Link
         href={`/works/${work.id}`}
-        className="work-in group block"
+        className={`work-in group block ${work.category === "Exhibition" ? "exhibition-card" : ""}`}
         style={style}
       >
         {inner}
@@ -56,7 +56,7 @@ function Card({ work, index }) {
       href={work.instagram}
       target="_blank"
       rel="noopener noreferrer"
-      className="work-in group block"
+      className={`work-in group block ${work.category === "Exhibition" ? "exhibition-card" : ""}`}
       style={style}
     >
       {inner}
@@ -75,6 +75,7 @@ function ExtraCard({ extra, index }) {
       style={{ animationDelay: `${(index % 8) * 0.09}s` }}
     >
       <div className="zoom-card relative flex aspect-square w-full flex-col justify-between overflow-hidden border border-[var(--color-line)] bg-white p-4 md:p-5">
+        {extra.image && <FadeImg src={extra.image} alt={extra.title} className="absolute inset-0 h-full w-full object-cover" />}
         <span className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 text-[var(--color-line)]">
           <Spiral className="spin-slow h-full w-full" />
         </span>
@@ -112,7 +113,7 @@ export default function WorksGrid({
 
 
   return (
-    <div>
+    <div className="works-archive">
       {/* 西暦ボタン */}
       {/* スマホは7列の格子で2行に収める（2026-09-15：3行目に1年だけ残っていた） */}
       <div className="mb-14 grid grid-cols-7 gap-y-3 border-b border-[var(--color-line)] pb-6 text-[13px] tracking-[0.08em] sm:flex sm:flex-wrap sm:gap-x-5 sm:text-sm sm:tracking-[0.22em]">
@@ -141,7 +142,7 @@ export default function WorksGrid({
         // key に activeYear を含めることで、年切替時にグリッドが再アニメーション。
         <div
           key={activeYear}
-          className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4"
+          className="works-grid grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4"
         >
           {items.map((work, i) => (
             <Card key={work.id} work={work} index={i} />

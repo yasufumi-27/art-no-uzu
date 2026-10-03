@@ -1,5 +1,3 @@
-// 【一時退避】詳細ページを持つ作品が0件の間は、静的書き出しで [id] ルートが使えないため _detail（非公開フォルダ）に置いている。
-// 詳細ページ化する作品を lib/works.js の DETAILS に hasDetail: true で登録したら、フォルダ名を [id] に戻す。
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Gallery from "@/components/Gallery";
@@ -24,7 +22,7 @@ function workJsonLd(work) {
     return {
       "@context": "https://schema.org",
       "@type": "ExhibitionEvent",
-      name: work.title,
+      name: workAlt(work),
       startDate: String(work.year),
       description: work.description,
       url,
@@ -35,7 +33,7 @@ function workJsonLd(work) {
   return {
     "@context": "https://schema.org",
     "@type": "VisualArtwork",
-    name: work.title,
+    name: workAlt(work),
     dateCreated: String(work.year),
     artform: "絵画",
     artMedium: work.material ?? undefined,
@@ -51,23 +49,25 @@ export function generateStaticParams() {
   return detailWorks().map((w) => ({ id: w.id }));
 }
 
-export function generateMetadata({ params }) {
-  const work = getWork(params.id);
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const work = getWork(id);
   if (!work) return {};
   return {
-    title: work.title,
+    title: workAlt(work),
     description: work.description,
     alternates: { canonical: `${SITE_URL}/works/${work.id}/` },
     // OGP はルートの openGraph.title を継承しないため、ページ別に明示する（仕様書 17）
     openGraph: {
-      title: `${work.title} — ART NO UZU`,
+      title: `${workAlt(work)} — ART NO UZU`,
       description: work.description,
     },
   };
 }
 
-export default function WorkDetail({ params }) {
-  const work = getWork(params.id);
+export default async function WorkDetail({ params }) {
+  const { id } = await params;
+  const work = getWork(id);
   if (!work || !work.hasDetail) notFound();
 
   const info = [
@@ -113,7 +113,7 @@ export default function WorkDetail({ params }) {
             </span>
           )}
           <h1 className="mt-4 text-2xl font-light tracking-wider-jp md:text-3xl leading-relaxed">
-            {work.title}
+            {work.title || `${work.year} — ${work.category} ${work.id.split("_")[1]}`}
           </h1>
           <p className="mt-6 max-w-xl text-sm leading-loose text-[var(--color-ink)]">
             {work.description}
@@ -124,7 +124,7 @@ export default function WorkDetail({ params }) {
             rel="noopener noreferrer"
             className="mt-8 inline-block border-b border-[var(--color-ink)] pb-1 text-xs tracking-wider-jp hover:opacity-60"
           >
-            Instagram で見る →
+            {work.linkLabel} で見る →
           </a>
         </Reveal>
 

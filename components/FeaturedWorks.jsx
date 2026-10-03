@@ -7,6 +7,7 @@ import FadeImg from "@/components/FadeImg";
 import InstagramBadge from "@/components/InstagramBadge";
 import Spiral from "@/components/Spiral";
 import { works, workAlt } from "@/lib/works";
+import { TOP_IMAGES } from "@/lib/top-images";
 import { SAME_IMAGE_GROUPS } from "@/lib/work-links";
 
 // index の Works / Exhibition。訪問ごとにランダムで9作品を選ぶ（#3）。
@@ -29,11 +30,27 @@ function pickRandom(list, n) {
 }
 
 const SHARP_WORKS = works.filter((w) => w.sharp);
+function chooseTiles(random = false) {
+  const top = random ? pickRandom(TOP_IMAGES, 5) : TOP_IMAGES.slice(0, 5);
+  const sides = random ? pickRandom(SHARP_WORKS, 4) : uniqueImages(SHARP_WORKS).slice(0, 4);
+  return [top[0], sides[0], top[1], sides[1], top[2], sides[2], top[3], sides[3], top[4]];
+}
 
 export default function FeaturedWorks() {
-  const [items, setItems] = useState(() => uniqueImages(SHARP_WORKS).slice(0, 9));
+  const [items, setItems] = useState(() => chooseTiles());
   const gridRef = useRef(null);
   const [preview, setPreview] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [intro, setIntro] = useState(() => TOP_IMAGES.slice(0, 3));
+  const storyRef = useRef(null);
+  const dialogRef = useRef(null);
+  const [selected, setSelected] = useState(null);
+  const openMobile = (event, work) => {
+    if (!window.matchMedia("(max-width: 639px), (hover: none)").matches) return;
+    event.preventDefault();
+    setSelected(work);
+    dialogRef.current.showModal();
+  };
 
   // ホバーした作品を拡大表示（打ち合わせメモ）：横は3列分、縦はその作品を中心に上下へ半段ずつ
   // （＝上の段の中央から下の段の中央まで）。一覧からはみ出す場合は高さを保ったまま内側へずらす。PCのみ。
@@ -56,13 +73,46 @@ export default function FeaturedWorks() {
   };
 
   useEffect(() => {
-    setItems(pickRandom(SHARP_WORKS, 9));
+    setItems(chooseTiles(true));
+    setIntro(pickRandom(TOP_IMAGES, 3));
+  }, []);
+
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      if (!storyRef.current) return;
+      const r = storyRef.current.getBoundingClientRect();
+      setProgress(Math.max(0, Math.min(1, -r.top / Math.max(1, r.height - window.innerHeight))));
+    };
+    const scroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", scroll, { passive: true });
+    window.addEventListener("resize", scroll);
+    return () => { window.removeEventListener("scroll", scroll); window.removeEventListener("resize", scroll); cancelAnimationFrame(raf); };
   }, []);
 
   return (
+    <>
+    <div ref={storyRef} className="featured-story">
+      <div className="featured-story-stage">
+        <p className="featured-story-title" style={{ opacity: progress < 0.18 ? 1 : 0 }}>Works / Exhibition</p>
+        <div className="featured-story-spiral" style={{ opacity: progress >= 0.12 && progress < 0.48 ? 1 : 0 }}>
+          <Spiral turns={5} strokeWidth={0.8} className="h-full w-full" pathClassName="scroll-spiral" />
+          <style>{`.scroll-spiral { stroke-dasharray: 1; stroke-dashoffset: ${1 - Math.min(1, Math.max(0, (progress - 0.12) / 0.3))}; }`}</style>
+        </div>
+        {intro.map((work, i) => (
+          <button key={work.id} className="featured-story-image" aria-label="作品を拡大" tabIndex={progress >= 0.45 + i * 0.17 && progress < 0.62 + i * 0.17 ? 0 : -1}
+            style={{ opacity: progress >= 0.45 + i * 0.17 && progress < 0.62 + i * 0.17 ? 1 : 0, pointerEvents: progress >= 0.45 + i * 0.17 && progress < 0.62 + i * 0.17 ? "auto" : "none" }}
+            onClick={(e) => openMobile(e, work)}>
+            <img src={work.images[0]} alt="神谷佳美 作品" />
+          </button>
+        ))}
+      </div>
+    </div>
     <div
       ref={gridRef}
-      className="relative grid grid-cols-3 gap-2 sm:gap-4 md:gap-6"
+      className="featured-grid relative grid grid-cols-3 gap-1 sm:gap-4 md:gap-6"
       onMouseLeave={() => setPreview(null)}
     >
       {items.map((work, i) => {
@@ -70,7 +120,7 @@ export default function FeaturedWorks() {
           <div className="zoom-card relative aspect-square overflow-hidden bg-[var(--color-line)]">
             <FadeImg
               src={work.thumb}
-              alt={workAlt(work)}
+              alt={work.title || (work.year ? workAlt(work) : "神谷佳美 作品")}
               className="h-full w-full object-cover"
             />
             {!work.hasDetail && <InstagramBadge label={work.linkLabel} small />}
@@ -89,9 +139,10 @@ export default function FeaturedWorks() {
             {/* 作品ページあり→詳細へ、なし→Instagram へ（#1） */}
             {work.hasDetail ? (
               <Link
-                href={`/works/${work.id}`}
+                href={work.href || `/works/${work.id}`}
                 className="group block"
                 onMouseEnter={(e) => showPreview(e.currentTarget, work)}
+                onClick={(e) => openMobile(e, work)}
               >
                 {inner}
               </Link>
@@ -102,6 +153,7 @@ export default function FeaturedWorks() {
                 rel="noopener noreferrer"
                 className="group block"
                 onMouseEnter={(e) => showPreview(e.currentTarget, work)}
+                onClick={(e) => openMobile(e, work)}
               >
                 {inner}
               </a>
@@ -146,5 +198,14 @@ export default function FeaturedWorks() {
         </div>
       )}
     </div>
+    <dialog ref={dialogRef} className="work-dialog" onClick={(e) => { if (e.target === e.currentTarget) e.currentTarget.close(); }} onClose={() => setSelected(null)}>
+      {selected && <div className="relative">
+        <button className="work-dialog-close" onClick={() => dialogRef.current.close()} aria-label="閉じる">×</button>
+        <img src={selected.images[0]} alt={workAlt(selected)} className="work-dialog-image" />
+        <p className="mt-4 text-sm">{selected.title || selected.year || "Works / Exhibition"}</p>
+        {selected.hasDetail ? <Link className="mt-4 inline-block border-b text-xs" href={selected.href || `/works/${selected.id}`}>詳しく見る →</Link> : <a className="mt-4 inline-block border-b text-xs" href={selected.instagram} target="_blank" rel="noopener noreferrer">{selected.linkLabel} で見る ↗</a>}
+      </div>}
+    </dialog>
+    </>
   );
 }

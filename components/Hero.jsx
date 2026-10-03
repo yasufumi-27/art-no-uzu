@@ -3,16 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
 import Spiral from "@/components/Spiral";
+import { TOP_IMAGES } from "@/lib/top-images";
 
 // TOP メインビジュアル（仕様書 8）。
 // クライアント提供の TOP 画像（2026-09 受領 top1〜5）をスライド表示。フェードイン/アウトで切替、自動 + 手動。
 // title / year を入れるとキャプションを一文字ずつ立ち上げて表示する（空なら出さない）。
-const SLIDES = [1, 2, 3, 4, 5].map((n) => ({
-  id: `top${n}`,
-  src: asset(`/images/top/top${n}.webp`),
-  title: "",
-  year: "",
-}));
+const SLIDES = TOP_IMAGES.map((w) => ({ ...w, src: w.images[0] }));
 
 const INTERVAL = 8000;
 

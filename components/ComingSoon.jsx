@@ -5,7 +5,7 @@ import Spiral from "@/components/Spiral";
 import { asset } from "@/lib/asset";
 import { SOCIAL } from "@/components/Footer";
 import { works } from "@/lib/works";
-import { COMING_SOON_IMAGES } from "@/lib/coming-soon";
+import { COMING_SOON_IMAGES, PARIS_IMAGES } from "@/lib/coming-soon";
 
 // Coming Soon（2027年）。
 // ・中央：花のマーク画像（クライアント提供ロゴ）が、渦の誕生に合わせて生まれては消える
@@ -31,7 +31,8 @@ export default function ComingSoon({ year }) {
     const list = images.current;
     if (!list.length) return;
     const id = ++seq.current;
-    const src = list[Math.floor(Math.random() * list.length)];
+    const pool = id % 3 === 0 && PARIS_IMAGES.length ? PARIS_IMAGES.map(asset) : list;
+    const src = pool[Math.floor(Math.random() * pool.length)];
     // 位置は枠に対する割合。画像が枠からはみ出しにくい範囲でランダム
     const left = 12 + Math.random() * 76;
     const top = 18 + Math.random() * 64;

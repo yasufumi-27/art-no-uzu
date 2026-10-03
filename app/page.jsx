@@ -18,7 +18,7 @@ export default function Home() {
         {/* ステートメント：渦のコンセプト */}
         <Reveal className="relative py-32 md:py-44 max-w-2xl mx-auto text-center">
           <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 text-[var(--color-line)] breathe">
-            <Spiral className="spin-slow h-full w-full" />
+            <Spiral turns={5} strokeWidth={0.8} className="uzu-birth h-full w-full" pathClassName="uzu-birth-draw" />
           </div>
           <p className="font-display text-xs tracking-[0.3em] text-[var(--color-muted)]">
             ART NO UZU

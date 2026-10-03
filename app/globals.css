@@ -598,3 +598,47 @@ select,
     opacity: 1;
   }
 }
+
+/* 2026-10 打ち合わせ：展示は4枠の中央に通常カードの1.75倍。 */
+.exhibition-card { grid-column: span 2; grid-row: span 2; display: grid; place-items: center; }
+/* 親の幅から通常1枠の高さを算出し、展示に確実に2行を割り当てる。 */
+.works-archive { container-type: inline-size; }
+.works-grid { --cols: 2; grid-auto-rows: calc((100cqw - (var(--cols) - 1) * 1rem) / var(--cols)); }
+.exhibition-card > div { width: calc(87.5% - 0.875rem); }
+@media (min-width: 640px) { .works-grid { --cols: 3; } }
+@media (min-width: 768px) { .works-grid { --cols: 4; } }
+.click-uzu { animation: clickUzuRipple 2.5s ease-out forwards; }
+.click-uzu path { animation-duration: 0.55s; }
+@keyframes clickUzuRipple {
+  0% { transform: scale(0.2); opacity: 0.5; }
+  22% { opacity: 0.1; }
+  100% { transform: scale(1.65); opacity: 0; }
+}
+.history-panel { transform-origin: left center; backface-visibility: hidden; }
+.history-panel.is-on { animation: historyPageTurn 0.8s ease-out both; }
+.history-photo { width: 100%; height: 260px; object-fit: contain; margin-bottom: 24px; }
+@keyframes historyPageTurn {
+  from { transform: perspective(1200px) rotateY(-65deg); opacity: 0; }
+  to { transform: perspective(1200px) rotateY(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .history-panel.is-on { animation: none; }
+}
+.featured-story { display: none; }
+.work-dialog { margin: auto; padding: 20px; width: min(96vw, 720px); max-height: 90dvh; background: var(--color-bg); border: 0; overflow: auto; }
+.work-dialog::backdrop { background: rgb(0 0 0 / 55%); }
+.work-dialog-close { position: absolute; right: 0; top: 0; z-index: 2; background: white; width: 36px; height: 36px; font-size: 24px; }
+.work-dialog-image { width: 100%; max-height: 65dvh; object-fit: contain; }
+@media (max-width: 639px) {
+  .featured-story { display: block; height: 480svh; margin-inline: -24px; }
+  .featured-story-stage { position: sticky; top: 100px; height: calc(100svh - 100px); display: grid; place-items: center; overflow: hidden; }
+  .featured-story-title { font-size: 22px; letter-spacing: 0.1em; transition: opacity 0.3s; }
+  .featured-story-spiral { position: absolute; width: 80%; aspect-ratio: 1; color: var(--color-muted); }
+  .featured-story-image { position: absolute; inset: 4px; transition: opacity 0.4s; }
+  .featured-story-image img { height: 100%; width: 100%; object-fit: contain; }
+  .featured-grid { margin-inline: -24px; padding: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .featured-story { display: none; }
+  .featured-story-image { transition: none; }
+}

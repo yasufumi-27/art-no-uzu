@@ -5,9 +5,9 @@ import { spiralPath } from "@/components/Spiral";
 
 // クリック（タップ）した位置に小さな渦が生まれ、波紋のように広がって消える。
 // 常時表示の背景渦の代わり（2026-09 クライアント回答）。見た目は globals.css の .click-uzu。
-const PATH = spiralPath(3.5, 240, 92);
+const PATH = spiralPath(2, 240, 92);
 const MAX_ALIVE = 6;
-const LIFETIME = 1900;
+const LIFETIME = 2600;
 
 export default function ClickUzu() {
   useEffect(() => {
@@ -27,8 +27,8 @@ export default function ClickUzu() {
       path.setAttribute("pathLength", "1");
       path.setAttribute("fill", "none");
       path.setAttribute("stroke", "currentColor");
-            // 線幅は渦の大きさに比例（132px で約1.3px）。vector-effect で固定すると描画アニメーションが崩れるため使わない
-      path.setAttribute("stroke-width", "2");
+      // 波紋として広がる細い線。
+      path.setAttribute("stroke-width", "0.8");
       path.setAttribute("stroke-linecap", "round");
       svg.appendChild(path);
       document.body.appendChild(svg);
