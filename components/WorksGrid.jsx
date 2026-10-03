@@ -64,8 +64,21 @@ function Card({ work, index }) {
   );
 }
 
-// 作品画像を持たない関連リンク（エッセイ・受賞ページなど）を、作品と同じ正方形の文字カードで出す
+// 関連リンクは表紙画像を優先し、画像のない受賞ページなどは文字カードで出す
 function ExtraCard({ extra, index }) {
+  if (extra.image) {
+    return (
+      <a href={extra.href} target="_blank" rel="noopener noreferrer"
+        className="work-in group block"
+        style={{ animationDelay: `${(index % 8) * 0.09}s` }}>
+        <div className="zoom-card relative aspect-square w-full overflow-hidden bg-white">
+          <FadeImg src={extra.image} alt={`${extra.title}の表紙`} className="h-full w-full object-contain" />
+          <span className="absolute left-3 top-3 bg-black/70 px-2 py-1 text-[0.625rem] tracking-wider-jp text-white">{extra.kind} ↗</span>
+        </div>
+        <p className="mt-3 text-xs leading-snug tracking-wider-jp">{extra.title}</p>
+      </a>
+    );
+  }
   return (
     <a
       href={extra.href}
@@ -75,7 +88,6 @@ function ExtraCard({ extra, index }) {
       style={{ animationDelay: `${(index % 8) * 0.09}s` }}
     >
       <div className="zoom-card relative flex aspect-square w-full flex-col justify-between overflow-hidden border border-[var(--color-line)] bg-white p-4 md:p-5">
-        {extra.image && <FadeImg src={extra.image} alt={extra.title} className="absolute inset-0 h-full w-full object-cover" />}
         <span className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 text-[var(--color-line)]">
           <Spiral className="spin-slow h-full w-full" />
         </span>

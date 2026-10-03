@@ -157,7 +157,7 @@
 - [ ] TOP画像6〜9（未受領、現在5枚を使用）。lib/top-images.jsへ追加。TOP画像と作品の対応情報も受領後に詳細への導線を更新。
 - [ ] パリの画像（未受領）。lib/coming-soon.jsのPARIS_IMAGESへ登録すると3枚ごとの3枚目に表示。
 - [ ] History年度別写真（未受領）。lib/history-images.jsへ登録。
-- [ ] エッセイ表紙（未受領）。lib/work-links.jsのYEAR_EXTRAS各項目へimageを登録。
+- [x] エッセイ表紙：リンク先のトップ画像をそのまま使用（2024／2025の2件を登録）。
 - [ ] 作品タイトル・素材・サイズ・シリーズ、展示画像・説明・会期・会場（未受領）。lib/works.jsのDETAILSへ登録。展示の参考：https://yoshimi-kamitani.studio.site/archive
 - [ ] 2015〜2023の掲載終了対象（後日連絡、現状維持）。
 - LiDARカメラアプリは ../lidar-app の既存iOSプロジェクトで管理。今回のWeb変更には含めない。
