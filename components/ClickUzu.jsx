@@ -28,7 +28,7 @@ export default function ClickUzu() {
       path.setAttribute("fill", "none");
       path.setAttribute("stroke", "currentColor");
       // 波紋として広がる細い線。
-      path.setAttribute("stroke-width", "0.2");
+      path.setAttribute("stroke-width", "0.05");
       path.setAttribute("vector-effect", "non-scaling-stroke");
       path.setAttribute("stroke-linecap", "round");
       svg.appendChild(path);
