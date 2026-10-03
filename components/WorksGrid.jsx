@@ -25,15 +25,8 @@ function mixedOrder(entries, year) {
   return result;
 }
 
-function cardStyle(index, year) {
-  const variants = [
-    ["100%", "start", "start"], ["78%", "end", "center"],
-    ["90%", "center", "end"], ["84%", "start", "center"],
-    ["96%", "end", "start"], ["74%", "center", "end"],
-  ];
-  const [width, horizontal, vertical] = variants[(index * 5 + year) % variants.length];
-  return { animationDelay: `${(index % 8) * 0.09}s`, "--card-width": width,
-    "--card-horizontal": horizontal, "--card-vertical": vertical };
+function cardStyle(index) {
+  return { animationDelay: `${(index % 8) * 0.09}s` };
 }
 
 function Card({ work, index }) {
@@ -61,7 +54,7 @@ function Card({ work, index }) {
   );
 
   // 登場アニメーション（#7）。年切替時に再生されるよう key は呼び出し側で制御。
-  const style = cardStyle(index, work.year);
+  const style = cardStyle(index);
 
   if (work.hasDetail) {
     return (
@@ -94,7 +87,7 @@ function ExtraCard({ extra, index }) {
     return (
       <a href={extra.href} target="_blank" rel="noopener noreferrer"
         className="work-in group block"
-        style={cardStyle(index, extra.year)}>
+        style={cardStyle(index)}>
         <div className="zoom-card relative aspect-square w-full overflow-hidden bg-white">
           <FadeImg src={extra.image} alt={`${extra.title}の表紙`} className="h-full w-full object-contain" />
           <span className="absolute left-3 top-3 bg-black/70 px-2 py-1 text-[0.625rem] tracking-wider-jp text-white">{extra.kind} ↗</span>
@@ -109,7 +102,7 @@ function ExtraCard({ extra, index }) {
       target="_blank"
       rel="noopener noreferrer"
       className="work-in group block"
-      style={cardStyle(index, extra.year)}
+      style={cardStyle(index)}
     >
       <div className="zoom-card relative flex aspect-square w-full flex-col justify-between overflow-hidden border border-[var(--color-line)] bg-white p-4 md:p-5">
         <span className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 text-[var(--color-line)]">
