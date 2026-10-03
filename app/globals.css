@@ -526,13 +526,21 @@ select,
   color: var(--color-ink);
   animation: clickUzuRipple 3s linear forwards;
 }
-/* 波紋はクリック直後から見せ、広がりとともに濃さを落とす。 */
+/* パスは中心から外へ描き、その後も波紋として広がる。描いている間は濃さを保つ。 */
+.click-uzu path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: clickUzuDraw 0.75s linear forwards;
+}
+@keyframes clickUzuDraw {
+  to { stroke-dashoffset: 0; }
+}
 @keyframes clickUzuRipple {
-  0% { transform: scale(0.3); opacity: calc(0.9 * var(--click-uzu-strength)); }
-  5% { transform: scale(0.48); opacity: calc(0.8 * var(--click-uzu-strength)); }
-  15% { transform: scale(0.83); opacity: calc(0.5 * var(--click-uzu-strength)); }
-  30% { transform: scale(1.15); opacity: calc(0.1 * var(--click-uzu-strength)); }
-  60% { transform: scale(1.48); opacity: calc(0.035 * var(--click-uzu-strength)); }
+  0% { transform: scale(0.6); opacity: calc(0.9 * var(--click-uzu-strength)); }
+  25% { transform: scale(0.95); opacity: calc(0.9 * var(--click-uzu-strength)); }
+  30% { transform: scale(1.08); opacity: calc(0.5 * var(--click-uzu-strength)); }
+  42% { transform: scale(1.3); opacity: calc(0.1 * var(--click-uzu-strength)); }
+  70% { transform: scale(1.56); opacity: calc(0.035 * var(--click-uzu-strength)); }
   100% { transform: scale(1.7); opacity: 0; }
 }
 
