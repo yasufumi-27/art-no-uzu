@@ -610,6 +610,11 @@ select,
   /* 各カードに専用の枠と表紙タイトルの高さを確保し、座標移動で重ねない。 */
   grid-auto-rows: calc(var(--tile) + 2.5rem);
 }
+.works-grid > a {
+  position: relative;
+  left: var(--card-x, 0px);
+  top: var(--card-y, 0px);
+}
 .works-grid > a:not(.exhibition-card) {
   width: 100%;
   justify-self: stretch;
