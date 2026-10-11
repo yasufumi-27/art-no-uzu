@@ -1,4 +1,5 @@
 import "./globals.css";
+import fontRanges from "@/lib/font-ranges.generated.json";
 import localFont from "next/font/local";
 import { asset } from "@/lib/asset";
 import Header from "@/components/Header";
@@ -103,7 +104,7 @@ export default function RootLayout({ children }) {
     <html lang="ja" className={zen.variable}>
       <head>
         <style>{[ ["Light", 300], ["Regular", 400], ["Medium", 500] ].map(([name, weight]) =>
-          `@font-face{font-family:"Zen Kaku Gothic New Full";font-style:normal;font-weight:${weight};font-display:swap;src:url("${asset(`/fonts/ZenKakuGothicNew-${name}.woff2`)}") format("woff2")}`
+          `@font-face{font-family:"Zen Kaku Gothic New Full";font-style:normal;font-weight:${weight};font-display:swap;src:url("${asset(`/fonts/ZenKakuGothicNew-${name}.woff2`)}") format("woff2");unicode-range:${fontRanges[name]}}`
         ).join("")}</style>
       </head>
       <body className="min-h-screen flex flex-col">

@@ -147,6 +147,7 @@ export default function FeaturedWorks() {
           <div className="zoom-card relative aspect-square overflow-hidden bg-[var(--color-line)]">
             <FadeImg
               src={work.thumb}
+              sizes="33vw"
               alt={work.title || (work.year ? workAlt(work) : "神谷佳美 作品")}
               className="h-full w-full object-cover"
             />

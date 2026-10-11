@@ -161,6 +161,7 @@ export default async function WorkDetail({ params }) {
                   <div className="zoom-card relative aspect-square overflow-hidden bg-[var(--color-line)]">
                     <FadeImg
                       src={w.thumb}
+                      sizes="(min-width: 640px) 192px, 160px"
                       alt={workAlt(w)}
                       className="h-full w-full object-cover"
                     />

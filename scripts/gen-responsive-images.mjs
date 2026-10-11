@@ -12,7 +12,7 @@ async function walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const name = path.join(dir, entry.name);
     if (entry.isDirectory()) files.push(...await walk(name));
-    else if (/\.webp$/.test(name) && !/-thumb\.webp$/.test(name)) files.push(name);
+    else if (/\.webp$/.test(name)) files.push(name);
   }
   return files;
 }
@@ -20,7 +20,8 @@ for (const file of [...await walk(`${root}/top`), ...await walk(`${root}/works`)
   const { width, height } = await sharp(file).metadata();
   const source = '/' + file.slice('public/'.length);
   const stem = path.relative(root, file).replaceAll(path.sep, '-').replace(/\.webp$/, '');
-  const widths = [...new Set([640, 960, 1280, Math.min(1920, width)].filter(w => w <= width))].sort((a,b)=>a-b);
+  const sizes = /-thumb\.webp$/.test(file) ? [320, 480, width] : [640, 960, 1280, Math.min(1920, width)];
+  const widths = [...new Set(sizes.filter(w => w <= width))].sort((a,b)=>a-b);
   const variants = [];
   for (const w of widths) {
     const name = `${stem}-${w}-q78.webp`;

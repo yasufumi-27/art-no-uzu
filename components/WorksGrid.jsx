@@ -22,6 +22,7 @@ function Card({ work, index }) {
     <div className="zoom-card relative aspect-square w-full overflow-hidden bg-[var(--color-line)]">
       <FadeImg
         src={work.thumb}
+        sizes="(min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
         alt={workAlt(work)}
         className="h-full w-full object-cover"
       />

@@ -80,10 +80,12 @@ export default function HistoryTimeline({ history }) {
         />
         <ol className="relative flex justify-between" role="tablist" aria-label="年を選ぶ">
           {years.map((y, i) => (
-            <li key={y.year} className="flex w-0 flex-col items-center">
+            <li key={y.year} role="presentation" className="flex w-0 flex-col items-center">
               <button
                 type="button"
                 role="tab"
+                id={`history-tab-${y.year}`}
+                aria-label={`${y.year}年の活動歴`}
                 aria-selected={i === active}
                 aria-controls={`history-${y.year}`}
                 onClick={() => go(i)}
@@ -158,6 +160,7 @@ export default function HistoryTimeline({ history }) {
                 key={y.year}
                 id={`history-${y.year}`}
                 role="tabpanel"
+                aria-labelledby={`history-tab-${y.year}`}
                 aria-hidden={!on}
                 className={`history-panel [grid-area:1/1] ${on ? "is-on" : ""} ${on && played ? "is-in" : ""}`}
               >
