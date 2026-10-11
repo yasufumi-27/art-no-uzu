@@ -87,7 +87,7 @@ const jsonLd = {
       mainEntityOfPage: `${SITE_URL}/about/`,
       image: `${SITE_URL}/images/about/artist.webp`,
       award:
-        "インフルエンサー・アワード・ジャパン 2023 ENTERTAINMENT部門 最優秀賞",
+        "インフルエンサー・アワード・ジャパン 2023 ENTERTAINMENT部門受賞",
       knowsAbout: ["絵画", "現代アート", "アクリル画", "ライブペインティング"],
       sameAs: SOCIAL.map((s) => s.href),
     },

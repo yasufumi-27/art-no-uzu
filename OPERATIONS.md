@@ -63,3 +63,4 @@
 - 展示の正式な日付・会場が未登録の間は、イベントの検索表示向けデータを作らず、展示記録として出力する。
 - GitHub Pages のプロジェクト配下の robots.txt はホストルートの robots.txt ではない。Search Console 登録時は `https://yasufumi-27.github.io/art-no-uzu/sitemap.xml` を直接送信する。
 - 未解決：問い合わせフォームは送信先未設定時のデモ動作。本番受付には `NEXT_PUBLIC_CONTACT_ENDPOINT` と実際の送信テストが必要。表示文言・受付先を決めてから対応する。
+- 要原稿確認：IAJ 2023 の公式ページ（https://lp.spirit-japan.com/iaj/2023/）は「カテゴリー別優秀賞」と記載。About の提供原稿は「最優秀賞」のため、表示内容を変えない今回の範囲では原稿を維持。構造化データは「ENTERTAINMENT部門受賞」とし、賞の等級を断定しない。
