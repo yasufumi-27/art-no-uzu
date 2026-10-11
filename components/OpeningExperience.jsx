@@ -50,7 +50,7 @@ function OpeningVideo({ contentRef }) {
       ) : (
         <video
           ref={videoRef}
-          src={asset("/videos/uzu-opening.mp4")}
+          src={asset("/videos/uzu-opening-3s.mp4")}
           autoPlay
           muted
           playsInline
