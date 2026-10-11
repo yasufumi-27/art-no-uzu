@@ -29,7 +29,7 @@ html {
   display: contents;
 }
 
-.opening-video {
+.opening-screen {
   position: fixed;
   inset: 0;
   z-index: 10000;
@@ -41,25 +41,63 @@ html {
   animation: opening-finish 3s linear forwards;
 }
 
-.opening-video video,
-.opening-video canvas {
+.opening-logo {
+  width: min(54vw, 280px);
+  max-height: 50svh;
+  object-fit: contain;
+  animation: opening-logo-in 0.8s ease-out both;
+}
+
+@keyframes opening-logo-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scroll-statement {
+  position: relative;
+}
+
+.scroll-statement.is-scroll-driven {
+  height: 340svh;
+}
+
+.scroll-statement-stage {
+  position: relative;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.is-scroll-driven .scroll-statement-stage {
+  position: sticky;
+  top: 0;
+}
+
+.scroll-statement-art {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 50%;
-  height: 50%;
+  width: min(82vw, 74svh, 760px);
+  aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  object-fit: contain;
-}
-
-.opening-video video {
-  opacity: 0;
+  opacity: 0.22;
   pointer-events: none;
+  z-index: -1;
 }
 
-.opening-video-fallback {
-  color: var(--color-ink);
-  letter-spacing: 0.3em;
+.scroll-statement-art canvas {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.scroll-statement-art video {
+  display: none;
+}
+
+.scroll-statement-copy {
+  position: relative;
 }
 
 @keyframes opening-finish {
@@ -68,7 +106,9 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .opening-video { display: none; }
+  .opening-screen { display: none; }
+  .scroll-statement.is-scroll-driven { height: auto; }
+  .scroll-statement-stage { position: relative; }
 }
 
 /* PC（デスクトップ）のみ文字サイズを全体的に約2pt大きく。

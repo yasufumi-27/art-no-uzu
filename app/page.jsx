@@ -2,7 +2,7 @@ import Link from "next/link";
 import Hero from "@/components/Hero";
 import LifeLine from "@/components/LifeLine";
 import Reveal from "@/components/Reveal";
-import Spiral from "@/components/Spiral";
+import ScrollStatement from "@/components/ScrollStatement";
 import FadeImg from "@/components/FadeImg";
 import { asset } from "@/lib/asset";
 import FeaturedWorks from "@/components/FeaturedWorks";
@@ -13,28 +13,9 @@ export default function Home() {
     <>
       <Hero />
       <LifeLine />
+      <ScrollStatement />
 
       <div className="container-main">
-        {/* ステートメント：渦のコンセプト */}
-        <Reveal className="relative py-32 md:py-44 max-w-2xl mx-auto text-center">
-          <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 text-[var(--color-line)] breathe">
-            <Spiral turns={5} strokeWidth={0.8} className="uzu-birth h-full w-full" pathClassName="uzu-birth-draw" />
-          </div>
-          <p className="font-display text-xs tracking-[0.3em] text-[var(--color-muted)]">
-            ART NO UZU
-          </p>
-          <p className="mt-8 text-base md:text-lg leading-loose tracking-wider-jp">
-            渦は、感情であり、呼吸であり、
-            <br />
-            記録であり、祈り。
-          </p>
-          <p className="mt-8 text-xs leading-loose text-[var(--color-muted)]">
-            2015年から、「渦」を描き続けている。
-            <br />
-            私が変われば、渦も変わる。
-          </p>
-        </Reveal>
-
         {/* Works / Exhibition */}
         <section className="pb-10">
           <Reveal className="mb-12 flex items-baseline justify-between gap-4">
