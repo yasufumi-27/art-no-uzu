@@ -24,7 +24,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* All pages share a three-second video opening. Keep the square film intact. */
+/* Three-second opening on artist's linen; the artwork has a transparent mask. */
 .opening-content {
   display: contents;
 }
@@ -35,11 +35,14 @@ html {
   z-index: 10000;
   display: grid;
   place-items: center;
-  background: #232b2f;
+  background-color: #ded4bf;
+  background-repeat: repeat;
+  background-size: 256px 256px;
   animation: opening-finish 3s linear forwards;
 }
 
-.opening-video video {
+.opening-video video,
+.opening-video canvas {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -49,8 +52,13 @@ html {
   object-fit: contain;
 }
 
+.opening-video video {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .opening-video-fallback {
-  color: #fff;
+  color: var(--color-ink);
   letter-spacing: 0.3em;
 }
 
