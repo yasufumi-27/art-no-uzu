@@ -3,6 +3,7 @@ import { Zen_Kaku_Gothic_New } from "next/font/google";
 import Header from "@/components/Header";
 import Footer, { SOCIAL } from "@/components/Footer";
 import ClickUzu from "@/components/ClickUzu";
+import OpeningExperience from "@/components/OpeningExperience";
 import {
   SITE_ORIGIN,
   SITE_URL,
@@ -97,10 +98,12 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <ClickUzu />
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <OpeningExperience>
+          <ClickUzu />
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </OpeningExperience>
       </body>
     </html>
   );

@@ -24,6 +24,43 @@ html {
   scroll-behavior: smooth;
 }
 
+/* All pages share a three-second video opening. Keep the square film intact. */
+.opening-content {
+  display: contents;
+}
+
+.opening-video {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  background: #21282c;
+  animation: opening-finish 3s linear forwards;
+}
+
+.opening-video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.opening-video-fallback {
+  color: #fff;
+  letter-spacing: 0.3em;
+}
+
+@keyframes opening-finish {
+  0%, 93% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opening-video { display: none; }
+}
+
 /* PC（デスクトップ）のみ文字サイズを全体的に約2pt大きく。
    スマホ・iPad（〜1279px）は現状維持。コンテナ幅/余白は px 指定のため崩れない。 */
 @media (min-width: 1280px) {
