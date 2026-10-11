@@ -91,7 +91,7 @@ function OpeningVideo({ contentRef }) {
   return (
     <div
       className="opening-video"
-      style={{ backgroundImage: `url("${asset("/images/textures/painting-linen.svg")}")` }}
+      style={{ backgroundImage: `url("${asset("/images/textures/white-painting-canvas.webp")}")` }}
       role="status"
       aria-label="オープニングを表示しています"
     >

@@ -24,7 +24,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Three-second opening on artist's linen; the artwork has a transparent mask. */
+/* White painting canvas with visible woven relief behind transparent artwork. */
 .opening-content {
   display: contents;
 }
@@ -35,9 +35,9 @@ html {
   z-index: 10000;
   display: grid;
   place-items: center;
-  background-color: #ded4bf;
+  background-color: #fafafa;
   background-repeat: repeat;
-  background-size: 256px 256px;
+  background-size: 512px 512px;
   animation: opening-finish 3s linear forwards;
 }
 
