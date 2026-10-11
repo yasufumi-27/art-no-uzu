@@ -24,7 +24,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* White painting canvas with visible woven relief behind transparent artwork. */
+/* Logo opening uses the same background as the rest of the page. */
 .opening-content {
   display: contents;
 }
@@ -35,15 +35,13 @@ html {
   z-index: 10000;
   display: grid;
   place-items: center;
-  background-color: #fafafa;
-  background-repeat: repeat;
-  background-size: 512px 512px;
+  background-color: var(--color-bg);
   animation: opening-finish 3s linear forwards;
 }
 
 .opening-logo {
-  width: min(54vw, 280px);
-  max-height: 50svh;
+  width: min(27vw, 140px);
+  max-height: 25svh;
   object-fit: contain;
   animation: opening-logo-in 0.8s ease-out both;
 }
@@ -92,12 +90,17 @@ html {
   opacity: 0;
 }
 
-.scroll-statement-art video {
-  display: none;
-}
-
 .scroll-statement-copy {
   position: relative;
+}
+
+.scroll-statement-quote { font-size: 2rem; }
+.scroll-statement-detail { font-size: 1.5rem; }
+@media (min-width: 768px) {
+  .scroll-statement-quote { font-size: 2.25rem; }
+}
+@media (max-width: 767px) {
+  .scroll-statement-copy .scroll-statement-quote { letter-spacing: 0; }
 }
 
 @keyframes opening-finish {
@@ -715,16 +718,18 @@ select,
 .work-dialog::backdrop { background: rgb(0 0 0 / 55%); }
 .work-dialog-close { position: absolute; right: 0; top: 0; z-index: 2; background: white; width: 36px; height: 36px; font-size: 24px; }
 .work-dialog-image { width: 100%; max-height: 65dvh; object-fit: contain; }
-@media (max-width: 639px) {
-  .featured-story { display: block; height: 480svh; margin-inline: -24px; }
-  .featured-story-stage { position: sticky; top: 100px; height: calc(100svh - 100px); display: grid; place-items: center; overflow: hidden; }
-  .featured-story-title { font-size: 22px; letter-spacing: 0.1em; transition: opacity 0.3s; }
-  .featured-story-spiral { position: absolute; width: 80%; aspect-ratio: 1; color: var(--color-muted); }
-  .featured-story-image { position: absolute; inset: 4px; transition: opacity 0.4s; }
-  .featured-story-image img { height: 100%; width: 100%; object-fit: contain; }
-  .featured-grid { margin-inline: -24px; padding: 4px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .featured-story { display: none; }
-  .featured-story-image { transition: none; }
+@media (max-width: 767px) {
+  .featured-grid { display: none; }
+  .featured-story { display: block; margin-inline: -24px; }
+  .featured-story-stage { position: relative; overflow: hidden; }
+  .featured-story-track { display: flex; flex-direction: column; }
+  .featured-story-image { width: 100%; padding: 24px; min-height: 70svh; }
+  .featured-story-image img { height: 100%; width: 100%; max-height: 72svh; object-fit: contain; }
+  .featured-story-count { display: none; }
+  .featured-story.is-scroll-driven { height: 500svh; }
+  .is-scroll-driven .featured-story-stage { position: sticky; top: 100px; height: calc(100svh - 100px); }
+  .is-scroll-driven .featured-story-track { flex-direction: row; height: 100%; will-change: transform; }
+  .is-scroll-driven .featured-story-image { flex: 0 0 100%; min-width: 0; min-height: 0; padding: 24px 24px 68px; }
+  .is-scroll-driven .featured-story-image img { max-height: none; }
+  .is-scroll-driven .featured-story-count { display: block; position: absolute; bottom: 24px; left: 0; width: 100%; text-align: center; font-size: 11px; letter-spacing: 0.2em; color: var(--color-muted); }
 }

@@ -38,7 +38,6 @@ function OpeningLogo({ contentRef }) {
   return (
     <div
       className="opening-screen"
-      style={{ backgroundImage: `url("${asset("/images/textures/white-painting-canvas.webp")}")` }}
       role="status"
       aria-label="オープニングを表示しています"
     >

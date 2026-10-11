@@ -42,3 +42,12 @@ encode.stdin.close()
 assert decode.wait() == 0 and encode.wait() == 0
 assert frames == 90, frames
 print(f'Prepared {frames} frames: {output.name}')
+
+# One transparent atlas scrubs reliably on phones without video autoplay/seek.
+atlas = output.parents[1] / 'images/uzu-scroll-frames.webp'
+subprocess.run([ffmpeg, '-v', 'error', '-y', '-i', str(output), '-filter_complex',
+    '[0:v]split=2[left][right];[left]crop=512:512:0:0,format=rgb24[color];'
+    '[right]crop=512:512:512:0,format=gray[mask];'
+    '[color][mask]alphamerge,scale=256:256,tile=10x9[out]',
+    '-map', '[out]', '-frames:v', '1', '-c:v', 'libwebp', '-quality', '88', str(atlas)], check=True)
+print(f'Prepared transparent scroll atlas: {atlas.name}')

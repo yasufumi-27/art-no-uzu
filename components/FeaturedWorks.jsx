@@ -41,12 +41,12 @@ export default function FeaturedWorks() {
   const gridRef = useRef(null);
   const [preview, setPreview] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [intro, setIntro] = useState(() => TOP_IMAGES.slice(0, 3));
+  const [scrollDriven, setScrollDriven] = useState(false);
   const storyRef = useRef(null);
   const dialogRef = useRef(null);
   const [selected, setSelected] = useState(null);
   const openMobile = (event, work) => {
-    if (!window.matchMedia("(max-width: 639px), (hover: none)").matches) return;
+    if (!window.matchMedia("(max-width: 767px), (hover: none)").matches) return;
     event.preventDefault();
     setSelected(work);
     dialogRef.current.showModal();
@@ -74,40 +74,56 @@ export default function FeaturedWorks() {
 
   useEffect(() => {
     setItems(chooseTiles(true));
-    setIntro(pickRandom(TOP_IMAGES, 3));
   }, []);
 
   useEffect(() => {
     let raf = 0;
+    const mobile = window.matchMedia("(max-width: 767px)");
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => {
       raf = 0;
       if (!storyRef.current) return;
+      const enabled = mobile.matches && !motion.matches;
+      storyRef.current.classList.toggle("is-scroll-driven", enabled);
+      setScrollDriven(enabled);
+      if (!enabled) { setProgress(0); return; }
       const r = storyRef.current.getBoundingClientRect();
-      setProgress(Math.max(0, Math.min(1, -r.top / Math.max(1, r.height - window.innerHeight))));
+      const stage = storyRef.current.querySelector(".featured-story-stage");
+      const top = parseFloat(getComputedStyle(stage).top) || 0;
+      const range = r.height - stage.getBoundingClientRect().height;
+      setProgress(Math.max(0, Math.min(1, (top - r.top) / Math.max(1, range))));
     };
     const scroll = () => { if (!raf) raf = requestAnimationFrame(update); };
     update();
     window.addEventListener("scroll", scroll, { passive: true });
     window.addEventListener("resize", scroll);
-    return () => { window.removeEventListener("scroll", scroll); window.removeEventListener("resize", scroll); cancelAnimationFrame(raf); };
+    mobile.addEventListener("change", scroll);
+    motion.addEventListener("change", scroll);
+    return () => {
+      window.removeEventListener("scroll", scroll);
+      window.removeEventListener("resize", scroll);
+      mobile.removeEventListener("change", scroll);
+      motion.removeEventListener("change", scroll);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
     <>
-    <div ref={storyRef} className="featured-story">
+    <div ref={storyRef} className={`featured-story${scrollDriven ? " is-scroll-driven" : ""}`}>
       <div className="featured-story-stage">
-        <p className="featured-story-title" style={{ opacity: progress < 0.18 ? 1 : 0 }}>Works / Exhibition</p>
-        <div className="featured-story-spiral" style={{ opacity: progress >= 0.12 && progress < 0.48 ? 1 : 0 }}>
-          <Spiral turns={5} strokeWidth={0.8} className="h-full w-full" pathClassName="scroll-spiral" />
-          <style>{`.scroll-spiral { stroke-dasharray: 1; stroke-dashoffset: ${1 - Math.min(1, Math.max(0, (progress - 0.12) / 0.3))}; }`}</style>
+        <div className="featured-story-track" style={{ transform: scrollDriven ? `translateX(${-progress * (TOP_IMAGES.length - 1) * 100}%)` : "none" }}>
+          {TOP_IMAGES.map((work, i) => {
+            const active = !scrollDriven || i === Math.round(progress * (TOP_IMAGES.length - 1));
+            return (
+              <button key={work.id} className="featured-story-image" aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を拡大`}
+                aria-hidden={!active} tabIndex={active ? 0 : -1} onClick={(e) => openMobile(e, work)}>
+                <img src={work.images[0]} alt={`神谷佳美 TOP指定作品 ${i + 1}`} loading="lazy" />
+              </button>
+            );
+          })}
         </div>
-        {intro.map((work, i) => (
-          <button key={work.id} className="featured-story-image" aria-label="作品を拡大" tabIndex={progress >= 0.45 + i * 0.17 && progress < 0.62 + i * 0.17 ? 0 : -1}
-            style={{ opacity: progress >= 0.45 + i * 0.17 && progress < 0.62 + i * 0.17 ? 1 : 0, pointerEvents: progress >= 0.45 + i * 0.17 && progress < 0.62 + i * 0.17 ? "auto" : "none" }}
-            onClick={(e) => openMobile(e, work)}>
-            <img src={work.images[0]} alt="神谷佳美 作品" />
-          </button>
-        ))}
+        <p className="featured-story-count" aria-hidden="true">{String(Math.round(progress * (TOP_IMAGES.length - 1)) + 1).padStart(2, "0")} / 05</p>
       </div>
     </div>
     <div
