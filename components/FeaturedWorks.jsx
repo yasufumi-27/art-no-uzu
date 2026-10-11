@@ -112,13 +112,23 @@ export default function FeaturedWorks() {
     <>
     <div ref={storyRef} className={`featured-story${scrollDriven ? " is-scroll-driven" : ""}`}>
       <div className="featured-story-stage">
+        <div className="featured-story-decoration" aria-hidden="true">
+          <Spiral turns={4} strokeWidth={0.5} className="h-full w-full" pathClassName="featured-story-ink" />
+          <style>{`.featured-story-ink { stroke-dasharray: 1; stroke-dashoffset: ${1 - progress}; }`}</style>
+        </div>
         <div className="featured-story-track" style={{ transform: scrollDriven ? `translateX(${-progress * (TOP_IMAGES.length - 1) * 100}%)` : "none" }}>
           {TOP_IMAGES.map((work, i) => {
             const active = !scrollDriven || i === Math.round(progress * (TOP_IMAGES.length - 1));
+            const offset = scrollDriven ? Math.max(-1, Math.min(1, i - progress * (TOP_IMAGES.length - 1))) : 0;
             return (
               <button key={work.id} className="featured-story-image" aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を拡大`}
                 aria-hidden={!active} tabIndex={active ? 0 : -1} onClick={(e) => openMobile(e, work)}>
-                <img src={work.images[0]} alt={`神谷佳美 TOP指定作品 ${i + 1}`} loading="lazy" />
+                <span className="featured-story-artwork" style={{
+                  transform: `perspective(900px) translateY(${Math.abs(offset) * 28}px) rotateY(${-offset * 18}deg) rotateZ(${offset * 3}deg) scale(${1 - Math.abs(offset) * 0.14})`,
+                  opacity: 1 - Math.abs(offset) * 0.22,
+                }}>
+                  <img src={work.images[0]} alt={`神谷佳美 TOP指定作品 ${i + 1}`} loading="lazy" />
+                </span>
               </button>
             );
           })}

@@ -45,16 +45,21 @@ function build(mode, size, length) {
   const pts = [];
   const pad = mode === "band" ? 16 : 0;
   // 帯では、最後（100歳）の渦が右端で切れないよう、その直径ぶん右側を空けておく
-  const span = mode === "band" ? length - pad * 2 - loopRadius("band", size, 7) * 2 : length - pad * 2;
+  // Reserve room inside the SVG for the final loop and its age label. An
+  // overflowing last label used to enlarge scrollHeight on every remeasure.
+  const endRoom = mode === "band" ? loopRadius("band", size, 7) * 2 : loopRadius("gutter", size, 7) * 2 + 30;
+  const span = Math.max(1, length - pad * 2 - endRoom);
   const mid = size / 2;
   for (let t = 0; t <= YEARS + 1e-9; t += STEP) {
     const along = pad + (t / YEARS) * span; // 進行方向の位置
     let across = mid + tremble(t, mode === "band" ? 0.6 : 1); // 進行方向と直角の位置
     let pos = along;
-    const m = MILESTONES.find((m) => Math.abs(t - m.t) <= LOOP_HALF);
+    const m = MILESTONES.find((m) => m.age === 100
+      ? t >= m.t - LOOP_HALF * 2
+      : Math.abs(t - m.t) <= LOOP_HALF);
     if (m) {
       // 節目：線の上の点から渦を描き出し、また線へ戻ってくる
-      const u = (t - (m.t - LOOP_HALF)) / (LOOP_HALF * 2);
+      const u = (t - (m.t - LOOP_HALF * (m.age === 100 ? 2 : 1))) / (LOOP_HALF * 2);
       const turns = 1.5 + m.k * 0.5;
       const r = loopRadius(mode, size, m.k) * Math.sin(Math.PI * u);
       const a = u * turns * Math.PI * 2 - Math.PI / 2;
@@ -213,7 +218,7 @@ export default function LifeLine() {
             key={m.age}
             ref={(el) => (marks.current[k] = el)}
             x={geo.width / 2 + r + 6}
-            y={(m.t / YEARS) * geo.height + r * 2 + 14}
+            y={g.pad + (m.t / YEARS) * g.span + r * 2 + 14}
             className="lifeline-mark fill-[var(--color-muted)] text-[9px] tracking-[0.15em]"
           >
             {m.year} / {m.age}歳

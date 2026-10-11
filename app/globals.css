@@ -101,6 +101,7 @@ html {
 }
 @media (max-width: 767px) {
   .scroll-statement-copy .scroll-statement-quote { letter-spacing: 0; }
+  .scroll-statement-detail { font-size: 0.75rem; }
 }
 
 @keyframes opening-finish {
@@ -714,6 +715,8 @@ select,
   .history-panel.is-on { animation: none; }
 }
 .featured-story { display: none; }
+.featured-story-decoration { display: none; }
+.featured-story-artwork { display: block; height: 100%; }
 .work-dialog { margin: auto; padding: 20px; width: min(96vw, 720px); max-height: 90dvh; background: var(--color-bg); border: 0; overflow: auto; }
 .work-dialog::backdrop { background: rgb(0 0 0 / 55%); }
 .work-dialog-close { position: absolute; right: 0; top: 0; z-index: 2; background: white; width: 36px; height: 36px; font-size: 24px; }
@@ -729,6 +732,10 @@ select,
   .featured-story.is-scroll-driven { height: 500svh; }
   .is-scroll-driven .featured-story-stage { position: sticky; top: 100px; height: calc(100svh - 100px); }
   .is-scroll-driven .featured-story-track { flex-direction: row; height: 100%; will-change: transform; }
+  .is-scroll-driven .featured-story-decoration { display: block; position: absolute; width: 94%; aspect-ratio: 1; left: 3%; top: 50%; transform: translateY(-50%); color: var(--color-muted); opacity: 0.2; pointer-events: none; }
+  .is-scroll-driven .featured-story-track { position: relative; z-index: 1; }
+  .is-scroll-driven .featured-story-artwork { will-change: transform, opacity; }
+  .is-scroll-driven .featured-story-artwork img { filter: drop-shadow(0 14px 18px rgb(0 0 0 / 14%)); }
   .is-scroll-driven .featured-story-image { flex: 0 0 100%; min-width: 0; min-height: 0; padding: 24px 24px 68px; }
   .is-scroll-driven .featured-story-image img { max-height: none; }
   .is-scroll-driven .featured-story-count { display: block; position: absolute; bottom: 24px; left: 0; width: 100%; text-align: center; font-size: 11px; letter-spacing: 0.2em; color: var(--color-muted); }
