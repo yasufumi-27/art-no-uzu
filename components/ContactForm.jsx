@@ -67,10 +67,11 @@ export default function ContactForm() {
       <Field label="お名前" name="name" required />
       <Field label="メールアドレス" name="email" type="email" required />
       <div>
-        <label className="block text-xs tracking-wider-jp text-[var(--color-muted)]">
+        <label htmlFor="contact-message" className="block text-xs tracking-wider-jp text-[var(--color-muted)]">
           内容 <span className="text-[var(--color-ink)]">*</span>
         </label>
         <textarea
+          id="contact-message"
           name="message"
           required
           rows={6}
@@ -104,10 +105,12 @@ export default function ContactForm() {
 function Field({ label, name, type = "text", required }) {
   return (
     <div>
-      <label className="block text-xs tracking-wider-jp text-[var(--color-muted)]">
+      <label htmlFor={`contact-${name}`} className="block text-xs tracking-wider-jp text-[var(--color-muted)]">
         {label} {required && <span className="text-[var(--color-ink)]">*</span>}
       </label>
       <input
+        id={`contact-${name}`}
+        autoComplete={name === "name" ? "name" : name === "email" ? "email" : undefined}
         type={type}
         name={name}
         required={required}

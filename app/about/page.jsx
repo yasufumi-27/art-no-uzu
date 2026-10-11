@@ -4,7 +4,7 @@ import StatementInk from "@/components/StatementInk";
 import Spiral from "@/components/Spiral";
 import FadeImg from "@/components/FadeImg";
 import { asset } from "@/lib/asset";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, ARTIST_ID } from "@/lib/site";
 
 export const metadata = {
   title: "About",
@@ -12,6 +12,10 @@ export const metadata = {
     "神谷佳美（YOSHIMI KAMITANI）。1994年東京生まれ。2015年から渦を描き続けるアーティストのプロフィール・ステートメント・活動歴。",
   alternates: { canonical: `${SITE_URL}/about/` },
   openGraph: {
+    url: `${SITE_URL}/about/`,
+    locale: "ja_JP",
+    siteName: "ART NO UZU",
+    type: "website",
     title: "About — ART NO UZU",
     description:
       "神谷佳美（YOSHIMI KAMITANI）。1994年東京生まれ。2015年から渦を描き続けるアーティストのプロフィール・ステートメント・活動歴。",
@@ -92,6 +96,17 @@ const STATEMENT = [
 export default function AboutPage() {
   return (
     <div className="container-main py-20 md:py-28">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "@id": `${SITE_URL}/about/#profile`,
+        url: `${SITE_URL}/about/`,
+        name: "神谷佳美（YOSHIMI KAMITANI）プロフィール",
+        inLanguage: "ja",
+        mainEntity: { "@id": ARTIST_ID },
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        citation: [...new Set(HISTORY.flatMap(year => [...year.items, ...(year.exhibitions || [])].flatMap(item => (item.links || []).map(link => link.href))))],
+      }).replace(/</g, "\\u003c") }} />
       <div className="grid grid-cols-1 gap-16 md:grid-cols-[1fr_1.2fr]">
         <Reveal className="md:sticky md:top-28 md:self-start">
           <div className="relative aspect-[4/5] w-full overflow-hidden bg-[var(--color-line)]">

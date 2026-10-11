@@ -22,7 +22,7 @@ export default function Header() {
         >
           {/* 受領ロゴ（logo_b_kakutei_moji）。文字の高さをメニュー +1pt 相当に合わせる */}
           <img
-            src={asset("/images/logo/logotype.png")}
+            src={asset("/images/responsive/logotype.webp")} width={1156} height={96}
             alt="YOSHIMI KAMITANI"
             className="anim-header-item block h-[0.8em] w-auto"
           />

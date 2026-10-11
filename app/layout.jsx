@@ -1,5 +1,6 @@
 import "./globals.css";
-import { Zen_Kaku_Gothic_New } from "next/font/google";
+import localFont from "next/font/local";
+import { asset } from "@/lib/asset";
 import Header from "@/components/Header";
 import Footer, { SOCIAL } from "@/components/Footer";
 import ClickUzu from "@/components/ClickUzu";
@@ -14,11 +15,16 @@ import {
 
 // 書体は Zen Kaku Gothic New に統一（2026-09 クライアント回答：
 // 欧文も TOP の和文フォントに合わせる。見出し用の Syne は撤去）
-const zen = Zen_Kaku_Gothic_New({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
+const zen = localFont({
+  src: [
+    { path: "./fonts/ZenKakuGothicNew-Light.woff2", weight: "300", style: "normal" },
+    { path: "./fonts/ZenKakuGothicNew-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/ZenKakuGothicNew-Medium.woff2", weight: "500", style: "normal" },
+  ],
   variable: "--font-body",
   display: "swap",
+  fallback: ["Zen Kaku Gothic New Full"],
+  adjustFontFallback: false,
 });
 
 // SEO / メタ情報（仕様書 17）。OGP 対応。
@@ -47,6 +53,7 @@ export const metadata = {
     type: "website",
     siteName: SITE_NAME,
     locale: "ja_JP",
+    url: `${SITE_URL}/`,
   },
   twitter: {
     card: "summary_large_image",
@@ -78,6 +85,7 @@ const jsonLd = {
         "1994年東京生まれ。2015年から「渦」を描き続けている。",
       url: SITE_URL,
       mainEntityOfPage: `${SITE_URL}/about/`,
+      image: `${SITE_URL}/images/about/artist.webp`,
       award:
         "インフルエンサー・アワード・ジャパン 2023 ENTERTAINMENT部門 最優秀賞",
       knowsAbout: ["絵画", "現代アート", "アクリル画", "ライブペインティング"],
@@ -93,6 +101,11 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ja" className={zen.variable}>
+      <head>
+        <style>{[ ["Light", 300], ["Regular", 400], ["Medium", 500] ].map(([name, weight]) =>
+          `@font-face{font-family:"Zen Kaku Gothic New Full";font-style:normal;font-weight:${weight};font-display:swap;src:url("${asset(`/fonts/ZenKakuGothicNew-${name}.woff2`)}") format("woff2")}`
+        ).join("")}</style>
+      </head>
       <body className="min-h-screen flex flex-col">
         <script
           type="application/ld+json"

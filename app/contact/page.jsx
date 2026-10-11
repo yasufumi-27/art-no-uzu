@@ -9,6 +9,10 @@ export const metadata = {
     "お問い合わせフォームおよび各種SNS・外部サービスへのリンク。",
   alternates: { canonical: `${SITE_URL}/contact/` },
   openGraph: {
+    url: `${SITE_URL}/contact/`,
+    locale: "ja_JP",
+    siteName: "ART NO UZU",
+    type: "website",
     title: "Contact — ART NO UZU",
     description: "お問い合わせフォームおよび各種SNS・外部サービスへのリンク。",
   },

@@ -1,5 +1,6 @@
 "use client";
 
+import { responsiveImage } from "@/lib/responsive-image";
 import { useEffect, useRef, useState } from "react";
 
 // 作品画像の共通コンポーネント（仕様書 15）。
@@ -17,6 +18,8 @@ export default function FadeImg({ className = "", loading = "lazy", ...props }) 
     <img
       ref={ref}
       loading={loading}
+      decoding="async"
+      {...responsiveImage(props.src, props.sizes)}
       onLoad={() => setLoaded(true)}
       className={`fade-in ${loaded ? "is-visible" : ""} ${className}`}
       {...props}

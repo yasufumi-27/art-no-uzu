@@ -41,7 +41,7 @@ function OpeningLogo({ contentRef }) {
       role="status"
       aria-label="オープニングを表示しています"
     >
-      <img className="opening-logo" src={asset("/images/logo/emblem.png")} alt="YOSHIMI KAMITANI" />
+      <img fetchPriority="high" loading="eager" className="opening-logo" src={asset("/images/responsive/emblem.webp")} width={900} height={1403} alt="YOSHIMI KAMITANI" />
     </div>
   );
 }

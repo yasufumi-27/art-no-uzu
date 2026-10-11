@@ -52,3 +52,14 @@
 - [ ] Search Console の登録をクライアントと一緒に実施（Google アカウントはクライアント側。所有権確認は DNS の TXT レコード or HTML タグ）
 - [ ] サイトマップ（`/sitemap.xml`）を Search Console に送信
 - [ ] ドメインの更新期限をこのファイルに記入
+
+## 表示を保つ配信最適化（2026-10-12）
+
+- `npm run build` / `npm run dev` の前処理で、作品の配信用 WebP を生成する。元画像は上書きせず、640 / 960 / 1280 / 最大1920px のコピーを `public/images/responsive/` に出力する。大画面向けには元解像度も選択可能。生成先は Git 管理対象外。
+- 画像の追加・更新後は通常のビルドだけでよい。`lib/responsive-images.generated.json` は自動生成データ。画質設定を変更した場合は、生成スクリプトの出力名に含む品質番号も更新する。
+- 書体は従来と同じ Zen Kaku Gothic New（300 / 400 / 500）。掲載文字をまとめた WOFF2 を優先し、未収録の文字は `public/fonts/` の同じ書体の全字形フォントで補完する。ライセンスは `public/fonts/OFL.txt`。
+- フォントの優先配信文字を更新する場合のみ、`fonttools[woff]` を入れた Python 環境で `python scripts/subset-fonts.py` を実行し、`app/fonts/` の生成物もコミットする。通常ビルドは Python や Google Fonts への接続を必要としない。
+- サイトマップには作品画像を含める。更新日をビルド日で水増ししないため `lastModified` は省略。作品の実際の更新日を管理できるようになった時点で追加する。
+- 展示の正式な日付・会場が未登録の間は、イベントの検索表示向けデータを作らず、展示記録として出力する。
+- GitHub Pages のプロジェクト配下の robots.txt はホストルートの robots.txt ではない。Search Console 登録時は `https://yasufumi-27.github.io/art-no-uzu/sitemap.xml` を直接送信する。
+- 未解決：問い合わせフォームは送信先未設定時のデモ動作。本番受付には `NEXT_PUBLIC_CONTACT_ENDPOINT` と実際の送信テストが必要。表示文言・受付先を決めてから対応する。

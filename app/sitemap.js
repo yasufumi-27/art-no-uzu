@@ -14,12 +14,13 @@ export default function sitemap() {
     ...detailWorks().map((w) => ({
       path: `/works/${w.id}/`,
       priority: 0.8,
+      images: w.images.map(src => new URL(src, SITE_URL).href),
     })),
   ];
 
-  return pages.map(({ path, priority }) => ({
+  return pages.map(({ path, priority, images }) => ({
     url: `${SITE_URL}${path}`,
-    lastModified: new Date(),
+    ...(images ? { images } : {}),
     changeFrequency: "monthly",
     priority,
   }));

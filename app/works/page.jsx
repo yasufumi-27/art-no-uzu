@@ -11,6 +11,10 @@ export const metadata = {
     "作品と展示記録の統合アーカイブ。年別に Works / Exhibition を一覧できます。",
   alternates: { canonical: `${SITE_URL}/works/` },
   openGraph: {
+    url: `${SITE_URL}/works/`,
+    locale: "ja_JP",
+    siteName: "ART NO UZU",
+    type: "website",
     title: "Works / Exhibition — ART NO UZU",
     description:
       "作品と展示記録の統合アーカイブ。年別に Works / Exhibition を一覧できます。",

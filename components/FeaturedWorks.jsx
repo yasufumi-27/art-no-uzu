@@ -7,6 +7,7 @@ import FadeImg from "@/components/FadeImg";
 import InstagramBadge from "@/components/InstagramBadge";
 import Spiral from "@/components/Spiral";
 import { works, workAlt } from "@/lib/works";
+import { responsiveImage } from "@/lib/responsive-image";
 import { TOP_IMAGES } from "@/lib/top-images";
 import { SAME_IMAGE_GROUPS } from "@/lib/work-links";
 
@@ -127,7 +128,7 @@ export default function FeaturedWorks() {
                   transform: `perspective(900px) translateY(${Math.abs(offset) * 28}px) rotateY(${-offset * 18}deg) rotateZ(${offset * 3}deg) scale(${1 - Math.abs(offset) * 0.14})`,
                   opacity: 1 - Math.abs(offset) * 0.22,
                 }}>
-                  <img src={work.images[0]} alt={`神谷佳美 TOP指定作品 ${i + 1}`} loading="lazy" />
+                  <img src={work.images[0]} {...responsiveImage(work.images[0])} decoding="async" alt={`神谷佳美 TOP指定作品 ${i + 1}`} loading="lazy" />
                 </span>
               </button>
             );

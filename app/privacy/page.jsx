@@ -7,6 +7,10 @@ export const metadata = {
     "ART NO UZU（神谷佳美公式サイト）のプライバシーポリシー。お問い合わせフォームで取得する個人情報の取り扱いについて。",
   alternates: { canonical: `${SITE_URL}/privacy/` },
   openGraph: {
+    url: `${SITE_URL}/privacy/`,
+    locale: "ja_JP",
+    siteName: "ART NO UZU",
+    type: "website",
     title: "Privacy Policy — ART NO UZU",
     description:
       "ART NO UZU（神谷佳美公式サイト）のプライバシーポリシー。お問い合わせフォームで取得する個人情報の取り扱いについて。",

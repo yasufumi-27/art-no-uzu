@@ -1,5 +1,6 @@
 "use client";
 
+import { responsiveImage } from "@/lib/responsive-image";
 import { useEffect, useRef, useState } from "react";
 
 // 作品詳細の画像ギャラリー（仕様書 10.1）。
@@ -47,6 +48,9 @@ export default function Gallery({ images, alt = "作品画像" }) {
           <img
             key={s}
             src={s}
+            {...responsiveImage(s)}
+            fetchPriority={i === 0 ? "high" : "low"}
+            decoding="async"
             alt={`${alt} ${i + 1}`}
             // 先頭はファーストビューのため即時、2枚目以降は遅延読み込み（仕様書 15 / 16）
             loading={i === 0 ? "eager" : "lazy"}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
+import { responsiveImage } from "@/lib/responsive-image";
 import Spiral from "@/components/Spiral";
 import { TOP_IMAGES } from "@/lib/top-images";
 
@@ -40,6 +41,9 @@ export default function Hero() {
           <img
             key={slide.id}
             src={slide.src}
+            {...responsiveImage(slide.src, "hero")}
+            fetchPriority={i === 0 ? "high" : "low"}
+            decoding="async"
             alt={slide.title || "神谷佳美 作品"}
             className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[3600ms] ease-in-out"
             style={{ opacity: ready && i === index ? 1 : 0 }}

@@ -53,8 +53,17 @@ export default function ScrollStatement() {
     const schedule = () => {
       if (!raf) raf = window.requestAnimationFrame(update);
     };
+    frames.fetchPriority = "low";
     frames.onload = schedule;
-    frames.src = asset("/images/uzu-scroll-frames.webp");
+    // The drawing starts well after this canvas first enters the viewport.
+    // Fetch its atlas on approach instead of competing with the opening/hero.
+    const preload = new IntersectionObserver((entries) => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        frames.src = asset("/images/uzu-scroll-frames.webp");
+        preload.disconnect();
+      }
+    });
+    preload.observe(canvas);
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     motion.addEventListener("change", schedule);
@@ -63,6 +72,7 @@ export default function ScrollStatement() {
     return () => {
       disposed = true;
       frames.onload = null;
+      preload.disconnect();
       window.cancelAnimationFrame(raf);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);

@@ -22,7 +22,7 @@ export default function Footer() {
       <div className="container-main flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
         <div>
           <img
-            src={asset("/images/logo/mark.png")}
+            src={asset("/images/responsive/mark.webp")} width={228} height={400}
             alt=""
             aria-hidden="true"
             className="mb-4 h-16 w-auto opacity-80"

@@ -14,31 +14,30 @@ import {
 } from "@/lib/works";
 import { SITE_URL, ARTIST_ID } from "@/lib/site";
 
-// 作品ごとの構造化データ（E-E-A-T）。作品は VisualArtwork、展示は ExhibitionEvent
-// として出力し、creator / performer を layout の Person（@id）に連結する。
+// Describe only known artwork facts. A year alone is not a valid event start date;
+// exhibition pages describe an archive record until precise event data is supplied.
+function workTitle(work) {
+  return work.title || `${work.year} — ${work.category} ${work.id.split("_")[1]}`;
+}
+function workDescription(work) {
+  return work.description || `神谷佳美（YOSHIMI KAMITANI）の${work.year}年の${work.category === "Exhibition" ? "展示記録" : "作品"}「${workTitle(work)}」。作品画像と関連リンクを掲載。`;
+}
 function workJsonLd(work) {
   const url = `${SITE_URL}/works/${work.id}/`;
-  if (work.category === "Exhibition") {
-    return {
-      "@context": "https://schema.org",
-      "@type": "ExhibitionEvent",
-      name: workAlt(work),
-      startDate: String(work.year),
-      description: work.description,
-      url,
-      performer: { "@id": ARTIST_ID },
-      organizer: { "@id": ARTIST_ID },
-    };
-  }
   return {
     "@context": "https://schema.org",
-    "@type": "VisualArtwork",
-    name: workAlt(work),
-    dateCreated: String(work.year),
-    artform: "絵画",
-    artMedium: work.material ?? undefined,
-    description: work.description,
+    "@type": work.category === "Exhibition" ? "CreativeWork" : "VisualArtwork",
+    "@id": `${url}#work`,
+    name: workTitle(work),
+    ...(work.category === "Exhibition" ? {} : {
+      dateCreated: String(work.year),
+      artform: "絵画",
+      artMedium: work.material ?? undefined,
+    }),
+    description: workDescription(work),
     url,
+    mainEntityOfPage: url,
+    image: work.images.map(src => new URL(src, SITE_URL).href),
     creator: { "@id": ARTIST_ID },
     copyrightHolder: { "@id": ARTIST_ID },
   };
@@ -54,13 +53,18 @@ export async function generateMetadata({ params }) {
   const work = getWork(id);
   if (!work) return {};
   return {
-    title: workAlt(work),
-    description: work.description,
+    title: workTitle(work),
+    description: workDescription(work),
     alternates: { canonical: `${SITE_URL}/works/${work.id}/` },
     // OGP はルートの openGraph.title を継承しないため、ページ別に明示する（仕様書 17）
     openGraph: {
-      title: `${workAlt(work)} — ART NO UZU`,
-      description: work.description,
+      title: `${workTitle(work)} — ART NO UZU`,
+      url: `${SITE_URL}/works/${work.id}/`,
+      locale: "ja_JP",
+      siteName: "ART NO UZU",
+      type: "website",
+      images: work.images.map(src => ({ url: new URL(src, SITE_URL).href, alt: workTitle(work) })),
+      description: workDescription(work),
     },
   };
 }

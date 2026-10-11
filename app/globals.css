@@ -43,12 +43,13 @@ html {
   width: min(27vw, 140px);
   max-height: 25svh;
   object-fit: contain;
-  animation: opening-logo-in 0.8s ease-out both;
+  animation: opening-logo-fade 3s ease-in-out both;
 }
 
-@keyframes opening-logo-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes opening-logo-fade {
+  0% { opacity: 0; transform: translateY(12px); }
+  27%, 70% { opacity: 1; transform: translateY(0); }
+  93%, 100% { opacity: 0; transform: translateY(0); }
 }
 
 .scroll-statement {
