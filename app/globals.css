@@ -61,6 +61,8 @@ html {
 }
 
 .scroll-statement-stage {
+  --statement-copy-room: 160px;
+  --statement-art-size: min(82vw, 74svh, 760px, calc(100svh - var(--statement-copy-room)));
   position: relative;
   height: 100svh;
   display: grid;
@@ -77,7 +79,7 @@ html {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: min(82vw, 74svh, 760px);
+  width: var(--statement-art-size);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   opacity: 0.32;
@@ -93,11 +95,30 @@ html {
 
 .scroll-statement-copy {
   position: relative;
+  height: 100%;
+  display: grid;
+  place-items: center;
 }
 
-.scroll-statement-quote { font-size: 2rem; }
-.scroll-statement-detail { font-size: 1.5rem; }
+.scroll-statement-label,
+.scroll-statement-detail {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  margin: 0;
+}
+
+.scroll-statement-label {
+  bottom: calc(50% + var(--statement-art-size) / 2 + 16px);
+}
+
+.scroll-statement-quote { margin: 0; font-size: 2rem; }
+.scroll-statement-detail {
+  top: calc(50% + var(--statement-art-size) / 2 + 16px);
+  font-size: 1.5rem;
+}
 @media (min-width: 768px) {
+  .scroll-statement-stage { --statement-copy-room: calc(12rem + 48px); }
   .scroll-statement-quote { font-size: 2.25rem; }
 }
 @media (max-width: 767px) {

@@ -87,11 +87,11 @@ export default function ScrollStatement() {
           <canvas ref={canvasRef} width={SIZE} height={SIZE} />
         </div>
         <div className="scroll-statement-copy container-main text-center">
-          <p className="font-display text-xs tracking-[0.3em] text-[var(--color-muted)]">ART NO UZU</p>
-          <p className="scroll-statement-quote mt-8 leading-loose tracking-wider-jp">
+          <p className="scroll-statement-label font-display text-xs tracking-[0.3em] text-[var(--color-muted)]">ART NO UZU</p>
+          <p className="scroll-statement-quote leading-loose tracking-wider-jp">
             渦は、感情であり、<br className="md:hidden" />呼吸であり、<br />記録であり、祈り。
           </p>
-          <p className="scroll-statement-detail mt-8 leading-loose text-[var(--color-muted)]">
+          <p className="scroll-statement-detail leading-loose text-[var(--color-muted)]">
             2015年から、「渦」を描き続けている。<br />私が変われば、渦も変わる。
           </p>
         </div>
