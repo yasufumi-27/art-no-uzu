@@ -80,7 +80,7 @@ html {
   width: min(82vw, 74svh, 760px);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  opacity: 0.22;
+  opacity: 0.32;
   pointer-events: none;
   z-index: -1;
 }
