@@ -114,6 +114,36 @@ html {
 
 /* Defaults keep the full statement readable without JavaScript. */
 .statement-reveal {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+}
+
+.statement-reveal::before,
+.statement-reveal::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  width: var(--ripple-size, 0px);
+  height: var(--ripple-size, 0px);
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side,
+    transparent calc(100% - 9px),
+    rgb(70 66 58 / 18%) calc(100% - 5px),
+    transparent 100%);
+  transform: translate(-50%, -50%) scale(var(--ripple-scale, 0));
+  opacity: var(--ripple-opacity, 0);
+}
+
+.statement-reveal::after {
+  transform: translate(-50%, -50%) scale(var(--ripple-echo-scale, 0));
+  opacity: var(--ripple-echo-opacity, 0);
+}
+
+.statement-reveal-text {
   display: inline-block;
   opacity: var(--phrase-opacity, 1);
   -webkit-mask-image: var(--phrase-mask, none);
