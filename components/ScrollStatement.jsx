@@ -22,11 +22,20 @@ export default function ScrollStatement() {
       element,
       start: Number(element.dataset.revealStart),
       end: Number(element.dataset.revealEnd),
+      radius: 0,
     }));
     let progress = 0;
     let raf = 0;
     let paintedFrame = -1;
     let disposed = false;
+
+    // Measure only when the text changes size, not on every scroll frame.
+    const measurePhrases = () => {
+      phrases.forEach(phrase => {
+        const { width, height } = phrase.element.getBoundingClientRect();
+        phrase.radius = Math.hypot(width / 2, height * 0.55) + 20;
+      });
+    };
 
     // Transparent frames extracted from the supplied video. Ordinary images
     // avoid mobile browsers' restrictions on paused/hidden video seeking.
@@ -54,19 +63,28 @@ export default function ScrollStatement() {
       root.dataset.progress = progress.toFixed(3);
       canvas.style.opacity = progress > 0 ? "1" : "0";
       // Use the drawing's progress for every phrase, including reverse scrolling.
-      // Smoothstep gives each arrival a quiet beginning and a lingering finish.
-      phrases.forEach(({ element, start, end }) => {
+      // A soft circular alpha mask travels outward like a drop on water.
+      // No text blur, color fringe, or visible stroke is applied to the glyphs.
+      phrases.forEach(({ element, start, end, radius }) => {
         const phase = motion.matches ? 1 : clamp((progress - start) / (end - start));
-        const reveal = phase * phase * (3 - 2 * phase);
-        element.style.setProperty("--phrase-opacity", reveal.toFixed(3));
-        element.style.setProperty("--phrase-rise", `${((1 - reveal) * 10).toFixed(2)}px`);
-        element.style.setProperty("--phrase-blur", `${((1 - reveal) * 3).toFixed(2)}px`);
+        const spread = 1 - Math.pow(1 - phase, 2);
+        const edge = spread * radius;
+        const opacity = clamp(phase / 0.32);
+        element.style.setProperty("--phrase-opacity", (opacity * opacity * (3 - 2 * opacity)).toFixed(3));
+        element.style.setProperty("--phrase-mask", phase >= 1 ? "none" :
+          `radial-gradient(circle at 50% 55%, #000 ${Math.max(0, edge - 20).toFixed(2)}px, transparent ${edge.toFixed(2)}px)`);
       });
       paint();
     };
     const schedule = () => {
       if (!raf) raf = window.requestAnimationFrame(update);
     };
+    const phraseSizes = new ResizeObserver(() => {
+      measurePhrases();
+      schedule();
+    });
+    phrases.forEach(({ element }) => phraseSizes.observe(element));
+    measurePhrases();
     frames.fetchPriority = "low";
     frames.onload = schedule;
     // The drawing starts well after this canvas first enters the viewport.
@@ -87,6 +105,7 @@ export default function ScrollStatement() {
       disposed = true;
       frames.onload = null;
       preload.disconnect();
+      phraseSizes.disconnect();
       window.cancelAnimationFrame(raf);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
@@ -101,12 +120,12 @@ export default function ScrollStatement() {
           <canvas ref={canvasRef} width={SIZE} height={SIZE} />
         </div>
         <div className="scroll-statement-copy container-main text-center">
-          <p data-reveal-start="0" data-reveal-end="0.12" className="scroll-statement-label statement-reveal font-display text-xs tracking-[0.3em] text-[var(--color-muted)]">ART NO UZU</p>
+          <p className="scroll-statement-label font-display text-xs tracking-[0.3em] text-[var(--color-muted)]">ART NO UZU</p>
           <p className="scroll-statement-quote leading-loose tracking-wider-jp">
             <span className="statement-reveal" data-reveal-start="0.03" data-reveal-end="0.18">渦は、</span><span className="statement-reveal" data-reveal-start="0.13" data-reveal-end="0.33">感情であり、</span><br className="md:hidden" /><span className="statement-reveal" data-reveal-start="0.30" data-reveal-end="0.51">呼吸であり、</span><br /><span className="statement-reveal" data-reveal-start="0.48" data-reveal-end="0.69">記録であり、</span><span className="statement-reveal" data-reveal-start="0.65" data-reveal-end="0.88">祈り。</span>
           </p>
           <p className="scroll-statement-detail leading-loose text-[var(--color-muted)]">
-            <span className="statement-reveal" data-reveal-start="0.80" data-reveal-end="0.94">2015年から、「渦」を描き続けている。</span><br /><span className="statement-reveal" data-reveal-start="0.89" data-reveal-end="1">私が変われば、渦も変わる。</span>
+            2015年から、「渦」を描き続けている。<br />私が変われば、渦も変わる。
           </p>
         </div>
       </div>

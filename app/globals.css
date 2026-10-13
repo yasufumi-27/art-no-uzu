@@ -116,8 +116,8 @@ html {
 .statement-reveal {
   display: inline-block;
   opacity: var(--phrase-opacity, 1);
-  transform: translateY(var(--phrase-rise, 0px));
-  filter: blur(var(--phrase-blur, 0px));
+  -webkit-mask-image: var(--phrase-mask, none);
+  mask-image: var(--phrase-mask, none);
 }
 
 .scroll-statement-quote { margin: 0; font-size: 2rem; }
