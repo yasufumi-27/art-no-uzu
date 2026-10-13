@@ -18,6 +18,11 @@ export default function ScrollStatement() {
     const context = canvas.getContext("2d");
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const frames = new Image();
+    const phrases = [...root.querySelectorAll("[data-reveal-start]")].map(element => ({
+      element,
+      start: Number(element.dataset.revealStart),
+      end: Number(element.dataset.revealEnd),
+    }));
     let progress = 0;
     let raf = 0;
     let paintedFrame = -1;
@@ -48,6 +53,15 @@ export default function ScrollStatement() {
       root.classList.toggle("is-scroll-driven", !motion.matches);
       root.dataset.progress = progress.toFixed(3);
       canvas.style.opacity = progress > 0 ? "1" : "0";
+      // Use the drawing's progress for every phrase, including reverse scrolling.
+      // Smoothstep gives each arrival a quiet beginning and a lingering finish.
+      phrases.forEach(({ element, start, end }) => {
+        const phase = motion.matches ? 1 : clamp((progress - start) / (end - start));
+        const reveal = phase * phase * (3 - 2 * phase);
+        element.style.setProperty("--phrase-opacity", reveal.toFixed(3));
+        element.style.setProperty("--phrase-rise", `${((1 - reveal) * 10).toFixed(2)}px`);
+        element.style.setProperty("--phrase-blur", `${((1 - reveal) * 3).toFixed(2)}px`);
+      });
       paint();
     };
     const schedule = () => {
@@ -87,12 +101,12 @@ export default function ScrollStatement() {
           <canvas ref={canvasRef} width={SIZE} height={SIZE} />
         </div>
         <div className="scroll-statement-copy container-main text-center">
-          <p className="scroll-statement-label font-display text-xs tracking-[0.3em] text-[var(--color-muted)]">ART NO UZU</p>
+          <p data-reveal-start="0" data-reveal-end="0.12" className="scroll-statement-label statement-reveal font-display text-xs tracking-[0.3em] text-[var(--color-muted)]">ART NO UZU</p>
           <p className="scroll-statement-quote leading-loose tracking-wider-jp">
-            渦は、感情であり、<br className="md:hidden" />呼吸であり、<br />記録であり、祈り。
+            <span className="statement-reveal" data-reveal-start="0.03" data-reveal-end="0.18">渦は、</span><span className="statement-reveal" data-reveal-start="0.13" data-reveal-end="0.33">感情であり、</span><br className="md:hidden" /><span className="statement-reveal" data-reveal-start="0.30" data-reveal-end="0.51">呼吸であり、</span><br /><span className="statement-reveal" data-reveal-start="0.48" data-reveal-end="0.69">記録であり、</span><span className="statement-reveal" data-reveal-start="0.65" data-reveal-end="0.88">祈り。</span>
           </p>
           <p className="scroll-statement-detail leading-loose text-[var(--color-muted)]">
-            2015年から、「渦」を描き続けている。<br />私が変われば、渦も変わる。
+            <span className="statement-reveal" data-reveal-start="0.80" data-reveal-end="0.94">2015年から、「渦」を描き続けている。</span><br /><span className="statement-reveal" data-reveal-start="0.89" data-reveal-end="1">私が変われば、渦も変わる。</span>
           </p>
         </div>
       </div>

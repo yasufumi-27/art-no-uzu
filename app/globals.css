@@ -112,6 +112,14 @@ html {
   bottom: calc(50% + var(--statement-art-size) / 2 + 16px);
 }
 
+/* Defaults keep the full statement readable without JavaScript. */
+.statement-reveal {
+  display: inline-block;
+  opacity: var(--phrase-opacity, 1);
+  transform: translateY(var(--phrase-rise, 0px));
+  filter: blur(var(--phrase-blur, 0px));
+}
+
 .scroll-statement-quote { margin: 0; font-size: 2rem; }
 .scroll-statement-detail {
   top: calc(50% + var(--statement-art-size) / 2 + 16px);
