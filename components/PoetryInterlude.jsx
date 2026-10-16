@@ -6,6 +6,7 @@ import styles from "./PoetryInterlude.module.css";
 
 export default function PoetryInterlude({ poems }) {
   const [index, setIndex] = useState(0);
+  const [phase, setPhase] = useState("enter");
   const [inView, setInView] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const [paused, setPaused] = useState(false);
@@ -17,9 +18,7 @@ export default function PoetryInterlude({ poems }) {
     const stage = stageRef.current;
     const observer = new IntersectionObserver(([entry]) => {
       setInView(entry.isIntersecting);
-      if (entry.isIntersecting) stage.classList.add(styles.visible);
     }, { threshold: 0.12 });
-    stage.classList.add(styles.waiting);
     observer.observe(stage);
     const visibility = () => setPageVisible(!document.hidden);
     document.addEventListener("visibilitychange", visibility);
@@ -32,14 +31,22 @@ export default function PoetryInterlude({ poems }) {
 
   useEffect(() => {
     if (!inView || !pageVisible || paused || hovered || focused || poems.length < 2) return;
-    // Allow time to read the complete poem; longer passages stay a little longer.
-    const duration = Math.max(20000, poems[index].text.length * 160);
-    const timer = window.setTimeout(() => setIndex(i => (i + 1) % poems.length), duration);
+    // A complete cycle takes 13–16 seconds, including arrival and departure.
+    const readingTime = Math.min(11000, Math.max(7500, poems[index].text.length * 65));
+    const duration = { enter: 3200, hold: readingTime, exit: 1800, gap: 350 }[phase];
+    const timer = window.setTimeout(() => {
+      if (phase === "gap") {
+        setIndex(i => (i + 1) % poems.length);
+        setPhase("enter");
+      } else {
+        setPhase({ enter: "hold", hold: "exit", exit: "gap" }[phase]);
+      }
+    }, duration);
     return () => window.clearTimeout(timer);
-  }, [index, inView, pageVisible, paused, hovered, focused, poems]);
+  }, [phase, index, inView, pageVisible, paused, hovered, focused, poems]);
 
   return (
-    <section className={styles.section} aria-label="作品の詩" data-resting={!inView || !pageVisible || paused}>
+    <section className={styles.section} aria-label="作品の詩" data-resting={!inView || !pageVisible || paused} data-phase={phase}>
       <div className={styles.atmosphere} aria-hidden="true">
         <div className={styles.light} />
         <div className={styles.mist} />
@@ -61,7 +68,14 @@ export default function PoetryInterlude({ poems }) {
               <blockquote className={styles.poem}>
                 <Link className={styles.poemLink} href={`/works/${poem.id}`} tabIndex={i === index ? 0 : -1}
                   aria-label={`「${poem.title}」の詩 — 作品ページへ`}>
-                  <p>{poem.text}</p>
+                  <p>{Array.from(poem.text).map((character, position, characters) =>
+                    character === "\n" ? "\n" : (
+                      <span key={position} className={styles.character} style={{
+                        "--arrival": `${position / Math.max(1, characters.length - 1) * 1500}ms`,
+                        "--departure": `${(characters.length - 1 - position) / Math.max(1, characters.length - 1) * 600}ms`,
+                      }}>{character}</span>
+                    )
+                  )}</p>
                 </Link>
               </blockquote>
               <span className={styles.closingMark} aria-hidden="true">”</span>
