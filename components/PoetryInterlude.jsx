@@ -54,20 +54,8 @@ export default function PoetryInterlude({ poems }) {
 
   return (
     <section className={styles.section} aria-label="作品の詩" data-resting={!inView || !pageVisible || paused} data-phase={phase}>
-      <div className={styles.architecture} aria-hidden="true">
-        <div className={styles.ceiling} />
-        <div className={styles.floor} />
-        <div className={styles.wallLeft} /><div className={styles.wallRight} />
-      </div>
-      <div className={styles.atmosphere} aria-hidden="true">
-        <div className={styles.light} />
-        <div className={styles.mist} />
-        {Array.from({ length: 9 }, (_, i) => (
-          <i key={i} className={styles.mote} style={{ "--n": i }} />
-        ))}
-      </div>
       <div ref={stageRef} className={styles.stage}>
-        <div className={styles.galleryLabel} aria-hidden="true">POETRY GALLERY<span>言葉をめぐる</span></div>
+        <div className={styles.galleryLabel} aria-hidden="true">POETRY<span>言葉の余白</span></div>
         <div className={styles.viewport}>
         <div className={styles.slides} style={{ "--turn": `${-position * 360 / poems.length}deg` }}
           onPointerEnter={e => { if (e.pointerType === "mouse") setHovered(true); }}
@@ -77,6 +65,7 @@ export default function PoetryInterlude({ poems }) {
           {poems.map((poem, i) => (
             <figure key={poem.id} className={`${styles.figure} ${i === index ? styles.active : ""}`}
               aria-hidden={i !== index} data-poem-id={poem.id}
+              data-near={i === (index + 1) % poems.length || i === (index - 1 + poems.length) % poems.length}
               style={{ "--angle": `${i * 360 / poems.length}deg` }}>
               <span className={styles.exhibitNumber} aria-hidden="true">{String(i + 1).padStart(2, "0")} / WORDS</span>
               <span className={styles.mark} aria-hidden="true">“</span>
