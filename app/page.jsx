@@ -2,7 +2,6 @@ import Link from "next/link";
 import Hero from "@/components/Hero";
 import LifeLine from "@/components/LifeLine";
 import Reveal from "@/components/Reveal";
-import ScrollStatement from "@/components/ScrollStatement";
 import FadeImg from "@/components/FadeImg";
 import { asset } from "@/lib/asset";
 import FeaturedWorks from "@/components/FeaturedWorks";
@@ -13,7 +12,6 @@ export default function Home() {
     <>
       <Hero />
       <LifeLine />
-      <ScrollStatement />
 
       <div className="container-main">
         {/* Works / Exhibition */}
