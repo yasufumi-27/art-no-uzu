@@ -58,7 +58,12 @@ export default function PoetryInterlude({ poems }) {
             <figure key={poem.id} className={`${styles.figure} ${i === index ? styles.active : ""}`}
               aria-hidden={i !== index} data-poem-id={poem.id}>
               <span className={styles.mark} aria-hidden="true">“</span>
-              <blockquote className={styles.poem}><p>{poem.text}</p></blockquote>
+              <blockquote className={styles.poem}>
+                <Link className={styles.poemLink} href={`/works/${poem.id}`} tabIndex={i === index ? 0 : -1}
+                  aria-label={`「${poem.title}」の詩 — 作品ページへ`}>
+                  <p>{poem.text}</p>
+                </Link>
+              </blockquote>
               <span className={styles.closingMark} aria-hidden="true">”</span>
               <figcaption className={styles.credit}>
                 <Link href={`/works/${poem.id}`} tabIndex={i === index ? 0 : -1}
