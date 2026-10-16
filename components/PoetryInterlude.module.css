@@ -1,0 +1,104 @@
+.section {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: 88svh;
+  padding: clamp(112px, 15vh, 180px) 32px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 48%, #fffdf8 0%, transparent 68%);
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 8% 15%;
+  background: radial-gradient(ellipse at 50% 45%, rgb(202 187 155 / 9%), transparent 66%);
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+.figure {
+  position: relative;
+  width: fit-content;
+  max-width: min(100%, 760px);
+  margin: 0;
+}
+
+.mark {
+  display: block;
+  height: 56px;
+  margin-bottom: 24px;
+  color: #b7ad99;
+  font-family: Georgia, serif;
+  font-size: 84px;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  user-select: none;
+}
+
+.poem {
+  margin: 0;
+  color: #383a36;
+  font-size: clamp(16px, 1.55vw, 22px);
+  font-weight: 300;
+  line-height: 2.35;
+  letter-spacing: 0.13em;
+  text-transform: none;
+  overflow-wrap: anywhere;
+}
+
+.poem p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.credit {
+  margin-top: 48px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 0.17em;
+  color: #77766f;
+  text-transform: none;
+}
+
+.credit cite { font-style: normal; }
+.credit a { text-underline-offset: 6px; }
+.credit a:hover { text-decoration: underline; }
+.credit a:focus-visible { outline: 1px solid currentColor; outline-offset: 8px; }
+
+.waiting .mark,
+.waiting .poem,
+.waiting .credit {
+  opacity: 0;
+  transform: translateY(14px);
+  filter: blur(5px);
+  transition: opacity 1.8s ease, transform 1.8s ease, filter 1.8s ease;
+}
+
+.visible .mark,
+.visible .poem,
+.visible .credit {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.visible .poem { transition-delay: 0.15s; }
+.visible .credit { transition-delay: 0.65s; }
+
+@media (max-width: 639px) {
+  .section { padding: 104px 28px 112px; min-height: 80svh; }
+  .poem { font-size: 16px; line-height: 2.2; letter-spacing: 0.07em; }
+  .mark { height: 44px; font-size: 68px; margin-bottom: 20px; }
+  .credit { margin-top: 36px; font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waiting .mark,
+  .waiting .poem,
+  .waiting .credit { opacity: 1; transform: none; filter: none; transition: none; }
+}

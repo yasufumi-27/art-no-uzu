@@ -5,13 +5,22 @@ import Reveal from "@/components/Reveal";
 import FadeImg from "@/components/FadeImg";
 import { asset } from "@/lib/asset";
 import FeaturedWorks from "@/components/FeaturedWorks";
+import PoetryInterlude from "@/components/PoetryInterlude";
+import { WORK_DETAILS } from "@/lib/work-details";
 import { SOCIAL } from "@/components/Footer";
+
+// A complete short poem, retaining the same line breaks as the work page.
+const POEMS = Object.entries(WORK_DETAILS)
+  .filter(([, work]) => work.purchaseUrl && work.description &&
+    work.description.split("\n").filter(Boolean).length <= 10)
+  .map(([id, work]) => ({ id, title: work.title, text: work.description }));
 
 export default function Home() {
   return (
     <>
       <Hero />
       <LifeLine />
+      <PoetryInterlude poems={POEMS} />
 
       <div className="container-main">
         {/* Works / Exhibition */}
