@@ -10,31 +10,12 @@ import { works, workAlt } from "@/lib/works";
 import { responsiveImage } from "@/lib/responsive-image";
 import { TOP_IMAGES } from "@/lib/top-images";
 import { SAME_IMAGE_GROUPS } from "@/lib/work-links";
+import { chooseFeaturedTiles } from "@/lib/featured-selection";
 
-// index の Works / Exhibition。訪問ごとにランダムで9作品を選ぶ（#3）。
-// 大きく拡大表示するため、解像度の高い作品（works.sharp）だけから選ぶ。
-// SSR ではハイドレーション不一致を避けるため決定的に先頭9件を描画し、
-// マウント後にクライアント側でシャッフルして差し替える。
-// 同じ画像の作品（SAME_IMAGE_GROUPS）は、指定した show の作品だけを残し、hide の作品は TOP に出さない
-const HIDDEN_ON_TOP = new Set(SAME_IMAGE_GROUPS.flatMap((g) => g.hide));
-function uniqueImages(list) {
-  return list.filter((w) => !HIDDEN_ON_TOP.has(w.id));
-}
-
-function pickRandom(list, n) {
-  const a = [...list];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return uniqueImages(a).slice(0, n);
-}
-
-const SHARP_WORKS = works.filter((w) => w.sharp);
+// 四隅＋中央は固定5枚、残り4枚は重複しない鮮明な作品から選ぶ。
+// SSR は決定的に選び、マウント後にランダム4枠だけを差し替える。
 function chooseTiles(random = false) {
-  const top = random ? pickRandom(TOP_IMAGES, 5) : TOP_IMAGES.slice(0, 5);
-  const sides = random ? pickRandom(SHARP_WORKS, 4) : uniqueImages(SHARP_WORKS).slice(0, 4);
-  return [top[0], sides[0], top[1], sides[1], top[2], sides[2], top[3], sides[3], top[4]];
+  return chooseFeaturedTiles(TOP_IMAGES, works, SAME_IMAGE_GROUPS, random ? Math.random : null);
 }
 
 export default function FeaturedWorks({ children }) {
