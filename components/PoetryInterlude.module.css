@@ -19,11 +19,28 @@
   pointer-events: none;
 }
 
+.stage { width: min(100%, 760px); }
+
+/* Overlapping grid cells reserve space for the tallest poem on every screen. */
+.slides { display: grid; align-items: center; }
 .figure {
+  grid-area: 1 / 1;
   position: relative;
   width: fit-content;
-  max-width: min(100%, 760px);
-  margin: 0;
+  max-width: 100%;
+  margin: 0 auto;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  filter: blur(3px);
+  transition: opacity 1.2s ease, filter 1.2s ease, visibility 0s 1.2s;
+}
+.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  filter: blur(0);
+  transition: opacity 2s ease 0.6s, filter 2s ease 0.6s, visibility 0s;
 }
 
 .mark {
@@ -70,25 +87,27 @@
 .credit a:hover { text-decoration: underline; }
 .credit a:focus-visible { outline: 1px solid currentColor; outline-offset: 8px; }
 
-.waiting .mark,
-.waiting .poem,
-.waiting .credit {
-  opacity: 0;
-  transform: translateY(14px);
-  filter: blur(5px);
-  transition: opacity 1.8s ease, transform 1.8s ease, filter 1.8s ease;
+.pause {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 40px auto -44px;
+  color: #8a877f;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
 }
+.pause:hover { color: #383a36; }
+.pause:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
 
-.visible .mark,
-.visible .poem,
-.visible .credit {
+.waiting { opacity: 0; transform: translateY(14px); filter: blur(5px); }
+.visible {
   opacity: 1;
   transform: translateY(0);
   filter: blur(0);
+  transition: opacity 1.8s ease, transform 1.8s ease, filter 1.8s ease;
 }
-
-.visible .poem { transition-delay: 0.15s; }
-.visible .credit { transition-delay: 0.65s; }
 
 @media (max-width: 639px) {
   .section { padding: 104px 28px 112px; min-height: 80svh; }
@@ -98,7 +117,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .waiting .mark,
-  .waiting .poem,
-  .waiting .credit { opacity: 1; transform: none; filter: none; transition: none; }
+  .waiting { opacity: 1; transform: none; filter: none; transition: none; }
+  .figure { filter: none; transition: opacity 0.3s ease, visibility 0s 0.3s; }
+  .active { transition: opacity 0.3s ease, visibility 0s; }
 }
