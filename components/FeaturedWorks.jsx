@@ -44,14 +44,6 @@ export default function FeaturedWorks({ children }) {
   const [progress, setProgress] = useState(0);
   const [scrollDriven, setScrollDriven] = useState(false);
   const storyRef = useRef(null);
-  const dialogRef = useRef(null);
-  const [selected, setSelected] = useState(null);
-  const openMobile = (event, work, always = false) => {
-    if (!always && !window.matchMedia("(max-width: 767px), (hover: none)").matches) return;
-    event.preventDefault();
-    setSelected(work);
-    dialogRef.current.showModal();
-  };
 
   // ホバーした作品を拡大表示（打ち合わせメモ）：横は3列分、縦はその作品を中心に上下へ半段ずつ
   // （＝上の段の中央から下の段の中央まで）。一覧からはみ出す場合は高さを保ったまま内側へずらす。PCのみ。
@@ -119,15 +111,15 @@ export default function FeaturedWorks({ children }) {
             const active = !scrollDriven || i === Math.round(progress * (TOP_IMAGES.length - 1));
             const offset = scrollDriven ? Math.max(-1, Math.min(1, i - progress * (TOP_IMAGES.length - 1))) : 0;
             return (
-              <button key={work.id} className="featured-story-image" aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を拡大`}
-                aria-hidden={!active} tabIndex={active ? 0 : -1} onClick={(e) => openMobile(e, work, true)}>
+              <Link key={work.id} href={work.href || `/works/${work.id}`} className="featured-story-image" aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を見る`}
+                aria-hidden={!active} tabIndex={active ? 0 : -1}>
                 <span className="featured-story-artwork" style={{
                   transform: `perspective(900px) translateY(${Math.abs(offset) * 28}px) rotateY(${-offset * 18}deg) rotateZ(${offset * 3}deg) scale(${1 - Math.abs(offset) * 0.14})`,
                   opacity: 1 - Math.abs(offset) * 0.22,
                 }}>
                   <img src={work.images[0]} {...responsiveImage(work.images[0])} decoding="async" alt={`神谷佳美 TOP指定作品 ${i + 1}`} loading="lazy" />
                 </span>
-              </button>
+              </Link>
             );
           })}
         </div>
@@ -168,7 +160,6 @@ export default function FeaturedWorks({ children }) {
                 href={work.href || `/works/${work.id}`}
                 className="group block"
                 onMouseEnter={(e) => showPreview(e.currentTarget, work)}
-                onClick={(e) => openMobile(e, work)}
               >
                 {inner}
               </Link>
@@ -179,7 +170,6 @@ export default function FeaturedWorks({ children }) {
                 rel="noopener noreferrer"
                 className="group block"
                 onMouseEnter={(e) => showPreview(e.currentTarget, work)}
-                onClick={(e) => openMobile(e, work)}
               >
                 {inner}
               </a>
@@ -224,14 +214,6 @@ export default function FeaturedWorks({ children }) {
         </div>
       )}
     </div>
-    <dialog ref={dialogRef} className="work-dialog" onClick={(e) => { if (e.target === e.currentTarget) e.currentTarget.close(); }} onClose={() => setSelected(null)}>
-      {selected && <div className="relative">
-        <button className="work-dialog-close" onClick={() => dialogRef.current.close()} aria-label="閉じる">×</button>
-        <img src={selected.images[0]} alt={workAlt(selected)} className="work-dialog-image" />
-        <p className="mt-4 text-sm">{selected.title || selected.year || "Works / Exhibition"}</p>
-        {selected.hasDetail ? <Link className="mt-4 inline-block border-b text-xs" href={selected.href || `/works/${selected.id}`}>詳しく見る →</Link> : <a className="mt-4 inline-block border-b text-xs" href={selected.instagram} target="_blank" rel="noopener noreferrer">{selected.linkLabel} で見る ↗</a>}
-      </div>}
-    </dialog>
     </>
   );
 }
