@@ -50,7 +50,7 @@ export const metadata = {
   openGraph: {
     title: "ART NO UZU — 神谷佳美 公式サイト",
     description:
-      "渦は、感情であり、呼吸であり、記録であり、祈り。神谷佳美の作品アーカイブ。",
+      "2015年から渦を描き続ける神谷佳美の作品アーカイブ。",
     type: "website",
     siteName: SITE_NAME,
     locale: "ja_JP",

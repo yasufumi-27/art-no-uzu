@@ -18,6 +18,7 @@ export default function Home() {
       <div className="container-main">
         {/* Works / Exhibition */}
         <section className="pb-10">
+          <FeaturedWorks>
           <Reveal className="mb-12 flex items-baseline justify-between gap-4">
             <h2 className="font-display text-2xl tracking-[0.12em] sm:text-4xl sm:tracking-[0.15em]">
               Works / Exhibition
@@ -29,7 +30,7 @@ export default function Home() {
               View all →
             </Link>
           </Reveal>
-          <FeaturedWorks />
+          </FeaturedWorks>
         </section>
 
         {/* About */}

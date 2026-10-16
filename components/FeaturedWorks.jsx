@@ -37,7 +37,7 @@ function chooseTiles(random = false) {
   return [top[0], sides[0], top[1], sides[1], top[2], sides[2], top[3], sides[3], top[4]];
 }
 
-export default function FeaturedWorks() {
+export default function FeaturedWorks({ children }) {
   const [items, setItems] = useState(() => chooseTiles());
   const gridRef = useRef(null);
   const [preview, setPreview] = useState(null);
@@ -46,8 +46,8 @@ export default function FeaturedWorks() {
   const storyRef = useRef(null);
   const dialogRef = useRef(null);
   const [selected, setSelected] = useState(null);
-  const openMobile = (event, work) => {
-    if (!window.matchMedia("(max-width: 767px), (hover: none)").matches) return;
+  const openMobile = (event, work, always = false) => {
+    if (!always && !window.matchMedia("(max-width: 767px), (hover: none)").matches) return;
     event.preventDefault();
     setSelected(work);
     dialogRef.current.showModal();
@@ -79,12 +79,11 @@ export default function FeaturedWorks() {
 
   useEffect(() => {
     let raf = 0;
-    const mobile = window.matchMedia("(max-width: 767px)");
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => {
       raf = 0;
       if (!storyRef.current) return;
-      const enabled = mobile.matches && !motion.matches;
+      const enabled = !motion.matches;
       storyRef.current.classList.toggle("is-scroll-driven", enabled);
       setScrollDriven(enabled);
       if (!enabled) { setProgress(0); return; }
@@ -98,12 +97,10 @@ export default function FeaturedWorks() {
     update();
     window.addEventListener("scroll", scroll, { passive: true });
     window.addEventListener("resize", scroll);
-    mobile.addEventListener("change", scroll);
     motion.addEventListener("change", scroll);
     return () => {
       window.removeEventListener("scroll", scroll);
       window.removeEventListener("resize", scroll);
-      mobile.removeEventListener("change", scroll);
       motion.removeEventListener("change", scroll);
       cancelAnimationFrame(raf);
     };
@@ -123,7 +120,7 @@ export default function FeaturedWorks() {
             const offset = scrollDriven ? Math.max(-1, Math.min(1, i - progress * (TOP_IMAGES.length - 1))) : 0;
             return (
               <button key={work.id} className="featured-story-image" aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を拡大`}
-                aria-hidden={!active} tabIndex={active ? 0 : -1} onClick={(e) => openMobile(e, work)}>
+                aria-hidden={!active} tabIndex={active ? 0 : -1} onClick={(e) => openMobile(e, work, true)}>
                 <span className="featured-story-artwork" style={{
                   transform: `perspective(900px) translateY(${Math.abs(offset) * 28}px) rotateY(${-offset * 18}deg) rotateZ(${offset * 3}deg) scale(${1 - Math.abs(offset) * 0.14})`,
                   opacity: 1 - Math.abs(offset) * 0.22,
@@ -137,6 +134,7 @@ export default function FeaturedWorks() {
         <p className="featured-story-count" aria-hidden="true">{String(Math.round(progress * (TOP_IMAGES.length - 1)) + 1).padStart(2, "0")} / 05</p>
       </div>
     </div>
+    {children}
     <div
       ref={gridRef}
       className="featured-grid relative grid grid-cols-3 gap-1 sm:gap-4 md:gap-6"

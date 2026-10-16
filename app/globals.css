@@ -60,109 +60,18 @@ html {
   height: 340svh;
 }
 
+/* The drawing is the entire statement: no text overlay and no faded layer. */
 .scroll-statement-stage {
-  --statement-copy-room: 160px;
-  --statement-art-size: min(82vw, 74svh, 760px, calc(100svh - var(--statement-copy-room)));
+  --statement-art-size: min(88vw, 82svh, 900px);
   position: relative;
   height: 100svh;
   display: grid;
   place-items: center;
   isolation: isolate;
 }
-
-.is-scroll-driven .scroll-statement-stage {
-  position: sticky;
-  top: 0;
-}
-
-.scroll-statement-art {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: var(--statement-art-size);
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-  opacity: 0.32;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.scroll-statement-art canvas {
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-}
-
-.scroll-statement-copy {
-  position: relative;
-  height: 100%;
-  display: grid;
-  place-items: center;
-}
-
-.scroll-statement-label,
-.scroll-statement-detail {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  margin: 0;
-}
-
-.scroll-statement-label {
-  bottom: calc(50% + var(--statement-art-size) / 2 + 16px);
-}
-
-/* Defaults keep the full statement readable without JavaScript. */
-.statement-reveal {
-  position: relative;
-  display: inline-block;
-  isolation: isolate;
-}
-
-.statement-reveal::before,
-.statement-reveal::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 55%;
-  width: var(--ripple-size, 0px);
-  height: var(--ripple-size, 0px);
-  pointer-events: none;
-  z-index: -1;
-  border-radius: 50%;
-  background: radial-gradient(circle closest-side,
-    transparent calc(100% - 9px),
-    rgb(70 66 58 / 18%) calc(100% - 5px),
-    transparent 100%);
-  transform: translate(-50%, -50%) scale(var(--ripple-scale, 0));
-  opacity: var(--ripple-opacity, 0);
-}
-
-.statement-reveal::after {
-  transform: translate(-50%, -50%) scale(var(--ripple-echo-scale, 0));
-  opacity: var(--ripple-echo-opacity, 0);
-}
-
-.statement-reveal-text {
-  display: inline-block;
-  opacity: var(--phrase-opacity, 1);
-  -webkit-mask-image: var(--phrase-mask, none);
-  mask-image: var(--phrase-mask, none);
-}
-
-.scroll-statement-quote { margin: 0; font-size: 2rem; }
-.scroll-statement-detail {
-  top: calc(50% + var(--statement-art-size) / 2 + 16px);
-  font-size: 1.5rem;
-}
-@media (min-width: 768px) {
-  .scroll-statement-stage { --statement-copy-room: calc(12rem + 48px); }
-  .scroll-statement-quote { font-size: 2.25rem; }
-}
-@media (max-width: 767px) {
-  .scroll-statement-copy .scroll-statement-quote { letter-spacing: 0; }
-  .scroll-statement-detail { font-size: 0.75rem; }
-}
+.is-scroll-driven .scroll-statement-stage { position: sticky; top: 0; }
+.scroll-statement-art { width: var(--statement-art-size); aspect-ratio: 1; opacity: 1; pointer-events: none; }
+.scroll-statement-art canvas { display: block; width: 100%; height: 100%; opacity: 1; }
 
 @keyframes opening-finish {
   0%, 93% { opacity: 1; }
@@ -774,29 +683,29 @@ select,
 @media (prefers-reduced-motion: reduce) {
   .history-panel.is-on { animation: none; }
 }
-.featured-story { display: none; }
+.featured-grid { overflow: clip; }
+.featured-story { display: block; margin-bottom: 64px; }
 .featured-story-decoration { display: none; }
 .featured-story-artwork { display: block; height: 100%; }
 .work-dialog { margin: auto; padding: 20px; width: min(96vw, 720px); max-height: 90dvh; background: var(--color-bg); border: 0; overflow: auto; }
 .work-dialog::backdrop { background: rgb(0 0 0 / 55%); }
 .work-dialog-close { position: absolute; right: 0; top: 0; z-index: 2; background: white; width: 36px; height: 36px; font-size: 24px; }
 .work-dialog-image { width: 100%; max-height: 65dvh; object-fit: contain; }
+/* Shared desktop/mobile story, followed by the nine-tile grid. */
+.featured-story-stage { position: relative; overflow: hidden; }
+.featured-story-track { display: flex; flex-direction: column; }
+.featured-story-image { width: 100%; padding: 24px; min-height: 70svh; }
+.featured-story-image img { height: 100%; width: 100%; max-height: 72svh; object-fit: contain; }
+.featured-story-count { display: none; }
+.featured-story.is-scroll-driven { height: 500svh; }
+.is-scroll-driven .featured-story-stage { position: sticky; top: 100px; height: calc(100svh - 100px); }
+.is-scroll-driven .featured-story-track { flex-direction: row; height: 100%; will-change: transform; position: relative; z-index: 1; }
+.is-scroll-driven .featured-story-decoration { display: block; position: absolute; width: 94%; aspect-ratio: 1; left: 3%; top: 50%; transform: translateY(-50%); color: var(--color-muted); opacity: 0.2; pointer-events: none; }
+.is-scroll-driven .featured-story-artwork { will-change: transform, opacity; }
+.is-scroll-driven .featured-story-artwork img { filter: drop-shadow(0 14px 18px rgb(0 0 0 / 14%)); }
+.is-scroll-driven .featured-story-image { flex: 0 0 100%; min-width: 0; min-height: 0; padding: 24px 24px 68px; }
+.is-scroll-driven .featured-story-image img { max-height: none; }
+.is-scroll-driven .featured-story-count { display: block; position: absolute; bottom: 24px; left: 0; width: 100%; text-align: center; font-size: 11px; letter-spacing: 0.2em; color: var(--color-muted); }
 @media (max-width: 767px) {
-  .featured-grid { display: none; }
-  .featured-story { display: block; margin-inline: -24px; }
-  .featured-story-stage { position: relative; overflow: hidden; }
-  .featured-story-track { display: flex; flex-direction: column; }
-  .featured-story-image { width: 100%; padding: 24px; min-height: 70svh; }
-  .featured-story-image img { height: 100%; width: 100%; max-height: 72svh; object-fit: contain; }
-  .featured-story-count { display: none; }
-  .featured-story.is-scroll-driven { height: 500svh; }
-  .is-scroll-driven .featured-story-stage { position: sticky; top: 100px; height: calc(100svh - 100px); }
-  .is-scroll-driven .featured-story-track { flex-direction: row; height: 100%; will-change: transform; }
-  .is-scroll-driven .featured-story-decoration { display: block; position: absolute; width: 94%; aspect-ratio: 1; left: 3%; top: 50%; transform: translateY(-50%); color: var(--color-muted); opacity: 0.2; pointer-events: none; }
-  .is-scroll-driven .featured-story-track { position: relative; z-index: 1; }
-  .is-scroll-driven .featured-story-artwork { will-change: transform, opacity; }
-  .is-scroll-driven .featured-story-artwork img { filter: drop-shadow(0 14px 18px rgb(0 0 0 / 14%)); }
-  .is-scroll-driven .featured-story-image { flex: 0 0 100%; min-width: 0; min-height: 0; padding: 24px 24px 68px; }
-  .is-scroll-driven .featured-story-image img { max-height: none; }
-  .is-scroll-driven .featured-story-count { display: block; position: absolute; bottom: 24px; left: 0; width: 100%; text-align: center; font-size: 11px; letter-spacing: 0.2em; color: var(--color-muted); }
+  .featured-story { margin-inline: -24px; }
 }

@@ -167,6 +167,28 @@ export default function AboutPage() {
         </div>
         <HistoryTimeline history={HISTORY} />
       </Reveal>
+
+      {/* 2026-10-13の来歴PDFと照合した全文。年を選ばず一覧で読める。 */}
+      <section className="mt-24 md:mt-32" aria-labelledby="biography-heading">
+        <div className="flex items-baseline justify-between gap-6 border-b border-[var(--color-line)] pb-4">
+          <h2 id="biography-heading" className="text-sm tracking-[0.2em]">来歴</h2>
+          <a href={asset("/documents/biography-20261013.pdf")} target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--color-muted)] underline underline-offset-4">PDFを開く ↗</a>
+        </div>
+        <div className="divide-y divide-[var(--color-line)]">
+          {[...HISTORY].reverse().map(({ year, items, exhibitions }) => (
+            <section key={year} aria-labelledby={`biography-${year}`} className="grid gap-4 py-8 sm:grid-cols-[100px_1fr] sm:gap-8">
+              <h3 id={`biography-${year}`} className="font-display text-lg tracking-[0.15em]">{year}</h3>
+              <div className="text-sm leading-loose">
+                {items.length > 0 && <ul className="space-y-1">{items.map(item => <li key={item.text}>{item.text}</li>)}</ul>}
+                {exhibitions?.length > 0 && <div className={items.length ? "mt-5" : ""}>
+                  <p className="mb-1 text-xs tracking-[0.12em] text-[var(--color-muted)]">EXHIBITION</p>
+                  <ul className="space-y-1">{exhibitions.map(item => <li key={item.text}>{item.text}</li>)}</ul>
+                </div>}
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
