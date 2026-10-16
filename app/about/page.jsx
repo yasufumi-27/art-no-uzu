@@ -172,7 +172,6 @@ export default function AboutPage() {
       <section className="mt-24 md:mt-32" aria-labelledby="biography-heading">
         <div className="flex items-baseline justify-between gap-6 border-b border-[var(--color-line)] pb-4">
           <h2 id="biography-heading" className="text-sm tracking-[0.2em]">来歴</h2>
-          <a href={asset("/documents/biography-20261013.pdf")} target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--color-muted)] underline underline-offset-4">PDFを開く ↗</a>
         </div>
         <div className="divide-y divide-[var(--color-line)]">
           {[...HISTORY].reverse().map(({ year, items, exhibitions }) => (

@@ -106,7 +106,7 @@ export default async function WorkDetail({ params }) {
       </div>
 
       {/* 作品を大きく上部表示 */}
-      <Reveal className="container-wide mt-10">
+      <Reveal className="container-wide work-gallery-shell mt-10">
         <Gallery images={work.images} alt={workAlt(work)} />
       </Reveal>
 

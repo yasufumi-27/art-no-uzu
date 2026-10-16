@@ -709,3 +709,24 @@ select,
 @media (max-width: 767px) {
   .featured-story { margin-inline: -24px; }
 }
+
+/* 作品・展示の画像はSPで左右端まで表示し、原寸の比率を保つ。 */
+.work-gallery-frame { aspect-ratio: 4 / 3; }
+.gallery-arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(28, 27, 25, 0.3);
+  border-radius: 50%;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: background-color 200ms, color 200ms;
+}
+.gallery-arrow:hover { background: var(--color-ink); color: var(--color-bg); }
+.gallery-arrow:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 3px; }
+@media (max-width: 767px) {
+  .work-gallery-shell { padding-inline: 0; }
+  .work-gallery-frame { aspect-ratio: var(--image-ratio); }
+}

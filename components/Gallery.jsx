@@ -12,6 +12,7 @@ export default function Gallery({ images, alt = "作品画像" }) {
   const [index, setIndex] = useState(0);
   const timer = useRef(null);
   const slides = images;
+  const activeImage = responsiveImage(slides[index]);
 
   // 自動切替
   useEffect(() => {
@@ -42,7 +43,10 @@ export default function Gallery({ images, alt = "作品画像" }) {
 
   return (
     <div>
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--color-line)]">
+      <div
+        className="work-gallery-frame relative w-full overflow-hidden bg-[var(--color-bg)]"
+        style={{ "--image-ratio": activeImage.width && activeImage.height ? `${activeImage.width} / ${activeImage.height}` : "4 / 3" }}
+      >
         {/* 各画像を重ね、opacity でフェードアウト/イン */}
         {slides.map((s, i) => (
           <img
@@ -63,14 +67,14 @@ export default function Gallery({ images, alt = "作品画像" }) {
             <button
               onClick={() => go(-1)}
               aria-label="前の画像"
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/70 px-3 py-2 text-xs hover:bg-white"
+              className="gallery-arrow absolute left-3 top-1/2 -translate-y-1/2 md:left-4"
             >
               ←
             </button>
             <button
               onClick={() => go(1)}
               aria-label="次の画像"
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/70 px-3 py-2 text-xs hover:bg-white"
+              className="gallery-arrow absolute right-3 top-1/2 -translate-y-1/2 md:right-4"
             >
               →
             </button>
