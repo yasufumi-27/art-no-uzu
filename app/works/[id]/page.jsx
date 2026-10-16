@@ -43,7 +43,7 @@ function workJsonLd(work) {
   };
 }
 
-// 静的エクスポート用：専用詳細ページを持つ作品（5件）のパスを生成。
+// 静的エクスポート用：専用詳細ページを持つ作品・展示のパスを生成。
 export function generateStaticParams() {
   return detailWorks().map((w) => ({ id: w.id }));
 }
@@ -78,6 +78,8 @@ export default async function WorkDetail({ params }) {
     ["Title", work.title],
     ["Year", work.year],
     ["Category", work.category],
+    ["Period", work.period],
+    ["Venue", work.venue],
     ["Series", work.series],
     ["Material", work.material],
     ["Size", work.size],
@@ -119,9 +121,15 @@ export default async function WorkDetail({ params }) {
           <h1 className="mt-4 text-2xl font-light tracking-wider-jp md:text-3xl leading-relaxed">
             {work.title || `${work.year} — ${work.category} ${work.id.split("_")[1]}`}
           </h1>
-          <p className="mt-6 max-w-xl text-sm leading-loose text-[var(--color-ink)]">
+          <p className="mt-6 max-w-xl whitespace-pre-line text-sm leading-loose text-[var(--color-ink)]">
             {work.description}
           </p>
+          {work.poem && <div className="mt-10 border-t border-[var(--color-line)] pt-8">
+            <h2 className="text-xs tracking-wider-jp text-[var(--color-muted)]">詩</h2>
+            <p className="mt-5 whitespace-pre-line text-sm leading-loose">{work.poem}</p>
+          </div>}
+          {work.article && <a href={work.article} target="_blank" rel="noopener noreferrer" className="mt-8 block text-xs underline underline-offset-4">展示について読む ↗</a>}
+          {work.purchaseUrl && <a href={work.purchaseUrl} target="_blank" rel="noopener noreferrer" className="mt-8 block w-fit border border-[var(--color-ink)] px-6 py-3 text-xs tracking-wider-jp hover:bg-[var(--color-ink)] hover:text-white">BASEで作品を見る ↗</a>}
           <a
             href={work.instagram}
             target="_blank"

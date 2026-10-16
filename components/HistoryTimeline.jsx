@@ -155,6 +155,7 @@ export default function HistoryTimeline({ history }) {
               ...(y.exhibitions ?? []).map((t) => ({ t, exhibition: true })),
             ];
             const on = i === active;
+            const photo = HISTORY_IMAGES[y.year];
             return (
               <section
                 key={y.year}
@@ -164,7 +165,12 @@ export default function HistoryTimeline({ history }) {
                 aria-hidden={!on}
                 className={`history-panel [grid-area:1/1] ${on ? "is-on" : ""} ${on && played ? "is-in" : ""}`}
               >
-                {HISTORY_IMAGES[y.year] && <img src={asset(HISTORY_IMAGES[y.year])} alt={`${y.year}年の活動記録`} className="history-photo" loading="lazy" />}
+                {photo && <figure className="mb-6">
+                  <img src={asset(photo.src)} alt={photo.caption} className="history-photo" loading="lazy" />
+                  <figcaption className="mt-2 text-[0.625rem] leading-relaxed text-[var(--color-muted)]">
+                    {photo.source ? <a href={photo.source} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{photo.caption} ↗</a> : photo.caption}
+                  </figcaption>
+                </figure>}
                 <h3 className="history-bigyear font-display text-4xl font-light tracking-[0.12em] md:text-6xl">
                   {y.year}
                 </h3>

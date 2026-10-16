@@ -41,6 +41,7 @@ const HISTORY = [
   ], exhibitions: [
     { text: "concent shibuya（渋谷）個展「生まれた喜び」", links: [L("YouTube", "https://www.youtube.com/watch?v=gL5-xlRYAus")] },
   ] },
+  { year: "2024", items: [], exhibitions: [{ text: "Gallery GOBANGURA（京都）個展「渦展 Vol.3」" }] },
   { year: "2023", items: [
     { text: "PSG（パリ・サンジェルマンFC）コラボ", links: [L("PSG Japan", "https://x.com/psgjapan/status/1726534038146715772")] },
     { text: "NIKE エアフォース1 広告出演" },
