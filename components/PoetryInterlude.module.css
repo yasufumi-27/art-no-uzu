@@ -3,121 +3,96 @@
   isolation: isolate;
   display: grid;
   place-items: center;
-  min-height: 88svh;
+  min-height: 94svh;
   padding: clamp(112px, 15vh, 180px) 32px;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 48%, #fffdf8 0%, transparent 68%);
+  background: radial-gradient(ellipse at 50% 46%, #fffefb 0%, #f3f0e9 48%, #f5f4f2 78%);
 }
-
-.section::before {
-  content: "";
+.atmosphere { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.light {
   position: absolute;
-  z-index: -1;
-  inset: 8% 15%;
-  background: radial-gradient(ellipse at 50% 45%, rgb(202 187 155 / 9%), transparent 66%);
-  filter: blur(30px);
-  pointer-events: none;
+  width: 55%; height: 125%; top: -30%; left: 20%;
+  background: linear-gradient(100deg, transparent 20%, rgb(255 255 255 / 85%) 48%, rgb(223 202 154 / 18%) 53%, transparent 72%);
+  filter: blur(28px);
+  transform: rotate(24deg);
+  animation: lightDrift 18s ease-in-out infinite alternate;
 }
-
-.stage { width: min(100%, 760px); }
-
-/* Overlapping grid cells reserve space for the tallest poem on every screen. */
+.mist {
+  position: absolute; inset: 20% -15%;
+  background: radial-gradient(ellipse at 25% 45%, rgb(188 176 151 / 18%), transparent 50%), radial-gradient(ellipse at 75% 60%, rgb(255 255 255 / 90%), transparent 50%);
+  filter: blur(36px);
+  animation: mistDrift 22s ease-in-out infinite alternate;
+}
+.mote {
+  position: absolute;
+  left: calc(12% + var(--n) * 9.3%); top: calc(24% + var(--n) * 5.7%);
+  width: 3px; height: 3px; border-radius: 50%; background: #b6a279;
+  box-shadow: 0 0 10px 3px rgb(222 201 155 / 45%);
+  animation: float 12s ease-in-out infinite;
+  animation-delay: calc(var(--n) * -1.7s);
+}
+.stage { position: relative; width: min(100%, 760px); }
+.prelude { display: grid; justify-items: center; gap: 14px; margin-bottom: 32px; }
+.prelude span { width: 1px; height: 56px; background: linear-gradient(transparent, #b9ab8e); }
+.prelude i { width: 4px; height: 4px; background: #b9ab8e; transform: rotate(45deg); }
+/* All poems occupy one cell so changing poems never moves the next section. */
 .slides { display: grid; align-items: center; }
 .figure {
-  grid-area: 1 / 1;
-  position: relative;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0 auto;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  filter: blur(3px);
-  transition: opacity 1.2s ease, filter 1.2s ease, visibility 0s 1.2s;
+  grid-area: 1 / 1; position: relative; width: fit-content; max-width: 100%; margin: 0 auto;
+  opacity: 0; visibility: hidden; pointer-events: none; filter: blur(7px); transform: translateY(8px);
+  transition: opacity 1.6s ease, filter 1.6s ease, transform 1.6s ease, visibility 0s 1.6s;
 }
 .active {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  filter: blur(0);
-  transition: opacity 2s ease 0.6s, filter 2s ease 0.6s, visibility 0s;
+  opacity: 1; visibility: visible; pointer-events: auto; filter: blur(0); transform: translateY(0);
+  transition: opacity 2.8s ease .8s, filter 3.2s ease .8s, transform 3.2s ease .8s, visibility 0s;
 }
-
-.mark {
-  display: block;
-  height: 56px;
-  margin-bottom: 24px;
-  color: #b7ad99;
-  font-family: Georgia, serif;
-  font-size: 84px;
-  font-weight: 400;
-  line-height: 1;
-  text-align: center;
-  user-select: none;
+.mark, .closingMark {
+  display: block; color: #b6a582; font-family: Georgia, serif; font-weight: 400;
+  line-height: 1; text-align: center; user-select: none;
 }
-
+.mark { height: 64px; font-size: 100px; margin-bottom: 24px; text-shadow: 0 2px 24px rgb(190 163 107 / 20%); }
+.closingMark { font-size: 60px; height: 28px; margin-top: 26px; opacity: .55; }
 .poem {
-  margin: 0;
-  color: #383a36;
-  font-size: clamp(16px, 1.55vw, 22px);
-  font-weight: 300;
-  line-height: 2.35;
-  letter-spacing: 0.13em;
-  text-transform: none;
-  overflow-wrap: anywhere;
+  margin: 0; color: #383a36; font-size: clamp(17px, 1.65vw, 23px); font-weight: 300;
+  line-height: 2.5; letter-spacing: .16em; text-transform: none; overflow-wrap: anywhere;
+  text-shadow: 0 0 24px rgb(255 255 255 / 95%);
 }
-
-.poem p {
-  margin: 0;
-  white-space: pre-wrap;
-}
-
+.poem p { margin: 0; white-space: pre-wrap; }
 .credit {
-  margin-top: 48px;
-  text-align: right;
-  font-size: 12px;
-  font-weight: 300;
-  letter-spacing: 0.17em;
-  color: #77766f;
-  text-transform: none;
+  margin-top: 40px; text-align: center; font-size: 12px; font-weight: 300;
+  letter-spacing: .2em; color: #777166; text-transform: none;
 }
-
+.credit::before { content: ""; display: block; width: 32px; height: 1px; background: #baac90; margin: 0 auto 22px; }
 .credit cite { font-style: normal; }
 .credit a { text-underline-offset: 6px; }
 .credit a:hover { text-decoration: underline; }
 .credit a:focus-visible { outline: 1px solid currentColor; outline-offset: 8px; }
-
 .pause {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  margin: 40px auto -44px;
-  color: #8a877f;
-  cursor: pointer;
-  background: transparent;
-  border: 0;
+  display: grid; place-items: center; width: 44px; height: 44px; margin: 40px auto -44px;
+  color: #8a877f; cursor: pointer; background: transparent; border: 0;
 }
 .pause:hover { color: #383a36; }
 .pause:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
-
-.waiting { opacity: 0; transform: translateY(14px); filter: blur(5px); }
-.visible {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-  transition: opacity 1.8s ease, transform 1.8s ease, filter 1.8s ease;
-}
-
+.waiting { opacity: 0; transform: translateY(18px); filter: blur(8px); }
+.visible { opacity: 1; transform: translateY(0); filter: blur(0); transition: opacity 2.8s ease, transform 2.8s ease, filter 3.2s ease; }
+.section[data-resting="true"] .atmosphere * { animation-play-state: paused; }
+@keyframes lightDrift { from { transform: translateX(-8%) rotate(24deg); opacity: .55; } to { transform: translateX(12%) rotate(16deg); opacity: 1; } }
+@keyframes mistDrift { from { transform: translate(-3%, 3%) scale(1); } to { transform: translate(5%, -3%) scale(1.12); } }
+@keyframes float { 0%, 100% { opacity: 0; transform: translateY(18px); } 40% { opacity: .6; } 80% { opacity: .15; transform: translateY(-45px); } }
 @media (max-width: 639px) {
-  .section { padding: 104px 28px 112px; min-height: 80svh; }
-  .poem { font-size: 16px; line-height: 2.2; letter-spacing: 0.07em; }
-  .mark { height: 44px; font-size: 68px; margin-bottom: 20px; }
-  .credit { margin-top: 36px; font-size: 11px; }
+  .section { padding: 88px 28px 104px; min-height: 80svh; }
+  .poem { font-size: 16px; line-height: 2.3; letter-spacing: .07em; }
+  .prelude { margin-bottom: 24px; }
+  .prelude span { height: 36px; }
+  .mark { height: 48px; font-size: 80px; margin-bottom: 24px; }
+  .closingMark { font-size: 48px; margin-top: 20px; }
+  .credit { margin-top: 28px; font-size: 11px; }
+  .light { width: 110%; left: -10%; filter: blur(20px); }
 }
-
 @media (prefers-reduced-motion: reduce) {
+  .atmosphere * { animation: none; }
+  .mote { opacity: .3; }
   .waiting { opacity: 1; transform: none; filter: none; transition: none; }
-  .figure { filter: none; transition: opacity 0.3s ease, visibility 0s 0.3s; }
-  .active { transition: opacity 0.3s ease, visibility 0s; }
+  .figure { filter: none; transform: none; transition: opacity .3s ease, visibility 0s .3s; }
+  .active { transition: opacity .3s ease, visibility 0s; }
 }

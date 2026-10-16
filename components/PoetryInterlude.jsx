@@ -39,9 +39,16 @@ export default function PoetryInterlude({ poems }) {
   }, [index, inView, pageVisible, paused, hovered, focused, poems]);
 
   return (
-    <section className={styles.section} aria-label="作品の詩">
+    <section className={styles.section} aria-label="作品の詩" data-resting={!inView || !pageVisible || paused}>
+      <div className={styles.atmosphere} aria-hidden="true">
+        <div className={styles.light} />
+        <div className={styles.mist} />
+        {Array.from({ length: 9 }, (_, i) => (
+          <i key={i} className={styles.mote} style={{ "--n": i }} />
+        ))}
+      </div>
       <div ref={stageRef} className={styles.stage}>
-        <span className={styles.mark} aria-hidden="true">“</span>
+        <div className={styles.prelude} aria-hidden="true"><span /><i /></div>
         <div className={styles.slides}
           onPointerEnter={e => { if (e.pointerType === "mouse") setHovered(true); }}
           onPointerLeave={() => setHovered(false)}
@@ -50,7 +57,9 @@ export default function PoetryInterlude({ poems }) {
           {poems.map((poem, i) => (
             <figure key={poem.id} className={`${styles.figure} ${i === index ? styles.active : ""}`}
               aria-hidden={i !== index} data-poem-id={poem.id}>
+              <span className={styles.mark} aria-hidden="true">“</span>
               <blockquote className={styles.poem}><p>{poem.text}</p></blockquote>
+              <span className={styles.closingMark} aria-hidden="true">”</span>
               <figcaption className={styles.credit}>
                 <Link href={`/works/${poem.id}`} tabIndex={i === index ? 0 : -1}
                   aria-label={`「${poem.title}」の作品を見る`}>
