@@ -53,12 +53,7 @@ export default function PoetryInterlude({ poems }) {
   }
 
   return (
-    <section className={styles.section} aria-label="作品の詩" onKeyDown={event => {
-      if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-        event.preventDefault();
-        move(event.key === "ArrowRight" ? 1 : -1);
-      }
-    }} data-resting={!inView || !pageVisible || paused} data-phase={phase}>
+    <section className={styles.section} aria-label="作品の詩" data-resting={!inView || !pageVisible || paused} data-phase={phase}>
       <div className={styles.architecture} aria-hidden="true">
         <div className={styles.ceiling} />
         <div className={styles.floor} />
@@ -109,7 +104,12 @@ export default function PoetryInterlude({ poems }) {
           ))}
         </div>
         </div>
-        <nav className={styles.controls} aria-label="詩の展示を移動">
+        <nav className={styles.controls} aria-label="詩の展示を移動" onKeyDown={event => {
+      if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+        event.preventDefault();
+        move(event.key === "ArrowRight" ? 1 : -1);
+      }
+    }}>
           <button type="button" onClick={() => move(-1)} aria-label="前の詩へ">←</button>
           <span className={styles.counter} aria-live="polite" aria-atomic="true">{String(index + 1).padStart(2, "0")} <span>/ {String(poems.length).padStart(2, "0")}</span></span>
         <button type="button" className={styles.pause} onClick={() => setPaused(p => !p)}
