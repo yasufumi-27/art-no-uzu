@@ -6,111 +6,123 @@ import styles from "./PoetryInterlude.module.css";
 
 export default function PoetryInterlude({ poems }) {
   const [position, setPosition] = useState(0);
-  const index = ((position % poems.length) + poems.length) % poems.length;
-  const [phase, setPhase] = useState("enter");
+  const [dragging, setDragging] = useState(false);
   const [inView, setInView] = useState(false);
-  const [pageVisible, setPageVisible] = useState(true);
-  const [paused, setPaused] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const [focused, setFocused] = useState(false);
-  const stageRef = useRef(null);
+  const viewportRef = useRef(null);
+  const strideRef = useRef(1);
+  const indexRef = useRef(0);
+  const dragRef = useRef(null);
+  const suppressClick = useRef(false);
+  const index = Math.max(0, Math.min(poems.length - 1, Math.round(position)));
 
   useEffect(() => {
-    const stage = stageRef.current;
-    const observer = new IntersectionObserver(([entry]) => {
-      setInView(entry.isIntersecting);
-    }, { threshold: 0.12 });
-    observer.observe(stage);
-    const visibility = () => setPageVisible(!document.hidden);
-    document.addEventListener("visibilitychange", visibility);
-    visibility();
-    return () => {
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", visibility);
+    const viewport = viewportRef.current;
+    const measure = () => {
+      const figures = viewport.querySelectorAll("[data-poem-id]");
+      strideRef.current = figures.length > 1
+        ? figures[1].offsetLeft - figures[0].offsetLeft
+        : figures[0]?.offsetWidth || 1;
+      viewport.scrollLeft = indexRef.current * strideRef.current;
     };
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    const visibility = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: .1 });
+    visibility.observe(viewport);
+    measure();
+    return () => { observer.disconnect(); visibility.disconnect(); };
   }, []);
 
-  useEffect(() => {
-    if (!inView || !pageVisible || paused || hovered || focused || poems.length < 2) return;
-    // A complete cycle takes 13–16 seconds, including arrival and departure.
-    const readingTime = Math.min(11000, Math.max(7500, poems[index].text.length * 65));
-    const duration = { enter: 4000, hold: readingTime, exit: 1200, gap: 150 }[phase];
-    const timer = window.setTimeout(() => {
-      if (phase === "gap") {
-        setPosition(p => p + 1);
-        setPhase("enter");
-      } else {
-        setPhase({ enter: "hold", hold: "exit", exit: "gap" }[phase]);
-      }
-    }, duration);
-    return () => window.clearTimeout(timer);
-  }, [phase, index, inView, pageVisible, paused, hovered, focused, poems]);
+  function trackScroll(event) {
+    const next = event.currentTarget.scrollLeft / strideRef.current;
+    indexRef.current = Math.max(0, Math.min(poems.length - 1, Math.round(next)));
+    setPosition(next);
+  }
 
-  function move(direction) {
-    setPaused(false);
-    setPosition(p => p + direction);
-    setPhase("enter");
+  function startDrag(event) {
+    suppressClick.current = false;
+    if (event.pointerType !== "mouse" || event.button !== 0) return;
+    dragRef.current = { x: event.clientX, scroll: event.currentTarget.scrollLeft, moved: false };
+  }
+
+  function drag(event) {
+    const gesture = dragRef.current;
+    if (!gesture) return;
+    if (event.buttons !== 1) { endDrag(event); return; }
+    const distance = event.clientX - gesture.x;
+    if (!gesture.moved && Math.abs(distance) < 8) return;
+    if (!gesture.moved) {
+      gesture.moved = true;
+      suppressClick.current = true;
+      setDragging(true);
+      event.currentTarget.setPointerCapture(event.pointerId);
+      event.currentTarget.style.scrollSnapType = "none";
+    }
+    event.preventDefault();
+    event.currentTarget.scrollLeft = gesture.scroll - distance;
+  }
+
+  function endDrag(event) {
+    const gesture = dragRef.current;
+    dragRef.current = null;
+    if (!gesture?.moved) return;
+    setDragging(false);
+    const viewport = event.currentTarget;
+    if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
+    viewport.style.scrollSnapType = "";
+    viewport.scrollTo({ left: Math.round(viewport.scrollLeft / strideRef.current) * strideRef.current,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
   }
 
   return (
-    <section className={styles.section} aria-label="作品の詩" data-resting={!inView || !pageVisible || paused} data-phase={phase}>
-      <div ref={stageRef} className={styles.stage}>
-        <div className={styles.galleryLabel} aria-hidden="true">POETRY<span>言葉の余白</span></div>
-        <div className={styles.viewport}>
-        <div className={styles.slides} style={{ "--turn": `${-position * 360 / poems.length}deg` }}
-          onPointerEnter={e => { if (e.pointerType === "mouse") setHovered(true); }}
-          onPointerLeave={() => setHovered(false)}
-          onFocus={() => setFocused(true)}
-          onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false); }}>
-          {poems.map((poem, i) => (
-            <figure key={poem.id} className={`${styles.figure} ${i === index ? styles.active : ""}`}
-              aria-hidden={i !== index} data-poem-id={poem.id}
-              data-near={i === (index + 1) % poems.length || i === (index - 1 + poems.length) % poems.length}
-              style={{ "--angle": `${i * 360 / poems.length}deg` }}>
-              <span className={styles.exhibitNumber} aria-hidden="true">{String(i + 1).padStart(2, "0")} / WORDS</span>
-              <span className={styles.mark} aria-hidden="true">“</span>
-              <blockquote className={styles.poem}>
-                <Link className={styles.poemLink} href={`/works/${poem.id}`} tabIndex={i === index ? 0 : -1}
-                  aria-label={`「${poem.title}」の詩 — 作品ページへ`}>
-                  <p>{Array.from(poem.text).map((character, position, characters) =>
-                    character === "\n" ? "\n" : (
-                      <span key={position} className={styles.character} style={{
-                        "--arrival": `${position / Math.max(1, characters.length - 1) * 1000 + 1200}ms`,
-                        "--departure": `${(characters.length - 1 - position) / Math.max(1, characters.length - 1) * 300}ms`,
-                      }}>{character}</span>
-                    )
-                  )}</p>
-                </Link>
-              </blockquote>
-              <span className={styles.closingMark} aria-hidden="true">”</span>
-              <figcaption className={styles.credit}>
-                <Link href={`/works/${poem.id}`} tabIndex={i === index ? 0 : -1}
-                  aria-label={`「${poem.title}」の作品を見る`}>
-                  <cite>“{poem.title}”</cite>より
-                </Link>
-              </figcaption>
-            </figure>
-          ))}
+    <section className={styles.section} aria-label="作品の詩" data-visible={inView}>
+      <div className={styles.galleryLabel} aria-hidden="true">POETRY<span>言葉の余白</span></div>
+      <div ref={viewportRef} className={styles.viewport} data-dragging={dragging}
+        role="region" aria-label="詩のギャラリー。横スクロールで作品をめぐる" tabIndex={0}
+        onScroll={trackScroll} onPointerDown={startDrag} onPointerMove={drag}
+        onPointerUp={endDrag} onPointerCancel={endDrag}
+        onDragStart={event => event.preventDefault()}
+        onClickCapture={event => {
+          if (suppressClick.current && event.detail > 0) { event.preventDefault(); event.stopPropagation(); }
+        }}
+        onKeyDown={event => {
+          if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+            event.preventDefault();
+            const next = Math.max(0, Math.min(poems.length - 1, index + (event.key === "ArrowRight" ? 1 : -1)));
+            event.currentTarget.scrollTo({ left: next * strideRef.current,
+              behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+          }
+        }}>
+        <div className={styles.slides}>
+          {poems.map((poem, i) => {
+            const distance = Math.max(-2, Math.min(2, i - position));
+            return (
+              <article key={poem.id} className={`${styles.figure} ${i === index ? styles.active : ""}`}
+                data-poem-id={poem.id} aria-label={`${i + 1} / ${poems.length}：${poem.title}`}
+                style={{ "--distance": distance, "--depth": Math.abs(distance) }}>
+                <figure className={styles.floatingBody}>
+                  <span className={styles.exhibitNumber} aria-hidden="true">{String(i + 1).padStart(2, "0")} / WORDS</span>
+                  <span className={styles.mark} aria-hidden="true">“</span>
+                  <blockquote className={styles.poem}>
+                    <Link className={styles.poemLink} href={`/works/${poem.id}`}
+                      aria-label={`「${poem.title}」の詩 — 作品ページへ`}>
+                      <p>{Array.from(poem.text).map((character, n, characters) => character === "\n" ? "\n" : (
+                        <span key={n} className={styles.character} style={{ "--arrival": `${n / characters.length * 350}ms` }}>{character}</span>
+                      ))}</p>
+                    </Link>
+                  </blockquote>
+                  <span className={styles.closingMark} aria-hidden="true">”</span>
+                  <figcaption className={styles.credit}>
+                    <Link href={`/works/${poem.id}`} aria-label={`「${poem.title}」の作品を見る`}>
+                      <cite>“{poem.title}”</cite>より
+                    </Link>
+                  </figcaption>
+                </figure>
+              </article>
+            );
+          })}
         </div>
-        </div>
-        <nav className={styles.controls} aria-label="詩の展示を移動" onKeyDown={event => {
-      if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-        event.preventDefault();
-        move(event.key === "ArrowRight" ? 1 : -1);
-      }
-    }}>
-          <button type="button" onClick={() => move(-1)} aria-label="前の詩へ">←</button>
-          <span className={styles.counter} aria-live="polite" aria-atomic="true">{String(index + 1).padStart(2, "0")} <span>/ {String(poems.length).padStart(2, "0")}</span></span>
-        <button type="button" className={styles.pause} onClick={() => setPaused(p => !p)}
-          aria-label={paused ? "詩の自動切り替えを再開" : "詩の自動切り替えを一時停止"} aria-pressed={paused}>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            {paused ? <path d="M4 2.5 9 6 4 9.5Z" fill="currentColor" /> : <path d="M4 2.5v7M8 2.5v7" stroke="currentColor" />}
-          </svg>
-        </button>
-          <button type="button" onClick={() => move(1)} aria-label="次の詩へ">→</button>
-        </nav>
-        <p className={styles.guide}>詩に触れると、作品へ。</p>
       </div>
+      <p className={styles.guide}>横にスクロールしてめぐる · 詩に触れると、作品へ。</p>
     </section>
   );
 }
