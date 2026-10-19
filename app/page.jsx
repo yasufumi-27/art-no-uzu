@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
+import HistoryTimeline from "@/components/HistoryTimeline";
+import { HISTORY } from "@/lib/history";
 import LifeLine from "@/components/LifeLine";
 import Reveal from "@/components/Reveal";
 import FadeImg from "@/components/FadeImg";
@@ -54,14 +56,14 @@ export default function Home() {
             </Reveal>
             <Reveal delay={0.1}>
               <h2 className="font-display text-2xl tracking-[0.12em] sm:text-4xl sm:tracking-[0.15em]">About</h2>
-              <p className="mt-8 text-sm leading-loose">
-                神谷佳美（YOSHIMI KAMITANI）。1994年東京生まれ。
-                2015年から、「渦」を描き続けている。
-              </p>
-              <p className="mt-4 text-sm leading-loose text-[var(--color-muted)]">
-                目指すのは、「渦を80年描き続けた、100歳のおばあちゃん」になること。
-                毎年「渦とは何か」を問い直し、その年の探究を作品として残している。
-              </p>
+              <div className="mt-8 space-y-6 text-sm leading-loose">
+                <p>神谷佳美（YOSHIMI KAMITANI）</p>
+                <p>1994年東京生まれ。<br />2015年から「渦」だけを描き続けている。</p>
+                <p>渦を通して、人間の悩みや願望、そして自分の人生を生きる決意を描く。</p>
+                <p>毎年「渦とは何か」を問い直し、その年の探究を作品として残している。</p>
+                <p>芸術の完成形として思い描くのは、「渦を80年描き続けた、100歳のおばあちゃん」になった自分自身。</p>
+                <p>一枚一枚の作品だけでなく、渦を描き続ける人生そのものを、ひとつの作品として構想している。</p>
+              </div>
               <Link
                 href="/about"
                 className="nav-link mt-8 inline-block text-xs tracking-wider-jp"
@@ -70,6 +72,17 @@ export default function Home() {
               </Link>
             </Reveal>
           </div>
+        </section>
+
+        {/* History */}
+        <section className="border-t border-[var(--color-line)] py-24 md:py-32" aria-labelledby="home-history">
+          <Reveal>
+            <div className="flex items-baseline justify-between gap-4 border-b border-[var(--color-line)] pb-4">
+              <h2 id="home-history" className="font-display text-2xl tracking-[0.12em] sm:text-4xl sm:tracking-[0.15em]">HISTORY</h2>
+              <Link href="/about#history" className="nav-link whitespace-nowrap text-xs tracking-wider-jp text-[var(--color-muted)] hover:text-[var(--color-ink)]">View all →</Link>
+            </div>
+            <HistoryTimeline history={HISTORY} />
+          </Reveal>
         </section>
 
         {/* Contact */}

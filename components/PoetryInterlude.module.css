@@ -73,9 +73,13 @@
   .section { padding: 40px 0 32px; --panel-width: calc(100vw - 64px); }
   .galleryLabel { margin-bottom: 32px; }
   .viewport { padding-bottom: 36px; }
-  .slides { gap: 28px; }
+  .slides { gap: 0; }
+  .figure:not(:last-child) { margin-inline-end: -40px; }
   .figure { perspective: 850px; }
-  .floatingBody { padding: 36px 20px 30px; }
+  .floatingBody {
+    padding: 36px 20px 30px;
+    transform: translateZ(calc(var(--depth) * -40px)) rotateY(calc(var(--distance) * -10deg));
+  }
   .poem { font-size: 14px; line-height: 2.05; letter-spacing: .025em; }
   .mark { height: 40px; font-size: 64px; margin-bottom: 16px; }
   .closingMark { font-size: 40px; margin-top: 14px; height: 22px; }
