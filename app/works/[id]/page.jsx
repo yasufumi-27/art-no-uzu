@@ -123,9 +123,9 @@ export default async function WorkDetail({ params }) {
       {/* 作品画像の下に説明文など */}
       <div className="container-main mt-14 grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr]">
         <Reveal delay={0.1}>
-          {work.category === "Exhibition" && (
+          {work.category !== "Works" && (
             <span className="inline-block bg-black px-2 py-1 text-[0.625rem] tracking-wider-jp text-white">
-              Exhibition
+              {work.category}
             </span>
           )}
           <h1 className="mt-4 whitespace-pre-line text-2xl font-light tracking-wider-jp md:text-3xl leading-relaxed">
@@ -185,9 +185,9 @@ export default async function WorkDetail({ params }) {
                       alt={workAlt(w)}
                       className="h-full w-full object-cover"
                     />
-                    {w.category === "Exhibition" && (
+                    {w.category !== "Works" && (
                       <span className="absolute left-2 top-2 bg-black/70 px-1.5 py-0.5 text-[0.5625rem] tracking-wider-jp text-white">
-                        Exhibition
+                        {w.category}
                       </span>
                     )}
                     {!w.hasDetail && <InstagramBadge label={w.linkLabel} small />}

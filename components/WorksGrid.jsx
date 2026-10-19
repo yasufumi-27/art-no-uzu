@@ -26,9 +26,9 @@ function Card({ work, index }) {
         alt={workAlt(work)}
         className="h-full w-full object-cover"
       />
-      {work.category === "Exhibition" && (
+      {work.category !== "Works" && (
         <span className="absolute left-3 top-3 bg-black/70 px-2 py-1 text-[0.625rem] tracking-wider-jp text-white">
-          Exhibition
+          {work.category}
         </span>
       )}
       {/* 詳細ページを持たない作品は Instagram へ誘導するラベルを表示 */}
