@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import ART from "@/lib/lifeline-art.generated.json";
+import { buildArtistLine } from "@/lib/lifeline-geometry.mjs";
 
 // TOP 専用：「一本の線の人生」。
 // ページ全体を 21歳（2015年、渦を描き始めた年）から 100歳（2094年）までの80年に見立て、一本の墨の線で描く。
@@ -42,6 +44,9 @@ function loopRadius(mode, size, k) {
 
 // mode: "gutter"（縦・size=余白の幅, length=ページの高さ） / "band"（横・size=帯の高さ, length=画面の幅）
 function build(mode, size, length) {
+  const artwork = mode === "gutter" ? (ART.vertical || ART.horizontal) : ART.horizontal;
+  const artistLine = buildArtistLine(artwork, mode, size, length);
+  if (artistLine) return artistLine;
   const pts = [];
   const pad = mode === "band" ? 16 : 0;
   // 帯では、最後（100歳）の渦が右端で切れないよう、その直径ぶん右側を空けておく
@@ -142,6 +147,7 @@ export default function LifeLine() {
       const progress = Math.min(1, window.scrollY / maxScroll);
       const target = window.scrollY + vh * (0.55 + 0.45 * progress * progress) - geo.top;
       const t = Math.min(YEARS, Math.max(0, (target / geo.pageHeight) * YEARS));
+      line.current.ownerSVGElement.dataset.progress = (t / YEARS).toFixed(4);
       const i = Math.min(g.pts.length - 1, Math.round(t / STEP));
       // ペン先までの線だけを描く。stroke-dasharray で隠す方式は iOS の Safari で効かず、
       // 先の線まで最初から見えてしまったため（2026-09-15）、d を切り出す方式にしている
@@ -159,7 +165,7 @@ export default function LifeLine() {
         }
       }
       // 100歳の節目は線の終点と重なるので、終点に届いた時点で記録を出す
-      marks.current.forEach((el, k) => el?.classList.toggle("is-drawn", t >= Math.min(YEARS, MILESTONES[k].t + LOOP_HALF)));
+      marks.current.forEach((el, k) => el?.classList.toggle("is-drawn", t >= Math.min(YEARS, MILESTONES[k].t + (g.artist ? 0 : LOOP_HALF))));
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -181,6 +187,9 @@ export default function LifeLine() {
   return (
     <svg
       aria-hidden="true"
+      data-lifeline="true"
+      data-mode={geo.mode}
+      data-art-id={ART.id || "default"}
       className={
         band
           ? "pointer-events-none fixed left-0 z-30 text-white mix-blend-difference"
@@ -206,7 +215,7 @@ export default function LifeLine() {
           <text
             key={m.age}
             ref={(el) => (marks.current[k] = el)}
-            x={g.pad + (m.t / YEARS) * g.span + r}
+            x={g.milestones ? g.milestones[k][0] : g.pad + (m.t / YEARS) * g.span + r}
             y={BAND_HEIGHT - 1}
             textAnchor="middle"
             className="lifeline-mark fill-current text-[8px] tracking-[0.05em]"
@@ -217,8 +226,8 @@ export default function LifeLine() {
           <text
             key={m.age}
             ref={(el) => (marks.current[k] = el)}
-            x={geo.width / 2 + r + 6}
-            y={g.pad + (m.t / YEARS) * g.span + r * 2 + 14}
+            x={g.milestones ? g.milestones[k][0] + 6 : geo.width / 2 + r + 6}
+            y={g.milestones ? g.milestones[k][1] + 14 : g.pad + (m.t / YEARS) * g.span + r * 2 + 14}
             className="lifeline-mark fill-[var(--color-muted)] text-[9px] tracking-[0.15em]"
           >
             {m.year} / {m.age}歳
