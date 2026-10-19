@@ -64,7 +64,8 @@ NEXT_PUBLIC_BASE_PATH=/art-no-uzu npm run build   # 出力: out/
 | --- | --- |
 | `NEXT_PUBLIC_BASE_PATH` | 配信サブパス。GitHub Pages は `/art-no-uzu`、独自ドメイン運用時は空 |
 | `NEXT_PUBLIC_SITE_ORIGIN` | 公開オリジン（OGP・sitemap の絶対URL用）。未設定時は GitHub Pages のオリジン |
-| `NEXT_PUBLIC_CONTACT_ENDPOINT` | お問い合わせフォーム送信先（Formspree 等）。未設定時はモック送信 |
+
+お問い合わせフォームは入力内容を `mailto:` でメールアプリに渡します。送信先は `art.no.uzu@gmail.com`（`components/ContactForm.jsx`）。利用者がメールアプリで送信を完了する方式で、メールアプリが開かない場合に備えて宛先も表示しています。
 
 ## デプロイ
 

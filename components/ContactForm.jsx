@@ -3,67 +3,44 @@
 import { useState } from "react";
 import Link from "next/link";
 
-// お問い合わせフォーム（仕様書 12.2）。
-// 必須：名前 / メールアドレス / 内容。送信完了画面あり。
-//
-// デモでは送信処理をモックしている。本番では以下のいずれかに接続する：
-//   - Formspree / Resend 等のフォーム送信サービス（静的サイト向け）
-//   - Vercel 移行後は API Route + メール送信 + reCAPTCHA v3
-const ENDPOINT = process.env.NEXT_PUBLIC_CONTACT_ENDPOINT || "";
+// 入力内容をメールアプリに渡す。実際の送信はメールアプリで行う。
+const CONTACT_EMAIL = "art.no.uzu@gmail.com";
 
 export default function ContactForm() {
-  const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
+  const [opened, setOpened] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
-    const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form));
+    setOpened(false);
+    const data = Object.fromEntries(new FormData(e.currentTarget));
 
-    if (!data.name || !data.email || !data.message) {
+    if (!data.name.trim() || !data.email.trim() || !data.message.trim()) {
       setError("必須項目を入力してください。");
       return;
     }
 
-    setSending(true);
-    try {
-      if (ENDPOINT) {
-        const res = await fetch(ENDPOINT, {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: new FormData(form),
-        });
-        if (!res.ok) throw new Error("送信に失敗しました");
-      } else {
-        // デモ用モック送信
-        await new Promise((r) => setTimeout(r, 800));
-      }
-      setSent(true);
-    } catch (err) {
-      setError("送信に失敗しました。時間をおいて再度お試しください。");
-    } finally {
-      setSending(false);
-    }
-  };
+    const subject = "【ART NO UZU】お問い合わせ";
+    const body = [
+      `お名前：${data.name.trim()}`,
+      `メールアドレス：${data.email.trim()}`,
+      "",
+      "お問い合わせ内容：",
+      data.message.trim(),
+    ].join("\r\n");
 
-  if (sent) {
-    // 送信完了画面
-    return (
-      <div className="border border-[var(--color-line)] py-20 text-center">
-        <p className="text-sm tracking-wider-jp">送信が完了しました</p>
-        <p className="mt-4 text-xs leading-relaxed text-[var(--color-muted)]">
-          お問い合わせありがとうございます。
-          <br />
-          内容を確認のうえ、追ってご連絡いたします。
-        </p>
-      </div>
-    );
-  }
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setOpened(true);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
+      <p className="text-xs leading-relaxed text-[var(--color-muted)]">
+        入力後、メールアプリを開きます。内容を確認して、メールアプリから送信してください。
+        <br />
+        送信先：<a href={`mailto:${CONTACT_EMAIL}`} className="underline underline-offset-2">{CONTACT_EMAIL}</a>
+      </p>
       <Field label="お名前" name="name" required />
       <Field label="メールアドレス" name="email" type="email" required />
       <div>
@@ -79,7 +56,12 @@ export default function ContactForm() {
         />
       </div>
 
-      {error && <p className="text-xs text-[#b03a2e]">{error}</p>}
+      {error && <p role="alert" className="text-xs text-[#b03a2e]">{error}</p>}
+      {opened && (
+        <p role="status" className="text-xs leading-relaxed text-[var(--color-muted)]">
+          メールアプリで送信を完了してください。開かない場合は、上記アドレス宛てに直接メールをお送りください。
+        </p>
+      )}
 
       <p className="text-[10px] leading-relaxed text-[var(--color-muted)]">
         ※ 送信いただいた個人情報は
@@ -87,16 +69,13 @@ export default function ContactForm() {
           プライバシーポリシー
         </Link>
         に基づき取り扱います。
-        <br />
-        ※ 本番環境では reCAPTCHA によるスパム対策を導入します。
       </p>
 
       <button
         type="submit"
-        disabled={sending}
         className="border border-[var(--color-ink)] px-10 py-3 text-xs tracking-wider-jp transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] disabled:opacity-40"
       >
-        {sending ? "送信中…" : "送信する"}
+        メールアプリを開く
       </button>
     </form>
   );
