@@ -29,6 +29,7 @@ function workJsonLd(work) {
     "@type": work.category === "Exhibition" ? "CreativeWork" : "VisualArtwork",
     "@id": `${url}#work`,
     name: workTitle(work),
+    ...(work.englishTitle ? { alternateName: work.englishTitle } : {}),
     ...(work.category === "Exhibition" ? {} : {
       dateCreated: String(work.year),
       artform: "絵画",
@@ -118,9 +119,10 @@ export default async function WorkDetail({ params }) {
               Exhibition
             </span>
           )}
-          <h1 className="mt-4 text-2xl font-light tracking-wider-jp md:text-3xl leading-relaxed">
+          <h1 className="mt-4 whitespace-pre-line text-2xl font-light tracking-wider-jp md:text-3xl leading-relaxed">
             {work.title || `${work.year} — ${work.category} ${work.id.split("_")[1]}`}
           </h1>
+          {work.englishTitle && <p lang="en" className="mt-4 text-sm leading-relaxed tracking-wide text-[var(--color-muted)]">{work.englishTitle}</p>}
           <p className="mt-6 max-w-xl whitespace-pre-line text-sm leading-loose text-[var(--color-ink)]">
             {work.description}
           </p>
