@@ -5,6 +5,7 @@ import Reveal from "@/components/Reveal";
 import FadeImg from "@/components/FadeImg";
 import InstagramBadge from "@/components/InstagramBadge";
 import {
+  WORK_REDIRECTS,
   comingSoonYear,
   detailWorks,
   getWork,
@@ -12,6 +13,7 @@ import {
   workAlt,
   years,
 } from "@/lib/works";
+import { asset } from "@/lib/asset";
 import { SITE_URL, ARTIST_ID } from "@/lib/site";
 
 // Describe only known artwork facts. A year alone is not a valid event start date;
@@ -46,7 +48,7 @@ function workJsonLd(work) {
 
 // 静的エクスポート用：専用詳細ページを持つ作品・展示のパスを生成。
 export function generateStaticParams() {
-  return detailWorks().map((w) => ({ id: w.id }));
+  return [...detailWorks().map((w) => ({ id: w.id })), ...Object.keys(WORK_REDIRECTS).map(id => ({ id }))];
 }
 
 export async function generateMetadata({ params }) {
@@ -74,6 +76,13 @@ export default async function WorkDetail({ params }) {
   const { id } = await params;
   const work = getWork(id);
   if (!work || !work.hasDetail) notFound();
+  if (id !== work.id) {
+    const target = asset(`/works/${work.id}/`);
+    return <>
+      <meta httpEquiv="refresh" content={`0;url=${target}`} />
+      <div className="container-main py-20"><Link href={`/works/${work.id}/`}>{work.title} の展示ページへ →</Link></div>
+    </>;
+  }
 
   const info = [
     ["Title", work.title],
