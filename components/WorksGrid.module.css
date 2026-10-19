@@ -1,0 +1,33 @@
+.yearHeading { display: flex; align-items: center; gap: 24px; margin: 0 auto 64px; width: 92%; }
+.yearHeading span { height: 1px; background: var(--color-line); flex: 1; }
+.yearHeading h2 { font-size: 18px; font-weight: 400; letter-spacing: .2em; }
+.groups { display: flex; flex-direction: column; gap: 64px; }
+.group { min-width: 0; }
+.feature { display: block; width: 100%; max-width: 680px; margin: 0 auto 28px; }
+.featureFrame { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.featureImage { width: 100%; height: 100%; object-fit: cover; min-width: 0; transition: transform 1s ease; }
+.feature:hover .featureImage { transform: scale(1.015); }
+.pair .featureImage { width: 50%; object-fit: contain; }
+.featureTitle { margin-top: 14px; font-size: 11px; line-height: 1.8; letter-spacing: .12em; text-align: center; }
+.featureTitle span { white-space: nowrap; }
+.smallGrid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px 22px; width: 90%; margin: 0 auto; align-items: start; }
+.card { display: block; min-width: 0; }
+.square { position: relative; aspect-ratio: 1; width: 100%; overflow: hidden; background: var(--color-line); }
+.cardImage { width: 100%; height: 100%; object-fit: cover; }
+.badge { position: absolute; left: 6px; top: 6px; max-width: calc(100% - 12px); background: #000a; color: white; font-size: 8px; line-height: 1.5; padding: 3px 5px; letter-spacing: .1em; overflow-wrap: anywhere; }
+.hoverTitle { position: absolute; inset: 0; display: flex; align-items: flex-end; background: linear-gradient(transparent,#0009); padding: 12px; opacity: 0; transition: opacity .5s; }
+.hoverTitle p { color: white; font-size: 10px; line-height: 1.7; }
+.card:hover .hoverTitle, .card:focus-visible .hoverTitle { opacity: 1; }
+.extraTitle { font-size: 10px; line-height: 1.8; margin-top: 12px; }
+.textCard { display: flex; flex-direction: column; justify-content: space-between; height: 100%; background: white; border: 1px solid var(--color-line); padding: 20px 12px; }
+.textCard span { font-size: 9px; letter-spacing: .15em; }
+.textCard p { font-size: 12px; line-height: 1.8; }
+@media (min-width: 768px) {
+  .yearHeading { margin-bottom: 76px; }
+  .groups { gap: 72px; }
+  .feature { width: 70%; margin-bottom: 36px; }
+  .featureTitle { font-size: 12px; }
+  .smallGrid { width: 92%; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 36px 40px; }
+  .badge { font-size: 9px; left: 9px; top: 9px; }
+}
+@media (prefers-reduced-motion: reduce) { .featureImage { transition: none; } }
