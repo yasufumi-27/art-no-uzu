@@ -22,17 +22,17 @@ function workTitle(work) {
   return work.title || `${work.year} — ${work.category} ${work.id.split("_")[1]}`;
 }
 function workDescription(work) {
-  return work.description || `神谷佳美（YOSHIMI KAMITANI）の${work.year}年の${work.category === "Exhibition" ? "展示記録" : "作品"}「${workTitle(work)}」。作品画像と関連リンクを掲載。`;
+  return work.description || `神谷佳美（YOSHIMI KAMITANI）の${work.year}年の${work.category === "Exhibition" ? "展示記録" : work.category === "Essay" ? "エッセイ" : "作品"}「${workTitle(work)}」。作品画像と関連リンクを掲載。`;
 }
 function workJsonLd(work) {
   const url = `${SITE_URL}/works/${work.id}/`;
   return {
     "@context": "https://schema.org",
-    "@type": work.category === "Exhibition" ? "CreativeWork" : "VisualArtwork",
+    "@type": ["Exhibition", "Essay"].includes(work.category) ? "CreativeWork" : "VisualArtwork",
     "@id": `${url}#work`,
     name: workTitle(work),
     ...(work.englishTitle ? { alternateName: work.englishTitle } : {}),
-    ...(work.category === "Exhibition" ? {} : {
+    ...(["Exhibition", "Essay"].includes(work.category) ? {} : {
       dateCreated: String(work.year),
       artform: "絵画",
       artMedium: work.material ?? undefined,
@@ -140,16 +140,17 @@ export default async function WorkDetail({ params }) {
             <h2 className="text-xs tracking-wider-jp text-[var(--color-muted)]">詩</h2>
             <p className="mt-5 whitespace-pre-line text-sm leading-loose">{work.poem}</p>
           </div>}
+          {work.essayUrl && <a href={work.essayUrl} target="_blank" rel="noopener noreferrer" className="mt-8 inline-block border-b border-[var(--color-ink)] pb-1 text-xs tracking-wider-jp hover:opacity-60">エッセイを読む ↗</a>}
           {work.article && <a href={work.article} target="_blank" rel="noopener noreferrer" className="mt-8 block text-xs underline underline-offset-4">展示について読む ↗</a>}
           {work.purchaseUrl && <a href={work.purchaseUrl} target="_blank" rel="noopener noreferrer" className="mt-8 block w-fit border border-[var(--color-ink)] px-6 py-3 text-xs tracking-wider-jp hover:bg-[var(--color-ink)] hover:text-white">BASEで作品を見る ↗</a>}
-          <a
+          {work.category !== "Essay" && <a
             href={work.instagram}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-8 inline-block border-b border-[var(--color-ink)] pb-1 text-xs tracking-wider-jp hover:opacity-60"
           >
             {work.linkLabel} で見る →
-          </a>
+          </a>}
         </Reveal>
 
         <Reveal
