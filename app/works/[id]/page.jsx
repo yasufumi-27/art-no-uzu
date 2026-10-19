@@ -124,6 +124,7 @@ export default async function WorkDetail({ params }) {
           <p className="mt-6 max-w-xl whitespace-pre-line text-sm leading-loose text-[var(--color-ink)]">
             {work.description}
           </p>
+          {work.awardUrl && <a href={work.awardUrl} target="_blank" rel="noopener noreferrer" className="mt-4 block text-xs underline underline-offset-4">GOOD DESIGN AWARD 公式ページ ↗</a>}
           {work.poem && <div className="mt-10 border-t border-[var(--color-line)] pt-8">
             <h2 className="text-xs tracking-wider-jp text-[var(--color-muted)]">詩</h2>
             <p className="mt-5 whitespace-pre-line text-sm leading-loose">{work.poem}</p>
