@@ -6,7 +6,8 @@
 .viewport[data-dragging="true"], .viewport[data-dragging="true"] a { cursor: grabbing; user-select: none; }
 .slide { display: block; flex: 0 0 var(--panel-width); width: var(--panel-width); min-width: 0; height: 100%; padding: 24px 0 110px; scroll-snap-align: center; -webkit-user-drag: none; }
 .slide img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 14px 18px rgb(0 0 0 / 14%)); -webkit-user-drag: none; }
-.artwork { display: block; height: 100%; opacity: max(.28, calc(1 - var(--distance) * .72)); filter: blur(calc(var(--distance) * 1.2px)); transform: scale(calc(1 - var(--distance) * .06)); transition: opacity .15s linear, filter .15s linear, transform .15s linear; }
+.artwork { display: block; height: 100%; opacity: max(.28, calc(1 - var(--distance) * .72)); transition: opacity .15s linear; }
+.slide[aria-hidden="false"] .artwork { opacity: 1; }
 .controls { position: absolute; z-index: 2; bottom: 34px; inset-inline: 0; display: flex; justify-content: center; align-items: center; gap: 25px; font-size: 11px; letter-spacing: .2em; color: var(--color-muted); pointer-events: none; }
 .controls button { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--color-line); border-radius: 50%; background: var(--color-bg); font-size: 16px; pointer-events: auto; }
 .controls button:disabled { opacity: .25; cursor: default; }

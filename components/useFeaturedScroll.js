@@ -15,7 +15,7 @@ export default function useFeaturedScroll(count, onProgress) {
 
   function measureStride() {
     const slides = viewportRef.current?.querySelectorAll("[data-featured-slide]");
-    return slides?.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : slides?.[0]?.offsetWidth || 1;
+    return slides?.length > 1 ? slides[1].getBoundingClientRect().left - slides[0].getBoundingClientRect().left : slides?.[0]?.getBoundingClientRect().width || 1;
   }
 
   function moveTo(index) {
