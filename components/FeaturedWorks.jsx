@@ -25,8 +25,6 @@ export default function FeaturedWorks({ children }) {
   const gridRef = useRef(null);
   const [preview, setPreview] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [scrollDriven, setScrollDriven] = useState(false);
-  const storyRef = useRef(null);
   const storyScroll = useFeaturedScroll(TOP_IMAGES.length, setProgress);
 
   // ホバーした作品を拡大表示（打ち合わせメモ）：横は3列分、縦はその作品を中心に上下へ半段ずつ
@@ -53,55 +51,20 @@ export default function FeaturedWorks({ children }) {
     setItems(chooseTiles(true));
   }, []);
 
-  useEffect(() => {
-    let raf = 0;
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => {
-      raf = 0;
-      if (!storyRef.current) return;
-      const enabled = !motion.matches;
-      storyRef.current.classList.toggle("is-scroll-driven", enabled);
-      setScrollDriven(enabled);
-      if (!enabled) { storyScroll.syncVertical(null); return; }
-      const r = storyRef.current.getBoundingClientRect();
-      const stage = storyRef.current.querySelector(".featured-story-stage");
-      const top = parseFloat(getComputedStyle(stage).top) || 0;
-      const range = r.height - stage.getBoundingClientRect().height;
-      storyScroll.syncVertical(Math.max(0, Math.min(1, (top - r.top) / Math.max(1, range))));
-    };
-    const scroll = () => { if (!raf) raf = requestAnimationFrame(update); };
-    update();
-    window.addEventListener("scroll", scroll, { passive: true });
-    window.addEventListener("resize", scroll);
-    motion.addEventListener("change", scroll);
-    return () => {
-      window.removeEventListener("scroll", scroll);
-      window.removeEventListener("resize", scroll);
-      motion.removeEventListener("change", scroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
 
   return (
     <>
-    <div ref={storyRef} className={`featured-story${scrollDriven ? " is-scroll-driven" : ""}`}>
-      <div className={`featured-story-stage ${storyStyles.stage}`}>
-        <div className="featured-story-decoration" aria-hidden="true">
-          <Spiral turns={4} strokeWidth={0.5} className="h-full w-full" pathClassName="featured-story-ink" />
-          <style>{`.featured-story-ink { stroke-dasharray: 1; stroke-dashoffset: ${1 - progress}; }`}</style>
-        </div>
+    <div className="featured-story">
+      <div className={storyStyles.stage}>
         <div ref={storyScroll.viewportRef} className={storyStyles.viewport} data-dragging={storyScroll.dragging}
           role="region" aria-label="作品ギャラリー。横スクロールで作品をめぐる" tabIndex={0} {...storyScroll.bindings}>
           {TOP_IMAGES.map((work, i) => {
             const active = i === Math.round(progress * (TOP_IMAGES.length - 1));
             const offset = Math.max(-1, Math.min(1, i - progress * (TOP_IMAGES.length - 1)));
             return (
-              <Link key={work.id} href={work.href || `/works/${work.id}`} className={storyStyles.slide} aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を見る`}
+              <Link key={work.id} href={work.href || `/works/${work.id}`} className={storyStyles.slide} data-featured-slide={i} aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を見る`}
                 aria-hidden={!active} tabIndex={active ? 0 : -1}>
-                <span className="featured-story-artwork" style={{
-                  transform: `perspective(900px) translateY(${Math.abs(offset) * 28}px) rotateY(${-offset * 18}deg) rotateZ(${offset * 3}deg) scale(${1 - Math.abs(offset) * 0.14})`,
-                  opacity: 1 - Math.abs(offset) * 0.22,
-                }}>
+                <span className={storyStyles.artwork} style={{ "--distance": Math.abs(offset) }}>
                   <img src={work.images[0]} {...responsiveImage(work.images[0])} decoding="async" alt={`神谷佳美 TOP指定作品 ${i + 1}`} loading="lazy" />
                 </span>
               </Link>
@@ -113,6 +76,7 @@ export default function FeaturedWorks({ children }) {
           <span aria-live="polite" aria-atomic="true">{String(Math.round(progress * (TOP_IMAGES.length - 1)) + 1).padStart(2, "0")} / 05</span>
           <button type="button" onClick={storyScroll.next} disabled={progress > .99} aria-label="次の作品">→</button>
         </div>
+        <p className={storyStyles.guide}>横にスクロールして作品を見る</p>
       </div>
     </div>
     {children}

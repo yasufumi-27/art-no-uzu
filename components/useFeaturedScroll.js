@@ -1,45 +1,28 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const clamp = value => Math.max(0, Math.min(1, value));
-
-// 縦スクロールとネイティブな横操作を、同じスクロール位置へ同期する。
+// ユーザーの横操作だけで位置を変える。ページの縦スクロールとは同期しない。
 export default function useFeaturedScroll(count, onProgress) {
   const viewportRef = useRef(null);
-  const vertical = useRef(0);
-  const offset = useRef(0);
-  const target = useRef(0);
   const position = useRef(0);
-  const busyUntil = useRef(0);
+  const strideRef = useRef(1);
   const gesture = useRef(null);
   const touching = useRef(false);
   const suppressClick = useRef(false);
   const settleTimer = useRef(null);
   const [dragging, setDragging] = useState(false);
-  const range = () => {
-    const el = viewportRef.current;
-    return el ? Math.max(0, el.scrollWidth - el.clientWidth) : 0;
-  };
 
-  const syncVertical = useCallback(next => {
-    if (next === null) return;
-    vertical.current = next;
-    if (touching.current || gesture.current?.moved || performance.now() < busyUntil.current) return;
-    const progress = clamp(next + offset.current);
-    offset.current = progress - next;
-    position.current = progress;
-    target.current = progress * range();
-    if (viewportRef.current) viewportRef.current.scrollLeft = target.current;
-    onProgress(progress);
-  }, [onProgress]);
+  function measureStride() {
+    const slides = viewportRef.current?.querySelectorAll("[data-featured-slide]");
+    return slides?.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : slides?.[0]?.offsetWidth || 1;
+  }
 
   function moveTo(index) {
     const el = viewportRef.current;
     if (!el) return;
     clearTimeout(settleTimer.current);
-    busyUntil.current = performance.now() + 700;
-    el.scrollTo({ left: Math.max(0, Math.min(count - 1, index)) * el.clientWidth,
+    el.scrollTo({ left: Math.max(0, Math.min(count - 1, index)) * measureStride(),
       behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
   }
 
@@ -48,21 +31,22 @@ export default function useFeaturedScroll(count, onProgress) {
     settleTimer.current = setTimeout(() => {
       const el = viewportRef.current;
       if (!el || touching.current || gesture.current?.moved) return;
-      const left = Math.round(el.scrollLeft / el.clientWidth) * el.clientWidth;
-      if (Math.abs(left - el.scrollLeft) > 1) moveTo(Math.round(el.scrollLeft / el.clientWidth));
+      const stride = measureStride();
+      const index = Math.round(el.scrollLeft / stride);
+      if (Math.abs(index * stride - el.scrollLeft) > 1) moveTo(index);
     }, 180);
   }
 
   function onScroll(event) {
     const el = event.currentTarget;
-    const max = range();
-    const next = max ? clamp(el.scrollLeft / max) : 0;
-    position.current = next;
-    onProgress(next);
-    // 縦スクロールから設定した位置の通知では、手動の差分を書き換えない。
-    if (Math.abs(el.scrollLeft - target.current) < 1) return;
-    offset.current = next - vertical.current;
-    busyUntil.current = performance.now() + 250;
+    const stride = measureStride();
+    if (Math.abs(stride - strideRef.current) > .5) {
+      strideRef.current = stride;
+      el.scrollLeft = Math.round(position.current) * stride;
+      return;
+    }
+    position.current = Math.max(0, Math.min(count - 1, el.scrollLeft / stride));
+    onProgress(count > 1 ? position.current / (count - 1) : 0);
     if (touching.current) suppressClick.current = true;
     settle();
   }
@@ -80,17 +64,17 @@ export default function useFeaturedScroll(count, onProgress) {
   useEffect(() => {
     const el = viewportRef.current;
     const observer = new ResizeObserver(() => {
-      target.current = position.current * range();
-      el.scrollLeft = target.current;
+      strideRef.current = measureStride();
+      el.scrollLeft = Math.round(position.current) * strideRef.current;
     });
     observer.observe(el);
     return () => { observer.disconnect(); clearTimeout(settleTimer.current); };
   }, []);
 
   return {
-    viewportRef, syncVertical, dragging,
-    previous: () => moveTo(Math.round(position.current * (count - 1)) - 1),
-    next: () => moveTo(Math.round(position.current * (count - 1)) + 1),
+    viewportRef, dragging,
+    previous: () => moveTo(Math.round(position.current) - 1),
+    next: () => moveTo(Math.round(position.current) + 1),
     bindings: {
       onScroll,
       onPointerDown(event) {
@@ -110,7 +94,6 @@ export default function useFeaturedScroll(count, onProgress) {
           event.currentTarget.setPointerCapture(event.pointerId);
         }
         event.preventDefault();
-        busyUntil.current = performance.now() + 400;
         event.currentTarget.scrollLeft = current.left - distance;
       },
       onPointerUp: endDrag,
@@ -119,15 +102,12 @@ export default function useFeaturedScroll(count, onProgress) {
       onTouchStart() { suppressClick.current = false; touching.current = true; clearTimeout(settleTimer.current); },
       onTouchEnd() { touching.current = false; settle(); },
       onTouchCancel() { touching.current = false; settle(); },
-      onWheel(event) {
-        if (Math.abs(event.deltaX) > Math.abs(event.deltaY) || event.shiftKey) busyUntil.current = performance.now() + 400;
-      },
       onDragStart: event => event.preventDefault(),
       onClickCapture(event) {
         if (suppressClick.current && event.detail > 0) { event.preventDefault(); event.stopPropagation(); }
       },
       onKeyDown(event) {
-        const index = Math.round(position.current * (count - 1));
+        const index = Math.round(position.current);
         if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) {
           event.preventDefault();
           moveTo(event.key === "Home" ? 0 : event.key === "End" ? count - 1 : index + (event.key === "ArrowRight" ? 1 : -1));
