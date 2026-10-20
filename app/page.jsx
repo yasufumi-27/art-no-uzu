@@ -9,7 +9,7 @@ import { asset } from "@/lib/asset";
 import FeaturedWorks from "@/components/FeaturedWorks";
 import PoetryInterlude from "@/components/PoetryInterlude";
 import { WORK_DETAILS } from "@/lib/work-details";
-import { SOCIAL } from "@/components/Footer";
+import SocialLinks from "@/components/SocialLinks";
 
 // A complete short poem, retaining the same line breaks as the work page.
 const POEMS = Object.entries(WORK_DETAILS)
@@ -89,24 +89,11 @@ export default function Home() {
           <Reveal>
             <h2 className="font-display text-2xl tracking-[0.12em] sm:text-4xl sm:tracking-[0.15em]">Contact</h2>
             <p className="mt-6 text-sm leading-loose text-[var(--color-muted)]">
-              作品のご購入・ご依頼・お問い合わせは、
-              <br className="md:hidden" />
+              作品のご依頼・お問い合わせは、
+              <br />
               フォームまたは各SNSよりお気軽にご連絡ください。
             </p>
-            <ul className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3 text-xs tracking-wider-jp text-[var(--color-muted)]">
-              {SOCIAL.map((s) => (
-                <li key={s.label}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="nav-link hover:text-[var(--color-ink)]"
-                  >
-                    {s.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <SocialLinks centered className="mt-10 text-xs tracking-wider-jp text-[var(--color-muted)]" />
             <Link
               href="/contact"
               className="mt-12 inline-block border border-[var(--color-ink)] px-12 py-3 text-xs tracking-wider-jp transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)]"

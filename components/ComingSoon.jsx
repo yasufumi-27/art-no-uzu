@@ -78,7 +78,7 @@ export default function ComingSoon({ year }) {
             Coming Soon
           </span>
           <span className="mt-3 text-[11px] tracking-wider-jp text-[var(--color-muted)]">
-            {year} — 新たな渦が、生まれる。
+            {year}
           </span>
         </span>
       </div>

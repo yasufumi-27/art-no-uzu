@@ -1,20 +1,9 @@
 import Link from "next/link";
 import { asset } from "@/lib/asset";
 
-// 外部SNS導線（仕様書 12.1）と著作権・免責（仕様書 20）。
-export const SOCIAL = [
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/art_no_uzu?igsh=ZmdjZXJveWJyMHJt",
-  },
-  { label: "YouTube", href: "https://www.youtube.com/@art_no_uzu/videos" },
-  {
-    label: "TikTok",
-    href: "https://www.tiktok.com/@art_no_uzu?_r=1&_t=ZS-97vsfWIkVi1",
-  },
-  { label: "LINE", href: "https://line.me/R/ti/p/@580mwjit" },
-  { label: "BASE", href: "https://yoshimisaito.base.shop" },
-];
+import SocialLinks from "@/components/SocialLinks";
+
+export { SOCIAL } from "@/lib/social";
 
 export default function Footer() {
   return (
@@ -38,20 +27,7 @@ export default function Footer() {
           </p>
         </div>
         <div className="flex flex-col gap-4">
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-xs tracking-wider-jp text-[var(--color-muted)]">
-            {SOCIAL.map((s) => (
-              <li key={s.label}>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors hover:text-[var(--color-ink)]"
-                >
-                  {s.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <SocialLinks className="text-xs tracking-wider-jp text-[var(--color-muted)]" />
           <div className="flex gap-6 text-xs tracking-wider-jp text-[var(--color-muted)]">
             <Link href="/contact" className="hover:text-[var(--color-ink)]">
               Contact

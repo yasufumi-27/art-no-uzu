@@ -1,6 +1,6 @@
 import Reveal from "@/components/Reveal";
 import ContactForm from "@/components/ContactForm";
-import { SOCIAL } from "@/components/Footer";
+import SocialLinks from "@/components/SocialLinks";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
@@ -28,7 +28,8 @@ export default function ContactPage() {
               Contact
             </h1>
             <p className="mt-8 text-sm leading-relaxed text-[var(--color-muted)]">
-              作品のご購入・ご依頼・その他お問い合わせは、下記フォームまたは各SNSよりお気軽にご連絡ください。
+              作品のご依頼・お問い合わせは、<br />
+              フォームまたは各SNSよりお気軽にご連絡ください。
             </p>
           </Reveal>
 
@@ -36,20 +37,7 @@ export default function ContactPage() {
             <h2 className="text-sm tracking-wider-jp text-[var(--color-muted)]">
               Links
             </h2>
-            <ul className="mt-6 space-y-3">
-              {SOCIAL.map((s) => (
-                <li key={s.label}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm tracking-wider-jp underline underline-offset-4 hover:opacity-60"
-                  >
-                    {s.label} →
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <SocialLinks className="mt-6 text-sm tracking-wider-jp" linkClassName="underline underline-offset-4 hover:opacity-60" />
           </Reveal>
         </div>
 

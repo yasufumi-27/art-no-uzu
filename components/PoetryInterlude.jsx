@@ -124,7 +124,7 @@ export default function PoetryInterlude({ poems }) {
 
   return (
     <section className={styles.section} aria-label="作品の詩" data-visible={inView}>
-      <div className={styles.galleryLabel} aria-hidden="true">POETRY<span>言葉の余白</span></div>
+      <div className={styles.galleryLabel} aria-hidden="true">POETRY<span>詩</span></div>
       <p className={styles.guide}>横にスクロールしてめぐる · 詩に触れると、作品へ。</p>
       <div ref={viewportRef} className={styles.viewport} data-dragging={dragging}
         role="region" aria-label="詩のギャラリー。横スクロールで作品をめぐる" tabIndex={0}
