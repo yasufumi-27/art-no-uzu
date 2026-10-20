@@ -7,7 +7,7 @@
   overflow: hidden;
   background: var(--color-bg, #f5f4f2);
 }
-.galleryLabel { font-size: 10px; letter-spacing: .32em; text-align: center; color: #727b7e; margin-bottom: 58px; }
+.galleryLabel { font-size: 10px; letter-spacing: .32em; text-align: center; color: #727b7e; margin-bottom: 16px; }
 .galleryLabel span { display: block; margin-top: 10px; font-size: 10px; letter-spacing: .24em; }
 .viewport {
   overflow-x: auto; overflow-y: hidden; width: 100%;
@@ -38,7 +38,7 @@
   transition: opacity .15s linear, filter .15s linear;
 }
 .exhibitNumber { position: absolute; top: 17px; left: 20px; font-size: 8px; letter-spacing: .2em; color: #98a4a8; }
-.guide { margin: 18px 0 0; font-size: 10px; letter-spacing: .18em; text-align: center; color: #7d888c; }
+.guide { margin: 0 24px 12px; line-height: 1.8; font-size: 10px; letter-spacing: .18em; text-align: center; color: #7d888c; }
 /* Letters settle into focus as their poem reaches the center. */
 .character { display: inline-block; }
 .section[data-visible="true"] .active .character { animation: focusLetter .9s ease-out both; animation-delay: var(--arrival); }
@@ -71,7 +71,7 @@
 .credit a:focus-visible { outline: 1px solid currentColor; outline-offset: 8px; }
 @media (max-width: 639px) {
   .section { padding: 40px 0 32px; --panel-width: calc(100vw - 64px); }
-  .galleryLabel { margin-bottom: 32px; }
+  .galleryLabel { margin-bottom: 14px; }
   .viewport { padding-bottom: 36px; }
   .slides { gap: 0; }
   .figure:not(:last-child) { margin-inline-end: -40px; }

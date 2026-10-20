@@ -62,9 +62,9 @@ export default function FeaturedWorks({ children }) {
             const active = i === Math.round(progress * (TOP_IMAGES.length - 1));
             const offset = Math.max(-1, Math.min(1, i - progress * (TOP_IMAGES.length - 1)));
             return (
-              <Link key={work.id} href={work.href || `/works/${work.id}`} className={storyStyles.slide} data-featured-slide={i} aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を見る`}
+              <Link key={work.id} href={work.href || `/works/${work.id}`} className={storyStyles.slide} data-featured-slide={i} data-centered={Math.abs(offset) < .005} aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を見る`}
                 aria-hidden={!active} tabIndex={active ? 0 : -1}>
-                <span className={storyStyles.artwork} style={{ "--distance": Math.abs(offset) }}>
+                <span className={storyStyles.artwork} style={{ "--distance": Math.abs(offset), "--offset": offset }}>
                   <img src={work.images[0]} {...responsiveImage(work.images[0])} decoding="async" alt={`神谷佳美 TOP指定作品 ${i + 1}`} loading="lazy" />
                 </span>
               </Link>
