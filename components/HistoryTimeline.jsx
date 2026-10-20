@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import HistoryEntry from "@/components/HistoryEntry";
 import { HISTORY_IMAGES } from "@/lib/history-images";
 import { asset } from "@/lib/asset";
 
@@ -178,24 +179,7 @@ export default function HistoryTimeline({ history }) {
                   {rows.map(({ t, exhibition }, j) => (
                     <li key={j} className="history-item" style={{ "--delay": `${0.25 + j * 0.12}s` }}>
                       <span className="history-ink">
-                        {exhibition && (
-                          <span className="mr-2 inline-block border border-[var(--color-ink)] px-1.5 text-[0.5625rem] leading-4 tracking-[0.15em] align-[1px]">
-                            Exhibition
-                          </span>
-                        )}
-                        {t.text}
-                        {t.links?.map((l) => (
-                          <a
-                            key={l.href + l.label}
-                            href={l.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            tabIndex={on ? 0 : -1}
-                            className="history-link ml-2 inline-block whitespace-nowrap border-b border-[var(--color-muted)] text-[0.625rem] tracking-[0.12em] text-[var(--color-muted)] transition-colors hover:border-[var(--color-ink)] hover:text-[var(--color-ink)]"
-                          >
-                            {l.label} ↗
-                          </a>
-                        ))}
+                        <HistoryEntry entry={t} exhibition={exhibition} active={on} />
                       </span>
                     </li>
                   ))}

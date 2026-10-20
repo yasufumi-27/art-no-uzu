@@ -1,5 +1,6 @@
 import Reveal from "@/components/Reveal";
 import HistoryTimeline from "@/components/HistoryTimeline";
+import HistoryEntry from "@/components/HistoryEntry";
 import { HISTORY } from "@/lib/history";
 import StatementInk from "@/components/StatementInk";
 import Spiral from "@/components/Spiral";
@@ -152,7 +153,7 @@ export default function AboutPage() {
             <section key={year} aria-labelledby={`biography-${year}`} className="grid grid-cols-[44px_minmax(0,1fr)] gap-3 py-4 sm:grid-cols-[100px_1fr] sm:gap-8 sm:py-8">
               <h3 id={`biography-${year}`} className="font-display pt-0.5 text-[13px] tracking-[0.08em] sm:pt-0 sm:text-lg sm:tracking-[0.15em]">{year}</h3>
               <div className="text-xs leading-[1.85] tracking-[0.02em] sm:text-sm sm:leading-loose sm:tracking-normal">
-                {items.length > 0 && <ul className="space-y-1">{items.map(item => <li key={item.text}>{item.text}</li>)}</ul>}
+                {items.length > 0 && <ul className="space-y-1">{items.map(item => <li key={item.text}>{item.detail ? <HistoryEntry entry={item} /> : item.text}</li>)}</ul>}
                 {exhibitions?.length > 0 && <div className={items.length ? "mt-3 sm:mt-5" : ""}>
                   <p className="mb-1 text-[10px] tracking-[0.12em] text-[var(--color-muted)] sm:text-xs">EXHIBITION</p>
                   <ul className="space-y-1">{exhibitions.map(item => <li key={item.text}>{item.text}</li>)}</ul>
