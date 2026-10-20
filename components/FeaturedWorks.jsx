@@ -11,6 +11,8 @@ import { responsiveImage } from "@/lib/responsive-image";
 import { TOP_IMAGES } from "@/lib/top-images";
 import { SAME_IMAGE_GROUPS } from "@/lib/work-links";
 import { chooseFeaturedTiles } from "@/lib/featured-selection";
+import useFeaturedScroll from "./useFeaturedScroll";
+import storyStyles from "./FeaturedStory.module.css";
 
 // 四隅＋中央は固定5枚、残り4枚は重複しない鮮明な作品から選ぶ。
 // SSR は決定的に選び、マウント後にランダム4枠だけを差し替える。
@@ -25,6 +27,7 @@ export default function FeaturedWorks({ children }) {
   const [progress, setProgress] = useState(0);
   const [scrollDriven, setScrollDriven] = useState(false);
   const storyRef = useRef(null);
+  const storyScroll = useFeaturedScroll(TOP_IMAGES.length, setProgress);
 
   // ホバーした作品を拡大表示（打ち合わせメモ）：横は3列分、縦はその作品を中心に上下へ半段ずつ
   // （＝上の段の中央から下の段の中央まで）。一覧からはみ出す場合は高さを保ったまま内側へずらす。PCのみ。
@@ -59,12 +62,12 @@ export default function FeaturedWorks({ children }) {
       const enabled = !motion.matches;
       storyRef.current.classList.toggle("is-scroll-driven", enabled);
       setScrollDriven(enabled);
-      if (!enabled) { setProgress(0); return; }
+      if (!enabled) { storyScroll.syncVertical(null); return; }
       const r = storyRef.current.getBoundingClientRect();
       const stage = storyRef.current.querySelector(".featured-story-stage");
       const top = parseFloat(getComputedStyle(stage).top) || 0;
       const range = r.height - stage.getBoundingClientRect().height;
-      setProgress(Math.max(0, Math.min(1, (top - r.top) / Math.max(1, range))));
+      storyScroll.syncVertical(Math.max(0, Math.min(1, (top - r.top) / Math.max(1, range))));
     };
     const scroll = () => { if (!raf) raf = requestAnimationFrame(update); };
     update();
@@ -82,17 +85,18 @@ export default function FeaturedWorks({ children }) {
   return (
     <>
     <div ref={storyRef} className={`featured-story${scrollDriven ? " is-scroll-driven" : ""}`}>
-      <div className="featured-story-stage">
+      <div className={`featured-story-stage ${storyStyles.stage}`}>
         <div className="featured-story-decoration" aria-hidden="true">
           <Spiral turns={4} strokeWidth={0.5} className="h-full w-full" pathClassName="featured-story-ink" />
           <style>{`.featured-story-ink { stroke-dasharray: 1; stroke-dashoffset: ${1 - progress}; }`}</style>
         </div>
-        <div className="featured-story-track" style={{ transform: scrollDriven ? `translateX(${-progress * (TOP_IMAGES.length - 1) * 100}%)` : "none" }}>
+        <div ref={storyScroll.viewportRef} className={storyStyles.viewport} data-dragging={storyScroll.dragging}
+          role="region" aria-label="作品ギャラリー。横スクロールで作品をめぐる" tabIndex={0} {...storyScroll.bindings}>
           {TOP_IMAGES.map((work, i) => {
-            const active = !scrollDriven || i === Math.round(progress * (TOP_IMAGES.length - 1));
-            const offset = scrollDriven ? Math.max(-1, Math.min(1, i - progress * (TOP_IMAGES.length - 1))) : 0;
+            const active = i === Math.round(progress * (TOP_IMAGES.length - 1));
+            const offset = Math.max(-1, Math.min(1, i - progress * (TOP_IMAGES.length - 1)));
             return (
-              <Link key={work.id} href={work.href || `/works/${work.id}`} className="featured-story-image" aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を見る`}
+              <Link key={work.id} href={work.href || `/works/${work.id}`} className={storyStyles.slide} aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を見る`}
                 aria-hidden={!active} tabIndex={active ? 0 : -1}>
                 <span className="featured-story-artwork" style={{
                   transform: `perspective(900px) translateY(${Math.abs(offset) * 28}px) rotateY(${-offset * 18}deg) rotateZ(${offset * 3}deg) scale(${1 - Math.abs(offset) * 0.14})`,
@@ -104,7 +108,11 @@ export default function FeaturedWorks({ children }) {
             );
           })}
         </div>
-        <p className="featured-story-count" aria-hidden="true">{String(Math.round(progress * (TOP_IMAGES.length - 1)) + 1).padStart(2, "0")} / 05</p>
+        <div className={storyStyles.controls}>
+          <button type="button" onClick={storyScroll.previous} disabled={progress < .01} aria-label="前の作品">←</button>
+          <span aria-live="polite" aria-atomic="true">{String(Math.round(progress * (TOP_IMAGES.length - 1)) + 1).padStart(2, "0")} / 05</span>
+          <button type="button" onClick={storyScroll.next} disabled={progress > .99} aria-label="次の作品">→</button>
+        </div>
       </div>
     </div>
     {children}
