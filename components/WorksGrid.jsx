@@ -41,9 +41,8 @@ function Feature({ feature }) {
   const { work, extra, label, image, portrait } = feature;
   return (
     <Destination work={work} extra={extra} className={`work-in group ${styles.feature}`} aria-label={label} data-feature-id={work?.id || extra.kind}>
-      <div className={`${styles.featureFrame} ${portrait ? styles.pair : ""}`}>
-        {portrait && <FadeImg src={asset("/images/about/artist.webp")} alt="神谷佳美" sizes="(min-width: 1760px) 570px, (min-width: 1024px) 33vw, (min-width: 768px) 320px, 45vw" className={styles.featureImage} />}
-        <FadeImg src={image} alt={label} sizes="(min-width: 1760px) 1140px, (min-width: 1024px) 65vw, (min-width: 768px) 680px, 86vw" className={styles.featureImage} />
+      <div className={`${styles.featureFrame} ${portrait ? styles.portrait : ""}`}>
+        <FadeImg src={portrait ? asset("/images/about/artist.webp") : image} alt={portrait ? `「${label}」を持つ神谷佳美` : label} sizes="(min-width: 1760px) 1140px, (min-width: 1024px) 65vw, (min-width: 768px) 680px, 86vw" className={styles.featureImage} />
       </div>
       <p className={styles.featureTitle}>{label}<span aria-hidden="true">{work?.hasDetail ? " →" : " ↗"}</span></p>
     </Destination>

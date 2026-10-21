@@ -7,7 +7,8 @@
 .featureFrame { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; display: flex; align-items: center; justify-content: center; }
 .featureImage { width: 100%; height: 100%; object-fit: cover; min-width: 0; transition: transform 1s ease; }
 .feature:hover .featureImage { transform: scale(1.015); }
-.pair .featureImage { width: 50%; object-fit: contain; }
+.portrait { aspect-ratio: 3 / 4; }
+.portrait .featureImage { object-fit: contain; }
 .featureTitle { margin-top: 14px; font-size: 11px; line-height: 1.8; letter-spacing: .12em; text-align: center; }
 .featureTitle span { white-space: nowrap; }
 .smallGrid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px 22px; width: 90%; margin: 0 auto; align-items: start; }
