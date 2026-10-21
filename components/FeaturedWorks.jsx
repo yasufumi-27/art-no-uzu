@@ -9,6 +9,7 @@ import Spiral from "@/components/Spiral";
 import { works, workAlt } from "@/lib/works";
 import { responsiveImage } from "@/lib/responsive-image";
 import { TOP_IMAGES } from "@/lib/top-images";
+import { FEATURED_STORY_IMAGES } from "@/lib/featured-story-images";
 import { SAME_IMAGE_GROUPS } from "@/lib/work-links";
 import { chooseFeaturedTiles } from "@/lib/featured-selection";
 import useFeaturedScroll from "./useFeaturedScroll";
@@ -25,7 +26,7 @@ export default function FeaturedWorks({ children }) {
   const gridRef = useRef(null);
   const [preview, setPreview] = useState(null);
   const [progress, setProgress] = useState(0);
-  const storyScroll = useFeaturedScroll(TOP_IMAGES.length, setProgress);
+  const storyScroll = useFeaturedScroll(FEATURED_STORY_IMAGES.length, setProgress);
 
   // ホバーした作品を拡大表示（打ち合わせメモ）：横は3列分、縦はその作品を中心に上下へ半段ずつ
   // （＝上の段の中央から下の段の中央まで）。一覧からはみ出す場合は高さを保ったまま内側へずらす。PCのみ。
@@ -58,11 +59,11 @@ export default function FeaturedWorks({ children }) {
       <div className={storyStyles.stage}>
         <div ref={storyScroll.viewportRef} className={storyStyles.viewport} data-dragging={storyScroll.dragging}
           role="region" aria-label="作品ギャラリー。横スクロールで作品をめぐる" tabIndex={0} {...storyScroll.bindings}>
-          {TOP_IMAGES.map((work, i) => {
-            const active = i === Math.round(progress * (TOP_IMAGES.length - 1));
-            const offset = Math.max(-1, Math.min(1, i - progress * (TOP_IMAGES.length - 1)));
+          {FEATURED_STORY_IMAGES.map((work, i) => {
+            const active = i === Math.round(progress * (FEATURED_STORY_IMAGES.length - 1));
+            const offset = Math.max(-1, Math.min(1, i - progress * (FEATURED_STORY_IMAGES.length - 1)));
             return (
-              <Link key={work.id} href={work.href || `/works/${work.id}`} className={storyStyles.slide} data-featured-slide={i} data-centered={Math.abs(offset) < .005} aria-label={`作品 ${i + 1} / ${TOP_IMAGES.length} を見る`}
+              <Link key={work.id} href={work.href || `/works/${work.id}`} className={storyStyles.slide} data-featured-slide={i} data-centered={Math.abs(offset) < .005} aria-label={`作品 ${i + 1} / ${FEATURED_STORY_IMAGES.length} を見る`}
                 aria-hidden={!active} tabIndex={active ? 0 : -1}>
                 <span className={storyStyles.artwork} style={{ "--distance": Math.abs(offset), "--offset": offset }}>
                   <img src={work.images[0]} {...responsiveImage(work.images[0])} decoding="async" alt={`神谷佳美 TOP指定作品 ${i + 1}`} loading="lazy" />
@@ -73,7 +74,7 @@ export default function FeaturedWorks({ children }) {
         </div>
         <div className={storyStyles.controls}>
           <button type="button" onClick={storyScroll.previous} disabled={progress < .01} aria-label="前の作品">←</button>
-          <span aria-live="polite" aria-atomic="true">{String(Math.round(progress * (TOP_IMAGES.length - 1)) + 1).padStart(2, "0")} / 05</span>
+          <span aria-live="polite" aria-atomic="true">{String(Math.round(progress * (FEATURED_STORY_IMAGES.length - 1)) + 1).padStart(2, "0")} / {String(FEATURED_STORY_IMAGES.length).padStart(2, "0")}</span>
           <button type="button" onClick={storyScroll.next} disabled={progress > .99} aria-label="次の作品">→</button>
         </div>
         <p className={storyStyles.guide}>横にスクロールして作品を見る</p>
