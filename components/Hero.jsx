@@ -17,6 +17,7 @@ export default function Hero() {
   const [index, setIndex] = useState(0);
   const [ready, setReady] = useState(false); // 初期ロード時のゆっくりフェードイン用
   const timer = useRef(null);
+  const gesture = useRef(null);
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setReady(true));
@@ -30,13 +31,31 @@ export default function Hero() {
       setIndex((prev) => (prev + 1) % SLIDES.length);
     }, INTERVAL);
     return () => clearInterval(timer.current);
-  }, []);
+  }, [index]);
+
+  const startSwipe = (event) => {
+    if (event.target.closest("button") || !event.isPrimary || event.button !== 0) return;
+    gesture.current = { x: event.clientX, y: event.clientY };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const endSwipe = (event) => {
+    const start = gesture.current;
+    gesture.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+    if (!start) return;
+    const dx = event.clientX - start.x, dy = event.clientY - start.y;
+    if (Math.abs(dx) >= 45 && Math.abs(dx) > Math.abs(dy) * 1.5) go(index + (dx < 0 ? 1 : -1));
+  };
 
   const current = SLIDES[index];
 
   return (
     <section className="relative w-full">
-      <div className="relative w-full h-[76vh] md:h-[90vh] overflow-hidden bg-transparent">
+      <div className="relative w-full h-[76vh] md:h-[90vh] overflow-hidden bg-transparent"
+        data-hero-slide={index + 1} style={{ touchAction: "pan-y pinch-zoom" }}
+        onPointerDown={startSwipe} onPointerUp={endSwipe}
+        onPointerCancel={() => { gesture.current = null; }}
+        onDragStart={event => event.preventDefault()}>
         {SLIDES.map((slide, i) => (
           <img
             key={slide.id}
@@ -44,6 +63,7 @@ export default function Hero() {
             {...responsiveImage(slide.src, "hero")}
             fetchPriority={i === 0 ? "high" : "low"}
             decoding="async"
+            draggable={false}
             alt={slide.title || "神谷佳美 作品"}
             className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[3600ms] ease-in-out"
             style={{ opacity: ready && i === index ? 1 : 0, objectPosition: slide.position }}

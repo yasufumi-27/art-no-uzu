@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import FadeImg from "@/components/FadeImg";
 import InstagramBadge from "@/components/InstagramBadge";
@@ -41,7 +41,7 @@ function Feature({ feature }) {
   const { work, extra, label, image, portrait } = feature;
   return (
     <Destination work={work} extra={extra} className={`work-in group ${styles.feature}`} aria-label={label} data-feature-id={work?.id || extra.kind}>
-      <div className={`${styles.featureFrame} ${portrait ? styles.portrait : ""}`} style={feature.aspectRatio ? { aspectRatio: feature.aspectRatio } : undefined}>
+      <div className={styles.featureFrame}>
         <FadeImg src={portrait ? asset("/images/about/artist.webp") : image} alt={portrait ? `「${label}」を持つ神谷佳美` : label} sizes="(min-width: 1760px) 1140px, (min-width: 1024px) 65vw, (min-width: 768px) 680px, 86vw" className={styles.featureImage} style={feature.objectPosition ? { objectPosition: feature.objectPosition } : undefined} />
       </div>
       <p className={styles.featureTitle}>{label}<span aria-hidden="true">{work?.hasDetail ? " →" : " ↗"}</span></p>
@@ -53,11 +53,18 @@ export default function WorksGrid({ works, years, comingSoonYear, initialYear, e
   const tabs = [comingSoonYear, ...years];
   const valid = tabs.includes(initialYear) ? initialYear : years[0];
   const [activeYear, setActiveYear] = useState(valid);
+  useEffect(() => setActiveYear(valid), [valid]);
+  const selectYear = (year) => {
+    setActiveYear(year);
+    const url = new URL(window.location.href);
+    url.searchParams.set("year", String(year));
+    window.history.replaceState(window.history.state, "", url);
+  };
   const groups = archiveGroups(works.filter(w => w.year === activeYear), extras.filter(e => e.year === activeYear), activeYear);
   return (
     <div className="works-archive">
       <div className="mb-14 grid grid-cols-7 gap-y-3 border-b border-[var(--color-line)] pb-6 text-[13px] tracking-[0.08em] sm:flex sm:flex-wrap sm:gap-x-5 sm:text-sm sm:tracking-[0.22em]">
-        {tabs.map(year => <button key={year} onClick={() => setActiveYear(year)} aria-pressed={activeYear === year} className={`nav-link underline-offset-4 transition-colors hover:text-[var(--color-ink)] ${activeYear === year ? "font-medium text-[var(--color-ink)] underline" : "text-[var(--color-muted)]"}`}>{year}</button>)}
+        {tabs.map(year => <button key={year} onClick={() => selectYear(year)} aria-pressed={activeYear === year} className={`nav-link underline-offset-4 transition-colors hover:text-[var(--color-ink)] ${activeYear === year ? "font-medium text-[var(--color-ink)] underline" : "text-[var(--color-muted)]"}`}>{year}</button>)}
       </div>
       <div className={styles.yearHeading}><span aria-hidden="true" /><h2>{activeYear}</h2><span aria-hidden="true" /></div>
       {activeYear === comingSoonYear ? <ComingSoon year={comingSoonYear} /> : (
