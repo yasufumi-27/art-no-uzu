@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
 import { responsiveImage } from "@/lib/responsive-image";
 import Spiral from "@/components/Spiral";
-import { TOP_IMAGES } from "@/lib/top-images";
+import { HERO_IMAGES } from "@/lib/hero-images";
 
 // TOP メインビジュアル（仕様書 8）。
-// クライアント提供の TOP 画像（2026-09 受領 top1〜5）をスライド表示。フェードイン/アウトで切替、自動 + 手動。
+// クライアント提供の TOP 画像（2026-10-21 受領6枚）をスライド表示。フェードイン/アウトで切替、自動 + 手動。
 // title / year を入れるとキャプションを一文字ずつ立ち上げて表示する（空なら出さない）。
-const SLIDES = TOP_IMAGES.map((w) => ({ ...w, src: w.images[0] }));
+const SLIDES = HERO_IMAGES;
 
 const INTERVAL = 8000;
 
@@ -46,7 +46,7 @@ export default function Hero() {
             decoding="async"
             alt={slide.title || "神谷佳美 作品"}
             className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[3600ms] ease-in-out"
-            style={{ opacity: ready && i === index ? 1 : 0 }}
+            style={{ opacity: ready && i === index ? 1 : 0, objectPosition: slide.position }}
           />
         ))}
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/10" />
