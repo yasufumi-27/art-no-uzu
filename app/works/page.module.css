@@ -1,0 +1,7 @@
+/* PCは添付の余白感に合わせて作品エリアを広く取り、画面幅に応じて左右余白を確保。 */
+@media (min-width: 1024px) {
+  .page {
+    max-width: 1760px;
+    padding-inline: clamp(24px, 4vw, 80px);
+  }
+}

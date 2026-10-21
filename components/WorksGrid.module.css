@@ -30,4 +30,8 @@
   .smallGrid { width: 92%; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 36px 40px; }
   .badge { font-size: 9px; left: 9px; top: 9px; }
 }
+/* 大画像は小画像グリッドの約3/4幅。PCでは680pxの上限を外して比例させる。 */
+@media (min-width: 1024px) {
+  .feature { max-width: none; }
+}
 @media (prefers-reduced-motion: reduce) { .featureImage { transition: none; } }

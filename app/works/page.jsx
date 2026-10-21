@@ -5,6 +5,7 @@ import Reveal from "@/components/Reveal";
 import { works, years, comingSoonYear } from "@/lib/works";
 import { YEAR_EXTRAS } from "@/lib/work-links";
 import { SITE_URL } from "@/lib/site";
+import styles from "./page.module.css";
 
 export const metadata = {
   title: "Works / Exhibition",
@@ -24,7 +25,7 @@ export const metadata = {
 
 export default function WorksPage() {
   return (
-    <div className="container-main py-20 md:py-28">
+    <div className={`container-main py-20 md:py-28 ${styles.page}`}>
       <Reveal className="mb-20 max-w-xl">
         <h1 className="font-display text-3xl font-light tracking-[0.08em]">
           Works / Exhibition
