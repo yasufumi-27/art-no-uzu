@@ -41,7 +41,7 @@ function Feature({ feature }) {
   const { work, extra, label, image, portrait } = feature;
   return (
     <Destination work={work} extra={extra} className={`work-in group ${styles.feature}`} aria-label={label} data-feature-id={work?.id || extra.kind}>
-      <div className={`${styles.featureFrame} ${portrait ? styles.portrait : ""}`}>
+      <div className={`${styles.featureFrame} ${portrait ? styles.portrait : ""}`} style={feature.aspectRatio ? { aspectRatio: feature.aspectRatio } : undefined}>
         <FadeImg src={portrait ? asset("/images/about/artist.webp") : image} alt={portrait ? `「${label}」を持つ神谷佳美` : label} sizes="(min-width: 1760px) 1140px, (min-width: 1024px) 65vw, (min-width: 768px) 680px, 86vw" className={styles.featureImage} />
       </div>
       <p className={styles.featureTitle}>{label}<span aria-hidden="true">{work?.hasDetail ? " →" : " ↗"}</span></p>
