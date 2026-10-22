@@ -56,7 +56,7 @@ export default function BookSpread({ directory, pageCount, title, bookUrl }) {
       </label>
       <button type="button" onClick={() => go(-1)} disabled={spread === 0} aria-label="前の見開き">→</button>
     </div>
-    <p className={styles.guide}>左右にスワイプして読む · 見開きに触れると作品集へ</p>
+    <p className={styles.guide}>左右にスワイプして読む</p>
     <span className={styles.status} aria-live="polite">{label}</span>
   </div>;
 }
