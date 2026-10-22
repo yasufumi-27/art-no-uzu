@@ -40,7 +40,7 @@ export default function BookSpread({ directory, pageCount, title, bookUrl }) {
 
   return <div className={styles.reader} data-book-reader>
     <a href={`${bookUrl.split("#")[0]}#p=${first}`} className={`${styles.spread} ${pages.length === 1 ? styles.single : ""}`}
-      aria-label={`${title} ${label}をFlipHTML5で読む`}
+      aria-label={`${title} ${label}を作品集で読む`}
       onPointerDown={start} onPointerUp={finish}
       onPointerCancel={() => { gesture.current = null; }}
       onDragStart={event => event.preventDefault()}
@@ -56,7 +56,7 @@ export default function BookSpread({ directory, pageCount, title, bookUrl }) {
       </label>
       <button type="button" onClick={() => go(-1)} disabled={spread === 0} aria-label="前の見開き">→</button>
     </div>
-    <p className={styles.guide}>左右にスワイプして読む · 見開きに触れるとFlipHTML5へ</p>
+    <p className={styles.guide}>左右にスワイプして読む · 見開きに触れると作品集へ</p>
     <span className={styles.status} aria-live="polite">{label}</span>
   </div>;
 }
