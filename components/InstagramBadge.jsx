@@ -2,6 +2,8 @@
 // （2026-09 クライアント回答：一覧で見分けがつくようにする）。
 // Exhibition ラベル（左上）と重ならないよう右上に置く。
 export default function InstagramBadge({ label = "Instagram", small = false }) {
+  // 小グリッドのリンク先は維持し、指定の外部メディア表記のみ非表示にする。
+  if (["youtube", "web magazine"].includes(label.toLowerCase())) return null;
   return (
     <span
       className={`${label === "Instagram" ? "hidden md:inline" : ""} absolute bg-black/70 tracking-wider-jp text-white ${
