@@ -1,0 +1,21 @@
+.reader { width: 100%; }
+.spread, .zoomSpread { display: flex; align-items: flex-start; justify-content: center; gap: 0; width: 100%; background: #fff; }
+.spread { padding: 0; border: 0; cursor: zoom-in; touch-action: pan-y pinch-zoom; box-shadow: 0 3px 18px #00000012; }
+.spread img, .zoomSpread img { display: block; width: 50%; height: auto; min-width: 0; }
+.single img { width: 50%; }
+.controls { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 18px; }
+.controls > button, .dialogTools button { min-width: 44px; min-height: 44px; border: 1px solid var(--color-line); padding: 8px 14px; background: var(--color-bg); color: var(--color-ink); }
+.controls > button:disabled { opacity: .25; }
+.jump { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+.jump select { min-height: 44px; padding: 6px 12px; border: 1px solid var(--color-line); color: var(--color-ink); background: var(--color-bg); }
+.guide { margin: 12px 0 0; font-size: 10px; text-align: center; line-height: 1.8; color: var(--color-muted); letter-spacing: .08em; }
+.status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.dialog { margin: auto; padding: 12px; width: min(1200px, 96vw); max-width: 96vw; max-height: 94dvh; background: var(--color-bg); border: 0; }
+.dialog::backdrop { background: #000b; }
+.dialogTools { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 12px; font-size: 12px; }
+.zoomViewport { overflow: auto; max-height: calc(94dvh - 92px); overscroll-behavior: contain; }
+.zoomed { width: max(1200px, 180%); }
+@media (max-width: 639px) {
+  .single img { width: 75%; }
+  .dialog { padding: 8px; }
+}
