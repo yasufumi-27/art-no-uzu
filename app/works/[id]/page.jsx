@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Gallery from "@/components/Gallery";
 import BookSpread from "@/components/BookSpread";
+import BookVertical from "@/components/BookVertical";
 import Reveal from "@/components/Reveal";
 import FadeImg from "@/components/FadeImg";
 import InstagramBadge from "@/components/InstagramBadge";
@@ -178,7 +179,7 @@ export default async function WorkDetail({ params }) {
             <FadeImg src={work.bookImage} alt={`作品集「${work.bookTitle}」表紙`} className="h-auto w-full" />
           </a>
           <div>
-            {work.bookImageDirectory ? <BookSpread bookUrl={work.bookUrl} directory={work.bookImageDirectory} pageCount={work.bookPageCount} title={work.bookTitle} /> : <iframe src={work.bookUrl} title={`作品集「${work.bookTitle}」`} loading="lazy" allowFullScreen className="aspect-[3/4] w-full border-0 md:aspect-[4/3]" />}
+            {work.bookLayout === "vertical" ? <BookVertical bookUrl={work.bookUrl} directory={work.bookImageDirectory} pageCount={work.bookPageCount} title={work.bookTitle} /> : work.bookImageDirectory ? <BookSpread bookUrl={work.bookUrl} directory={work.bookImageDirectory} pageCount={work.bookPageCount} title={work.bookTitle} /> : <iframe src={work.bookUrl} title={`作品集「${work.bookTitle}」`} loading="lazy" allowFullScreen className="aspect-[3/4] w-full border-0 md:aspect-[4/3]" />}
             <a href={work.bookUrl} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-xs underline underline-offset-4">作品集を別画面で読む ↗</a>
           </div>
         </div>

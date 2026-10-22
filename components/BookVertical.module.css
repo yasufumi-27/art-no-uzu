@@ -1,0 +1,11 @@
+.reader { width: 100%; max-width: 600px; margin-inline: auto; }
+.viewport { position: relative; height: min(75svh, 800px); overflow-y: auto; overscroll-behavior-y: contain; background: var(--color-bg); border: 1px solid var(--color-line); }
+.page { display: block; margin-bottom: 16px; background: #fff; }
+.page:last-child { margin-bottom: 0; }
+.page img { display: block; width: 100%; height: auto; }
+.controls { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 18px; }
+.controls button { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; padding: 0; border: 1px solid var(--color-line); border-radius: 50%; color: var(--color-ink); background: var(--color-bg); }
+.controls button:disabled { opacity: .25; }
+.controls label { display: flex; gap: 10px; align-items: center; font-size: 12px; }
+.controls select { min-height: 44px; padding: 6px 12px; border: 1px solid var(--color-line); background: var(--color-bg); color: var(--color-ink); }
+.guide { margin: 12px 0 0; font-size: 10px; text-align: center; color: var(--color-muted); letter-spacing: .08em; }
