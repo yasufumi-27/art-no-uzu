@@ -16,6 +16,7 @@ function cardStyle(index) {
 
 function Destination({ work, extra, children, ...props }) {
   if (work?.hasDetail) return <Link href={`/works/${work.id}`} {...props}>{children}</Link>;
+  if (work && !work.instagram) return <div {...props}>{children}</div>;
   return <a href={work?.instagram || extra.href} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>;
 }
 
@@ -28,7 +29,7 @@ function Card({ card, index }) {
       <div className={`zoom-card ${styles.square}`}>
         {src ? <FadeImg src={src} sizes="(min-width: 1760px) 350px, (min-width: 1024px) 22vw, (min-width: 768px) 210px, 38vw" alt={title} className={styles.cardImage} /> : <div className={styles.textCard}><span>{extra.kind}</span><p>{extra.title}</p></div>}
         {work?.category !== "Works" && work && <span className={styles.badge}>{work.category}</span>}
-        {work && !work.hasDetail && <InstagramBadge label={work.linkLabel} />}
+        {work && work.instagram && !work.hasDetail && <InstagramBadge label={work.linkLabel} />}
         {extra && <span className={styles.badge}>{extra.kind} ↗</span>}
         {work?.title && <div className={styles.hoverTitle}><p>{work.title}</p></div>}
       </div>
