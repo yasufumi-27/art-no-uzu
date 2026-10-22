@@ -1,15 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { asset } from "@/lib/asset";
 import styles from "./BookSpread.module.css";
 
 // Right-bound book: cover alone, then page 3 on the left / page 2 on the right.
-export default function BookSpread({ directory, pageCount, title }) {
+export default function BookSpread({ directory, pageCount, title, bookUrl }) {
   const [spread, setSpread] = useState(0);
-  const [expanded, setExpanded] = useState(false);
-  const [zoomed, setZoomed] = useState(false);
-  const dialog = useRef(null);
   const gesture = useRef(null);
   const suppressClick = useRef(false);
   const count = 1 + Math.ceil((pageCount - 1) / 2);
@@ -17,15 +14,6 @@ export default function BookSpread({ directory, pageCount, title }) {
   const pages = spread === 0 ? [1] : [first + 1, first].filter(n => n <= pageCount);
   const label = spread === 0 ? "表紙" : `${first}–${Math.min(first + 1, pageCount)} / ${pageCount}`;
   const go = delta => setSpread(value => Math.max(0, Math.min(count - 1, value + delta)));
-
-  useEffect(() => {
-    if (!expanded) return;
-    const el = dialog.current;
-    const overflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    el.showModal();
-    return () => { el.close(); document.body.style.overflow = overflow; };
-  }, [expanded]);
 
   function images() {
     return pages.map(page => <img key={page} data-book-page={page}
@@ -51,14 +39,14 @@ export default function BookSpread({ directory, pageCount, title }) {
   }
 
   return <div className={styles.reader} data-book-reader>
-    <button type="button" className={`${styles.spread} ${pages.length === 1 ? styles.single : ""}`}
-      aria-label={`${title} ${label}を拡大する`}
+    <a href={`${bookUrl.split("#")[0]}#p=${first}`} className={`${styles.spread} ${pages.length === 1 ? styles.single : ""}`}
+      aria-label={`${title} ${label}をFlipHTML5で読む`}
       onPointerDown={start} onPointerUp={finish}
       onPointerCancel={() => { gesture.current = null; }}
       onDragStart={event => event.preventDefault()}
-      onClick={event => { if (event.detail === 0 || !suppressClick.current) { setZoomed(false); setExpanded(true); } }}>
+      onClick={event => { if (event.detail !== 0 && suppressClick.current) event.preventDefault(); }}>
       {images()}
-    </button>
+    </a>
     <div className={styles.controls}>
       <button type="button" onClick={() => go(1)} disabled={spread === count - 1} aria-label="次の見開き">←</button>
       <label className={styles.jump}>ページ
@@ -68,20 +56,7 @@ export default function BookSpread({ directory, pageCount, title }) {
       </label>
       <button type="button" onClick={() => go(-1)} disabled={spread === 0} aria-label="前の見開き">→</button>
     </div>
-    <p className={styles.guide}>左右にスワイプして読む · 見開きに触れると拡大</p>
+    <p className={styles.guide}>左右にスワイプして読む · 見開きに触れるとFlipHTML5へ</p>
     <span className={styles.status} aria-live="polite">{label}</span>
-    <dialog ref={dialog} className={styles.dialog} onClose={() => setExpanded(false)}
-      onCancel={() => setExpanded(false)} aria-label={`${title} 見開きの拡大表示`}
-      onClick={event => { if (event.target === event.currentTarget) setExpanded(false); }}>
-      <div className={styles.dialogTools}>
-        <button type="button" onClick={() => setZoomed(value => !value)}>{zoomed ? "全体を表示" : "さらに拡大"}</button>
-        <button type="button" onClick={() => setExpanded(false)} autoFocus>閉じる ×</button>
-      </div>
-      <div className={styles.zoomViewport} tabIndex={0} aria-label="拡大した作品集。スクロールして閲覧できます。">
-        <div className={`${styles.zoomSpread} ${zoomed ? styles.zoomed : ""} ${pages.length === 1 ? styles.single : ""}`}>
-          {images()}
-        </div>
-      </div>
-    </dialog>
   </div>;
 }
