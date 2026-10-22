@@ -127,7 +127,7 @@ export default function HistoryTimeline({ history }) {
             onClick={() => go(active - 1)}
             disabled={active === 0}
             aria-label="前の年"
-            className="text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)] disabled:opacity-20"
+            className="gallery-arrow text-sm disabled:opacity-20"
           >
             ←
           </button>
@@ -136,7 +136,7 @@ export default function HistoryTimeline({ history }) {
             onClick={() => go(active + 1)}
             disabled={active === years.length - 1}
             aria-label="次の年"
-            className="text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)] disabled:opacity-20"
+            className="gallery-arrow text-sm disabled:opacity-20"
           >
             →
           </button>
