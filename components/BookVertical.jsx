@@ -34,7 +34,7 @@ export default function BookVertical({ directory, pageCount, title, bookUrl }) {
     <div className={styles.controls}>
       <button type="button" aria-label="前のページ" disabled={page === 1} onClick={() => go(page - 1)}>↑</button>
       <label>ページ <select aria-label="表示するページ" value={page} onChange={event => go(Number(event.target.value))}>
-        {numbers.map(n => <option key={n} value={n}>{n} / {pageCount}</option>)}
+        {numbers.map(n => <option key={n} value={n}>{n}</option>)}
       </select></label>
       <button type="button" aria-label="次のページ" disabled={page === pageCount} onClick={() => go(page + 1)}>↓</button>
     </div>
