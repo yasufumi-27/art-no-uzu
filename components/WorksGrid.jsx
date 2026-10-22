@@ -24,11 +24,12 @@ function Card({ card, index }) {
   const { work, extra, image } = card;
   const title = work ? workAlt(work) : extra.title;
   const src = image || work?.thumb || extra?.image;
+  const badge = ["2024_5", "2025_5"].includes(work?.id) ? "ART BOOK" : work?.category;
   return (
     <Destination work={work} extra={extra} className={`work-in group ${styles.card}`} style={cardStyle(index)} aria-label={title}>
       <div className={`zoom-card ${styles.square}`}>
         {src ? <FadeImg src={src} sizes="(min-width: 1760px) 350px, (min-width: 1024px) 22vw, (min-width: 768px) 210px, 38vw" alt={title} className={styles.cardImage} /> : <div className={styles.textCard}><span>{extra.kind}</span><p>{extra.title}</p></div>}
-        {work?.category !== "Works" && work && <span className={styles.badge}>{work.category}</span>}
+        {work?.category !== "Works" && work && <span className={styles.badge}>{badge}</span>}
         {work && work.instagram && !work.hasDetail && <InstagramBadge label={work.linkLabel} />}
         {extra && <span className={styles.badge}>{extra.kind} ↗</span>}
         {work?.title && <div className={styles.hoverTitle}><p>{work.title}</p></div>}
