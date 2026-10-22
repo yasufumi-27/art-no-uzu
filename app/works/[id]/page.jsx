@@ -147,7 +147,7 @@ export default async function WorkDetail({ params }) {
           {work.purchaseUrl && <a href={work.purchaseUrl} target="_blank" rel="noopener noreferrer" className="mt-8 block w-fit border border-[var(--color-ink)] px-6 py-3 text-xs tracking-wider-jp hover:bg-[var(--color-ink)] hover:text-white">BASEで作品を見る ↗</a>}
           {work.websiteUrl && <a href={work.websiteUrl} target="_blank" rel="noopener noreferrer" className="mt-8 block w-fit break-all text-xs underline underline-offset-4 hover:opacity-60">{work.websiteUrl} ↗</a>}
           {work.youtubeUrl && <a href={work.youtubeUrl} target="_blank" rel="noopener noreferrer" className="mt-8 block w-fit border-b border-[var(--color-ink)] pb-1 text-xs tracking-wider-jp hover:opacity-60">YouTubeで見る →</a>}
-          {work.category !== "Essay" && !work.websiteUrl && <a
+          {work.category !== "Essay" && !work.websiteUrl && !work.hideInstagramLink && <a
             href={work.instagram}
             target="_blank"
             rel="noopener noreferrer"
