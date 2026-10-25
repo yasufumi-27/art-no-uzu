@@ -27,7 +27,7 @@ export default function Footer() {
           </p>
         </div>
         <div className="flex flex-col gap-8 md:gap-4">
-          <SocialLinks spacious linkClassName="inline-block py-2 md:py-0" className="text-xs tracking-wider-jp text-[var(--color-muted)]" />
+          <SocialLinks compact linkClassName="inline-block py-2 md:py-0" className="text-xs tracking-wide text-[var(--color-muted)]" />
           <div className="flex flex-wrap gap-8 md:gap-6 text-xs tracking-wider-jp text-[var(--color-muted)]">
             <Link href="/contact" className="hover:text-[var(--color-ink)]">
               Contact
