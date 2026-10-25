@@ -164,14 +164,15 @@ export default function HistoryTimeline({ history }) {
                 role="tabpanel"
                 aria-labelledby={`history-tab-${y.year}`}
                 aria-hidden={!on}
-                className={`history-panel [grid-area:1/1] ${on ? "is-on" : ""} ${on && played ? "is-in" : ""}`}
+                className={`history-panel lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-10 [grid-area:1/1] ${on ? "is-on" : ""} ${on && played ? "is-in" : ""}`}
               >
-                {photo && <figure className="mb-6">
+                {photo && <figure className="mb-6 lg:mb-0">
                   <img src={asset(photo.src)} alt={photo.caption} className="history-photo" loading="lazy" />
                   <figcaption className="mt-2 text-[0.625rem] leading-relaxed text-[var(--color-muted)]">
                     {photo.source ? <a href={photo.source} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{photo.caption} ↗</a> : photo.caption}
                   </figcaption>
                 </figure>}
+                <div className={photo ? "min-w-0" : "min-w-0 lg:col-span-2"}>
                 <h3 className="history-bigyear font-display text-4xl font-light tracking-[0.12em] md:text-6xl">
                   {y.year}
                 </h3>
@@ -184,6 +185,7 @@ export default function HistoryTimeline({ history }) {
                     </li>
                   ))}
                 </ul>
+                </div>
               </section>
             );
           })}
