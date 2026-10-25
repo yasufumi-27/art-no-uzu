@@ -79,6 +79,7 @@ export default function ContactForm() {
         <legend className="text-xs">お問い合わせ内容の概要 <span className="text-red-600">*</span></legend>
         <div className="mt-2 space-y-4 rounded-sm border border-[var(--color-line)] p-3">
           {TOPICS.map(topic => <label key={topic} className="flex items-start gap-2 text-xs leading-relaxed"><input type="checkbox" name="topics" value={topic} checked={topics.includes(topic)} onChange={e => setTopics(e.target.checked ? [...topics, topic] : topics.filter(t => t !== topic))} className="mt-0.5 shrink-0" />{topic}</label>)}
+        </div>
         <p className="mt-1 text-xs text-[var(--color-muted)]">複数選択できます。</p>
       </fieldset>
       <div><label htmlFor="contact-message" className="text-xs">詳細 <span className="text-red-600">*</span></label><textarea id="contact-message" name="message" required rows={8} maxLength={5000} placeholder="ご依頼内容につきまして、詳細に教えてください" className={inputClass} /></div>
