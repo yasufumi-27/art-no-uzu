@@ -178,7 +178,7 @@ export default async function WorkDetail({ params }) {
       </div>
 
       {work.bookUrl && <section className="container-main mt-20 md:mt-28" aria-labelledby="work-book-title">
-        <h2 id="work-book-title" className="border-b border-[var(--color-line)] pb-5 text-sm tracking-wider-jp">作品集 — {work.bookTitle}</h2>
+        <h2 id="work-book-title" className="border-b border-[var(--color-line)] pb-5 text-sm tracking-wider-jp">{work.bookHeading || `作品集 — ${work.bookTitle}`}</h2>
         <div className="mt-8 grid gap-8 md:grid-cols-[160px_1fr] md:items-start">
           <a href={work.bookUrl} target="_blank" rel="noopener noreferrer" className="mx-auto block w-32 md:w-full" aria-label={`作品集「${work.bookTitle}」を開く`}>
             <FadeImg src={work.bookImage} alt={`作品集「${work.bookTitle}」表紙`} className="h-auto w-full" />
