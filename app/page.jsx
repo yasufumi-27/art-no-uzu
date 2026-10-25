@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Biography from "@/components/Biography";
 import Hero from "@/components/Hero";
 import HistoryTimeline from "@/components/HistoryTimeline";
 import { HISTORY } from "@/lib/history";
@@ -83,6 +84,8 @@ export default function Home() {
             <HistoryTimeline history={HISTORY} />
           </Reveal>
         </section>
+
+        <Biography className="pb-24 md:pb-32" />
 
         {/* Contact */}
         <section className="border-t border-[var(--color-line)] py-24 md:py-32 text-center">
