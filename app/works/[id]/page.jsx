@@ -137,11 +137,29 @@ export default async function WorkDetail({ params }) {
           <p className="mt-6 max-w-xl whitespace-pre-line text-sm leading-loose text-[var(--color-ink)]">
             {work.description}
           </p>
-          {work.awardUrl && <a href={work.awardUrl} target="_blank" rel="noopener noreferrer" className="mt-4 block text-xs underline underline-offset-4">GOOD DESIGN AWARD 公式ページ ↗</a>}
           {work.poem && <div className="mt-10 border-t border-[var(--color-line)] pt-8">
             <h2 className="text-xs tracking-wider-jp text-[var(--color-muted)]">詩</h2>
             <p className="mt-5 whitespace-pre-line text-sm leading-loose">{work.poem}</p>
           </div>}
+
+        </Reveal>
+
+        <Reveal
+          delay={0.2}
+          className="border-t border-[var(--color-line)] pt-8 text-xs md:border-l md:border-t-0 md:pl-10 md:pt-0"
+        >
+          <dl className="space-y-3">
+          {info.map(([k, v]) => (
+            <div key={k} className="flex gap-6">
+              <dt className="w-24 shrink-0 tracking-wider-jp text-[var(--color-muted)]">
+                {k}
+              </dt>
+              <dd className="tracking-wider-jp">{v}</dd>
+            </div>
+          ))}
+          </dl>
+          <div className="flex flex-col items-end text-right" data-work-links>
+          {work.awardUrl && <a href={work.awardUrl} target="_blank" rel="noopener noreferrer" className="mt-4 block text-xs underline underline-offset-4">GOOD DESIGN AWARD 公式ページ ↗</a>}
           {work.essayUrl && <a href={work.essayUrl} target="_blank" rel="noopener noreferrer" className="mt-8 inline-block border-b border-[var(--color-ink)] pb-1 text-xs tracking-wider-jp hover:opacity-60">エッセイを読む ↗</a>}
           {work.article && <a href={work.article} target="_blank" rel="noopener noreferrer" className="mt-8 block text-xs underline underline-offset-4">{work.articleLabel || "展示について読む"} ↗</a>}
           {work.purchaseUrl && <a href={work.purchaseUrl} target="_blank" rel="noopener noreferrer" className="mt-8 block w-fit border border-[var(--color-ink)] px-6 py-3 text-xs tracking-wider-jp hover:bg-[var(--color-ink)] hover:text-white">BASEで作品を見る ↗</a>}
@@ -155,21 +173,7 @@ export default async function WorkDetail({ params }) {
           >
             {work.linkLabel} で見る →
           </a>}
-        </Reveal>
-
-        <Reveal
-          as="dl"
-          delay={0.2}
-          className="space-y-3 border-t border-[var(--color-line)] pt-8 text-xs md:border-l md:border-t-0 md:pl-10 md:pt-0"
-        >
-          {info.map(([k, v]) => (
-            <div key={k} className="flex gap-6">
-              <dt className="w-24 shrink-0 tracking-wider-jp text-[var(--color-muted)]">
-                {k}
-              </dt>
-              <dd className="tracking-wider-jp">{v}</dd>
-            </div>
-          ))}
+          </div>
         </Reveal>
       </div>
 
@@ -181,7 +185,7 @@ export default async function WorkDetail({ params }) {
           </a>
           <div>
             {work.bookLayout === "vertical" ? <BookVertical bookUrl={work.bookUrl} directory={work.bookImageDirectory} pageCount={work.bookPageCount} title={work.bookTitle} /> : work.bookImageDirectory ? <BookSpread bookUrl={work.bookUrl} directory={work.bookImageDirectory} pageCount={work.bookPageCount} title={work.bookTitle} /> : <iframe src={work.bookUrl} title={`作品集「${work.bookTitle}」`} loading="lazy" allowFullScreen className="aspect-[3/4] w-full border-0 md:aspect-[4/3]" />}
-            <a href={work.bookUrl} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-xs underline underline-offset-4">作品集を別画面で読む ↗</a>
+            <a href={work.bookUrl} target="_blank" rel="noopener noreferrer" className="mt-4 ml-auto block w-fit text-right text-xs underline underline-offset-4">作品集を別画面で読む ↗</a>
           </div>
         </div>
       </section>}
