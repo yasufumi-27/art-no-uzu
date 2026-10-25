@@ -12,7 +12,12 @@ export default function Gallery({ images, alt = "作品画像" }) {
   const [index, setIndex] = useState(0);
   const timer = useRef(null);
   const slides = images;
-  const activeImage = responsiveImage(slides[index]);
+  // 全画像の縦横比から最も高さが必要な枠を先に確保する。
+  // 読み込みや画像切替に依存させず、下の説明文の位置を固定する。
+  const frameRatio = Math.min(...slides.map(src => {
+    const { width, height } = responsiveImage(src);
+    return width > 0 && height > 0 ? width / height : 4 / 3;
+  }), 4 / 3);
 
   // 自動切替
   useEffect(() => {
@@ -45,7 +50,7 @@ export default function Gallery({ images, alt = "作品画像" }) {
     <div>
       <div
         className="work-gallery-frame relative w-full overflow-hidden bg-[var(--color-bg)]"
-        style={{ "--image-ratio": activeImage.width && activeImage.height ? `${activeImage.width} / ${activeImage.height}` : "4 / 3" }}
+        style={{ "--image-ratio": frameRatio }}
       >
         {/* 各画像を重ね、opacity でフェードアウト/イン */}
         {slides.map((s, i) => (
