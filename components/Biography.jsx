@@ -14,8 +14,7 @@ export default function Biography({ className = "" }) {
               <div className="text-xs leading-[1.85] tracking-[0.02em] sm:text-sm sm:leading-loose sm:tracking-normal">
                 {items.length > 0 && <ul className="space-y-1">{items.map(item => <li key={item.text}><HistoryEntry entry={item} /></li>)}</ul>}
                 {exhibitions?.length > 0 && <div className={items.length ? "mt-3 sm:mt-5" : ""}>
-                  <p className="mb-1 text-[10px] tracking-[0.12em] text-[var(--color-muted)] sm:text-xs">EXHIBITION</p>
-                  <ul className="space-y-1">{exhibitions.map(item => <li key={item.text}>{item.text}</li>)}</ul>
+                  <ul className="space-y-1">{exhibitions.map(item => <li key={item.text}><HistoryEntry entry={item} exhibition /></li>)}</ul>
                 </div>}
               </div>
             </section>
