@@ -97,6 +97,16 @@ export default async function WorkDetail({ params }) {
     ["Size", work.size],
   ].filter(([, v]) => v);
 
+  const externalLinks = [
+    { href: work.awardUrl, label: "GOOD DESIGN AWARD 公式ページ" },
+    { href: work.essayUrl, label: "エッセイを読む" },
+    { href: work.article, label: work.articleLabel || "展示について読む" },
+    { href: work.purchaseUrl, label: "BASEで作品を見る", purchase: true },
+    { href: work.websiteUrl, label: work.websiteLabel || work.websiteUrl },
+    { href: work.youtubeUrl, label: "YouTubeで見る" },
+    { href: work.category !== "Essay" && !work.websiteUrl && !work.hideInstagramLink ? work.instagram : null, label: `${work.linkLabel}で見る` },
+  ].filter(link => link.href).sort((a, b) => Array.from(a.label).length - Array.from(b.label).length);
+
   // 同年の他作品（自身を除く）
   const related = works.filter(
     (w) => w.year === work.year && w.id !== work.id
@@ -158,21 +168,13 @@ export default async function WorkDetail({ params }) {
             </div>
           ))}
           </dl>
-          <div className="flex flex-col items-end text-right" data-work-links>
-          {work.awardUrl && <a href={work.awardUrl} target="_blank" rel="noopener noreferrer" className="mt-4 block text-xs underline underline-offset-4">GOOD DESIGN AWARD 公式ページ ↗</a>}
-          {work.essayUrl && <a href={work.essayUrl} target="_blank" rel="noopener noreferrer" className="mt-8 inline-block border-b border-[var(--color-ink)] pb-1 text-xs tracking-wider-jp hover:opacity-60">エッセイを読む ↗</a>}
-          {work.article && <a href={work.article} target="_blank" rel="noopener noreferrer" className="mt-8 block text-xs underline underline-offset-4">{work.articleLabel || "展示について読む"} ↗</a>}
-          {work.purchaseUrl && <a href={work.purchaseUrl} target="_blank" rel="noopener noreferrer" className="mt-8 block w-fit border border-[var(--color-ink)] px-6 py-3 text-xs tracking-wider-jp hover:bg-[var(--color-ink)] hover:text-white">BASEで作品を見る ↗</a>}
-          {work.websiteUrl && <a href={work.websiteUrl} target="_blank" rel="noopener noreferrer" className="mt-8 block w-fit break-all text-xs underline underline-offset-4 hover:opacity-60">{work.websiteLabel || work.websiteUrl} ↗</a>}
-          {work.youtubeUrl && <a href={work.youtubeUrl} target="_blank" rel="noopener noreferrer" className="mt-8 block w-fit border-b border-[var(--color-ink)] pb-1 text-xs tracking-wider-jp hover:opacity-60">YouTubeで見る →</a>}
-          {work.category !== "Essay" && !work.websiteUrl && !work.hideInstagramLink && <a
-            href={work.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-8 inline-block border-b border-[var(--color-ink)] pb-1 text-xs tracking-wider-jp hover:opacity-60"
-          >
-            {work.linkLabel} で見る →
-          </a>}
+          <div className="mt-8 flex flex-col items-start gap-6 text-left" data-work-links>
+            {externalLinks.map(link => <a key={link.href + link.label} href={link.href} target="_blank" rel="noopener noreferrer"
+              className={link.purchase
+                ? "block w-fit border border-[var(--color-ink)] px-6 py-3 text-xs tracking-wider-jp hover:bg-[var(--color-ink)] hover:text-white"
+                : "block w-fit break-words border-b border-[var(--color-ink)] pb-1 text-xs tracking-wider-jp hover:opacity-60"}>
+              {link.label} ↗︎
+            </a>)}
           </div>
         </Reveal>
       </div>
@@ -185,7 +187,7 @@ export default async function WorkDetail({ params }) {
           </a>
           <div>
             {work.bookLayout === "vertical" ? <BookVertical bookUrl={work.bookUrl} directory={work.bookImageDirectory} pageCount={work.bookPageCount} title={work.bookTitle} /> : work.bookImageDirectory ? <BookSpread bookUrl={work.bookUrl} directory={work.bookImageDirectory} pageCount={work.bookPageCount} title={work.bookTitle} /> : <iframe src={work.bookUrl} title={`作品集「${work.bookTitle}」`} loading="lazy" allowFullScreen className="aspect-[3/4] w-full border-0 md:aspect-[4/3]" />}
-            <a href={work.bookUrl} target="_blank" rel="noopener noreferrer" className="mt-4 ml-auto block w-fit text-right text-xs underline underline-offset-4">作品集を別画面で読む ↗</a>
+            <a href={work.bookUrl} target="_blank" rel="noopener noreferrer" className="mt-4 block w-fit text-left text-xs underline underline-offset-4">作品集を別画面で読む ↗︎</a>
           </div>
         </div>
       </section>}
